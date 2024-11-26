@@ -1,16 +1,17 @@
 const joi = require("joi");
 const sqlite3 = require("sqlite3").verbose();
 
-
+//Initialize the Sqlite database in RAM
 const db = new sqlite3.Database(":memory:", (error) => {
     if (error) {
         console.error("Error creating database:", error);
     } else {
         console.log("SQLite successful.");
+        //Serialize and run it
         db.serialize(() => {
             db.run(
                 `CREATE TABLE locations (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT PRIMARY KEY,
                     latitude FLOAT NOT NULL,
                     longitude FLOAT NOT NULL
                 )`,
@@ -22,6 +23,7 @@ const db = new sqlite3.Database(":memory:", (error) => {
                     }
                 }
             );
+            //Post some template data
             db.run(
                 `INSERT INTO locations (latitude, longitude) VALUES (13.1545, 14.656),
                 (55.75167, 37.61778), (61.50369712622088, 23.808507956130082),
@@ -61,17 +63,19 @@ const putSchema = joi.object({
 
 // Find all locations
 const findAll = (modifiers, callback) => {
-    let query = `SELECT rowid AS id, * FROM locations`;
+    let query = `SELECT * FROM locations`;
     if (modifiers.length > 0) {
         query += ` ${modifiers.join(" ")}`;
     }
-
+    //Converted to sqlite
     db.all(query, [], function (err, rows) {
         if (err) {
             callback({
                 status: 400,
                 message: "Incorrect query syntax",
             });
+            /*Errors and callbacks will need some work. It is now
+            a mishmash of setting statuses and messages and then throwing errors*/
         } else if (rows.length === 0) {
             callback(new Error("No locations found on the database"));
         } else {
@@ -82,7 +86,7 @@ const findAll = (modifiers, callback) => {
 
 // Find by specific id
 const findById = (id, callback) => {
-    const query = `SELECT rowid AS id, * FROM locations WHERE id = ?`;
+    const query = `SELECT * FROM locations WHERE id = ?`;
 
     db.get(query, [id], function (err, row) {
         if (err) {
