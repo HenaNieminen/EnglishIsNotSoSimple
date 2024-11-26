@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 const connect = (array) => {
     const apiUrl = `/api/locations`;
     async function getDatabase() {
