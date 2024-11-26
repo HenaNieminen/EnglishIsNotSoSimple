@@ -11,7 +11,7 @@ const db = new sqlite3.Database(":memory:", (error) => {
         db.serialize(() => {
             db.run(
                 `CREATE TABLE locations (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT PRIMARY KEY,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     latitude FLOAT NOT NULL,
                     longitude FLOAT NOT NULL
                 )`,
