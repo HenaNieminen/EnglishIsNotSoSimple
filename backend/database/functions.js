@@ -7,7 +7,8 @@ const db = new sqlite3.Database(":memory:", (error) => {
         console.error("Error creating database:", error);
     } else {
         console.log("SQLite successful.");
-        //Serialize and run it
+        /*Serialize and run it so that the create statement doesn't run in parrarel
+        with the insert statements*/
         db.serialize(() => {
             db.run(
                 `CREATE TABLE locations (
@@ -64,6 +65,7 @@ const putSchema = joi.object({
 // Find all locations
 const findAll = (modifiers, callback) => {
     let query = `SELECT * FROM locations`;
+
     if (modifiers.length > 0) {
         query += ` ${modifiers.join(" ")}`;
     }
@@ -102,6 +104,7 @@ const findById = (id, callback) => {
 //Delete by specific id
 const deleteById = (id, callback) => {
     const query = `DELETE FROM locations WHERE id = ?`;
+
     db.run(query, [id], function (err) {
         if (err) {
             callback(new Error("Incorrect query syntax"));
@@ -112,15 +115,18 @@ const deleteById = (id, callback) => {
         }
     });
 };
+
 // Post a new location
 const save = (location, callback) => {
     const { error } = locationSchema.validate(location);
+
     if (error) {
         callback(new Error("Invalid location data given"));
         return;
     }
 
     const query = `INSERT INTO locations (latitude, longitude) VALUES (?, ?)`;
+
     db.run(query, [location.latitude, location.longitude], function (err) {
         if (err) {
             callback(new Error("Incorrect query syntax"));
@@ -156,6 +162,7 @@ const put = (location, id, callback) => {
         }
     );
 };
+
 const patch = (location, id, callback) => {
     const { error } = updateSchema.validate(location);
     if (error) {
@@ -181,9 +188,9 @@ const patch = (location, id, callback) => {
         return;
     }
     // Create the query string with the updates
-    const query = `UPDATE locations SET ${updates.join(", ")} WHERE id = ${id}`;
+    const query = `UPDATE locations SET ${updates.join(", ")} WHERE id = ?`;
 
-    db.run(query, function (err) {
+    db.run(query, [id], function (err) {
         if (err) {
             callback(new Error("Incorrect query syntax"));
         } else if (this.changes === 0) {
