@@ -15,7 +15,7 @@ function App() {
             <ul>
                 {locations.map((location) => (
                     <li key={location.id}>
-                        id: {location.id} Latitude: {location.latitude}, Longitude: {location.longitude}
+                        ID: {location.id} Latitude: {location.latitude}, Longitude: {location.longitude}
                     </li>
                 ))}
             </ul>
