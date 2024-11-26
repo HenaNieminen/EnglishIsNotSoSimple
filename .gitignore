@@ -41,6 +41,11 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
+# Vite cache
+.vite-cache/
+
+.vite-cache/deps
+
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
