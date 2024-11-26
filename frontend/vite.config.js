@@ -17,5 +17,8 @@ export default defineConfig({
         },
         preserveSymlinks: true,
     },
+    rollupOptions: {
+        external: ['react-leaflet']
+    },
     cacheDir: path.resolve(__dirname, "../.vite-cache"), // Set cache directory outside frontend
 });
