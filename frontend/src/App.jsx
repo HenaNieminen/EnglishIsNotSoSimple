@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import connect from "./Fetchdata";
-import "./App.css";
+import "./styles/App.css";
+import Map from "./Map.jsx"
 
 function App() {
     const [locations, setLocations] = useState([]);
@@ -19,6 +20,7 @@ function App() {
                     </li>
                 ))}
             </ul>
+            <Map locations={locations} />
         </div>
     );
 }
