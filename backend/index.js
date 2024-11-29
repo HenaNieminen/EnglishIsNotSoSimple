@@ -6,7 +6,7 @@ const path = require("path");
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/locations", Router);
+app.use("/api/", Router);
 
 app.listen(port, () => {
     console.log(`Activating RESTful at: ${port}`);
