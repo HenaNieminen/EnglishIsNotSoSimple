@@ -1,12 +1,3 @@
-const sqlite3 = require("sqlite3").verbose();
-
-//Initialize the Sqlite database in RAM
-const db = new sqlite3.Database(":memory:", (error) => {
-
-});
-
-
-
 
 const findAll = () => {
 
