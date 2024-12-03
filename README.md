@@ -37,5 +37,7 @@ of the readme.
 ## Release timetable
 
 1st release: 15.12.2024
+
 2nd release: 10.1.2025
+
 Final release: 17.1.2025
