@@ -10,3 +10,5 @@ const db = new sqlite3.Database(":memory:", (error) => {
         db.run("CREATE TABLE wordpairs (id INTEGER PRIMARY KEY, wordpair TEXT)");
     });
 });
+
+module.exports = { db };
