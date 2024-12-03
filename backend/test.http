@@ -3,61 +3,42 @@ GET http://localhost:3000/
 
 ###
 
-# GET all locations
-GET http://localhost:3000/api/locations
+#
+GET http://localhost:3000/api/
 
 ###
 
-# GET a specific location by ID
-GET http://localhost:3000/api/locations/1
+#
+GET http://localhost:3000/api/
 
 ###
 
-# DELETE a location by ID
-DELETE http://localhost:3000/api/locations/12
+#
+DELETE http://localhost:3000/api/
 
 ###
 
-# POST a new location
-POST http://localhost:3000/api/locations/
-Content-Type: application/json
-
-{
-  "latitude": 90,
-  "longitude": 60
-}
+#
+POST http://localhost:3000/api/
 
 ###
 
-# PUT to update a location by ID
-# Replace ID and values as needed
-PUT http://localhost:3000/api/locations/1
-Content-Type: application/json
-
-{
-  "latitude": 70,
-  "longitude": 70
-}
+#
+PUT http://localhost:3000/api/
 
 ###
 
-# PATCH to partially update a location by ID
-# Replace ID and values as needed
-PATCH http://localhost:3000/api/locations/15
-Content-Type: application/json
-
-{
-  "latitude": 65
-}
+#
+PATCH http://localhost:3000/api/
 
 ###
 
-# GET all locations with FILTER (e.g., filter by latitude)
-# Replace query parameters as needed
-GET http://localhost:3000/api/locations?longitude=60
+#
+#
+GET http://localhost:3000/api/
 
 ###
 
-# GET all locations with SORT (e.g., sort by latitude)
-# Replace query parameters as needed
-GET http://localhost:3000/api/locations?sort=latitde&oder=dsc&longitude=60
+#
+#
+GET http://localhost:3000/api/
