@@ -1,4 +1,4 @@
-const db = require('./database');
+const db = require("./database.js");
 //Import the database
 
 const getWordpairs = () => {
