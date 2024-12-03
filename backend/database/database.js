@@ -15,4 +15,4 @@ const db = new sqlite3.Database(":memory:", (error) => {
     });
 });
 
-module.exports = { db };
+module.exports = db;
