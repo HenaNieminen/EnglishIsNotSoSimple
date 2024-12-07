@@ -18,8 +18,7 @@ around and will hit into build errors. Also the URL will definitely not match an
 Basic backend and functionality will hopefully be implemented by release 1. It will start out very basic and will be expanded
 upon before release 2.
 
-UI will be limited on the frontend side and hopefully the first task type of typing in the correct translation of a word will
-be available on release 1.
+UI will be limited or nonexistant in Release 1 as I have two projects to make at the same time. I promise backend will be in "some state."
 
 ## For release 2?
 More task types, better backend. More details will be updated.
