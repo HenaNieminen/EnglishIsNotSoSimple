@@ -17,6 +17,9 @@ const db = new sqlite3.Database(":memory:", (error) => {
             /*Translations stores all the IDs of the words that match comma separated.
             this will need some handling or a better idea*/
             .run("INSERT INTO words (word) VALUES ('hello'), ('terve');");
+        /*Eventually, I will read off all the initial data from a file. Hardcoding should do
+        for now. For saving user generated words and translations, I will look into localstorage
+        or somehow making this persistant other means */
     });
 });
 
