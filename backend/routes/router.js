@@ -3,10 +3,10 @@ const express = require("express");
 const router = express.Router();
 router.use(express.json());
 
-router.get("/wordpairs", async (req, res) => {
+router.get("/words", async (req, res) => {
     //Fetch all information from wordpairs table using the getWordPairs function
     try {
-        const data = await sqlite.getWordpairs();
+        const data = await sqlite.getAllWords();
         res.status(200).json(data);
     } catch (error) {
         /*Error handling will need some work to get statuses correct instead of
