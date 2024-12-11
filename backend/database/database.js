@@ -12,7 +12,7 @@ const db = new sqlite3.Database(":memory:", (error) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 word_id INTEGER NOT NULL,
                 translations text,
-                FOREIGN KEY (word_id) REFERENCES words (id),
+                FOREIGN KEY (word_id) REFERENCES words (id)
             );`)
             /*Translations stores all the IDs of the words that match comma separated.
             this will need some handling or a better idea*/
