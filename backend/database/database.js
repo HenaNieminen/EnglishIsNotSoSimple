@@ -7,11 +7,15 @@ const db = new sqlite3.Database(":memory:", (error) => {
         return;
     }
     db.serialize(() => {
-        /*Decided to keep it simple for now. This will only support a single language and definition
-        and may not even work from the get go. Idea to expand this would be to add a separate translations
-        table which I will implement later*/
-        db.run("CREATE TABLE wordpairs (id INTEGER PRIMARY KEY AUTOINCREMENT, words TEXT);")
-            .run("INSERT INTO wordpairs (words) VALUES ('hello, terve');")
+        db.run("CREATE TABLE words (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT);")
+            .run(`CREATE TABLE translations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                translations text,
+                FOREIGN KEY (first_word_id) REFERENCES words (id),
+            );`)
+            /*Translations stores all the IDs of the words that match comma separated.
+            this will need some handling or a better idea*/
+            .run("INSERT INTO words (word) VALUES ('hello'), ('terve');");
     });
 });
 
