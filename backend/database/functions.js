@@ -3,11 +3,9 @@ const db = require("./database.js");
 
 const getAllWords = () => {
     return new Promise((resolve, reject) => {
-        /*Query all the wordpairs from the table*/
-        db.all('SELECT * FROM wordpairs', (err, rows) => {
+        db.all('SELECT * FROM words', (err, rows) => {
             if (err) {
-                //Throw error with reject (Will need better error handling in the future
-                return reject(err);
+                return reject({ status: 500, message: err.message });
             }
             //Resolve returns all taken data
             resolve(rows);
