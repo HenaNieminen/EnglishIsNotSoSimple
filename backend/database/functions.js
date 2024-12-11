@@ -1,7 +1,7 @@
 const db = require("./database.js");
 //Import the database
 
-const getWordpairs = () => {
+const getAllWords = () => {
     return new Promise((resolve, reject) => {
         /*Query all the wordpairs from the table*/
         db.all('SELECT * FROM wordpairs', (err, rows) => {
@@ -17,5 +17,5 @@ const getWordpairs = () => {
 
 //Export all the modules for the router.js
 module.exports = {
-    getWordpairs
+    getAllWords
 };
