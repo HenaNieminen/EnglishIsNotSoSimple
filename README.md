@@ -21,10 +21,10 @@ upon before release 2.
 UI will be limited or nonexistant in Release 1 as I have two projects to make at the same time. I promise backend will be in "some state."
 
 ## For release 2?
-More task types, better backend. More details will be updated.
+Basic UI. Getting the first task types done (Open translation). 
 
-Idea would be to make flashcards or such à la Quizlet, but we will see how this project will advance. (At least satisfactory grade of 2 is what
-I am aiming for)
+This release may not have persistant settings or user added content. I have an idea to use localStorage to then push the
+user added words and translations into the database when it loads up into the ram, but we'll see how this pans out
 
 ## For final release?
 This whole thing will hopefully be completely done! Up to a satisfactory level or maybe beyond that if I progress well.
