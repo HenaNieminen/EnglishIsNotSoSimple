@@ -58,4 +58,5 @@ module.exports = {
     getAllWords,
     getAllTranslations,
     getWordsById,
+    getTranslationsById,
 };
