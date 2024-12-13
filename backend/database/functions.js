@@ -13,6 +13,10 @@ const getAllWords = () => {
     });
 };
 
+const getAllTranslations = () => {
+
+};
+
 //Export all the modules for the router.js
 module.exports = {
     getAllWords
