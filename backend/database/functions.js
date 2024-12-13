@@ -14,10 +14,18 @@ const getAllWords = () => {
 };
 
 const getAllTranslations = () => {
-
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM translations', (err, rows) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            resolve(rows);
+        });
+    });
 };
 
 //Export all the modules for the router.js
 module.exports = {
-    getAllWords
+    getAllWords,
+    getAllTranslations,
 };
