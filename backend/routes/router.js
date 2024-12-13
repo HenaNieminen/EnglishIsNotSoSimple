@@ -36,6 +36,16 @@ router.get("/words/:id([0-9]+)", async (req, res) => {
     }
 });
 
+router.get("/translations/:id([0-9]+)", async (req, res) => {
+    try {
+        const data = await sqlite.getTranslationsById(req.params.id);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
 
 
 module.exports = router;
