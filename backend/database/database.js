@@ -18,6 +18,14 @@ const createTranslationsTable = (db) => {
     force all posted words to be in lowercase */
 };
 
+const createPlaceHolderData = (db) => {
+    db.run("INSERT INTO words (word) VALUES ('hello'), ('terve'), ('hi')")
+        .run("INSERT INTO translations (word_id, translations) VALUES (1, '2,3'), (2, '1'), (3, '1');");
+    /* Eventually, I will read off all the initial data from a file. Hardcoding should do
+    for now. For saving user generated words and translations, I will look into localstorage
+    or somehow making this persistent other means */
+}
+
 // Initialize the database to RAM
 const db = new sqlite3.Database(":memory:", (error) => {
     if (error) {
@@ -27,13 +35,10 @@ const db = new sqlite3.Database(":memory:", (error) => {
     db.serialize(() => {
         createWordsTable(db);
         createTranslationsTable(db);
-
-        db.run("INSERT INTO words (word) VALUES ('hello'), ('terve'), ('hi')")
-            .run("INSERT INTO translations (word_id, translations) VALUES (1, '2,3'), (2, '1'), (3, '1');");
-        /* Eventually, I will read off all the initial data from a file. Hardcoding should do
-        for now. For saving user generated words and translations, I will look into localstorage
-        or somehow making this persistent other means */
+        createPlaceHolderData(db);
     });
 });
+
+
 
 module.exports = db;
