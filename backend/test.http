@@ -9,7 +9,7 @@ GET http://localhost:3000/api/words
 ###
 
 #
-GET http://localhost:3000/api/
+GET http://localhost:3000/api/translations
 
 ###
 
