@@ -12,6 +12,7 @@ router.get("/words", async (req, res) => {
         /*Error handling will need some work to get statuses correct instead of
         stubby non explaining sh**e */
         console.error("Error fetchig from database", error);
+        res.status(error.status).json(error.message);
     }
 });
 
@@ -20,7 +21,18 @@ router.get("/translations", async (req, res) => {
         const data = await sqlite.getAllTranslations();
         res.status(200).json(data);
     } catch (error) {
-        console.error("Error fetchig from database", error);
+        console.error("Error fetch from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+router.get("/words/:id([0-9]+)", async (req, res) => {
+    try {
+        const data = await sqlite.getWordsById(req.params.id);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
     }
 });
 
