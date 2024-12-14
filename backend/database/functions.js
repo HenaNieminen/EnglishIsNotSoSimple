@@ -52,6 +52,20 @@ const getTranslationsById = (id) => {
     });
 };
 
+const postWords = (word) => {
+    return new Promise((resolve, reject) => {
+        if (word.length < 1) {
+            return reject({ status: 400, message: 'Word cannot be empty' });
+        }
+        db.run('INSERT INTO words (word) VALUES (?)', [word], function (err) {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            resolve({ id: this.lastID, word: word });
+        });
+    });
+};
+
 
 //Export all the modules for the router.js
 module.exports = {
@@ -59,4 +73,5 @@ module.exports = {
     getAllTranslations,
     getWordsById,
     getTranslationsById,
+    postWords,
 };
