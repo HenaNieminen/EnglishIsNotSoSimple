@@ -16,6 +16,20 @@ router.get("/words", async (req, res) => {
     }
 });
 
+router.post("/words", async (req, res) => {
+    try {
+        const { word } = req.body;
+        if (!word) {
+            throw { status: 400, message: "Word is required" };
+        }
+        const data = await sqlite.postWords(word);
+        res.status(201).json(data);
+    } catch (error) {
+        console.error("Error adding to database", error);
+        res.status(error.status || 500).json({ message: error.message });
+    }
+});
+
 router.get("/translations", async (req, res) => {
     try {
         const data = await sqlite.getAllTranslations();
@@ -45,6 +59,8 @@ router.get("/translations/:id([0-9]+)", async (req, res) => {
         res.status(error.status).json(error.message);
     }
 });
+
+
 
 
 
