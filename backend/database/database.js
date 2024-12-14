@@ -2,14 +2,14 @@ const sqlite3 = require("sqlite3").verbose();
 
 //Create words table
 const createWordsTable = (db) => {
-    db.run("CREATE TABLE words (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT);");
+    db.run("CREATE TABLE words (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT UNIQUE);");
 };
 
 //Create translations table
 const createTranslationsTable = (db) => {
     db.run(`CREATE TABLE translations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        word_id INTEGER NOT NULL,
+        word_id INTEGER NOT NULL UNIQUE,
         translations text,
         FOREIGN KEY (word_id) REFERENCES words (id)
     );`);
