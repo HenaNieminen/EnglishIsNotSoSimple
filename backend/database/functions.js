@@ -59,6 +59,9 @@ const postWords = (word) => {
         }
         db.run('INSERT INTO words (word) VALUES (?)', [word], function (err) {
             if (err) {
+                if (err.code === 'SQLITE_CONSTRAINT') {
+                    return reject({ status: 409, message: 'Word already exists' });
+                }
                 return reject({ status: 500, message: err.message });
             }
             resolve({ id: this.lastID, word: word });
