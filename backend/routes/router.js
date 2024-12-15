@@ -26,7 +26,7 @@ router.post("/words", async (req, res) => {
         res.status(201).json(data);
     } catch (error) {
         console.error("Error adding to database", error);
-        res.status(error.status || 500).json({ message: error.message });
+        res.status(error.status).json({ message: error.message });
     }
 });
 
@@ -37,6 +37,17 @@ router.get("/translations", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
+    }
+});
+
+router.post("/translations", async (req, res) => {
+    try {
+        const { id, transIds } = req.body;
+        const data = await sqlite.postTranslations(id, transIds);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error adding to database", error);
+        res.status(error.status).json({ message: error.message });
     }
 });
 

@@ -29,13 +29,39 @@ POST http://localhost:3000/api/words
 Content-Type: application/json
 
 {
-    "word": "auto"
+    "word": "moottori"
+}
+
+
+###
+POST http://localhost:3000/api/words
+Content-Type: application/json
+
+{
+    "word": "engine"
 }
 
 
 ###
 
-#
+POST http://localhost:3000/api/words
+Content-Type: application/json
+
+{
+    "word": "motor"
+}
+
+###
+
+POST http://localhost:3000/api/translations
+Content-Type: application/json
+
+{
+    "id": "4",
+    "transIds": "5,6"
+}
+
+###
 PUT http://localhost:3000/api/
 
 ###
