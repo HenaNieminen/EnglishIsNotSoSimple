@@ -16,6 +16,7 @@ router.get("/words", async (req, res) => {
 });
 
 router.get("/words/:id([0-9]+)", async (req, res) => {
+    //Fetch an specific word by ID from the words table
     try {
         const data = await sqlite.getWordsById(req.params.id);
         res.status(200).json(data);
@@ -26,6 +27,7 @@ router.get("/words/:id([0-9]+)", async (req, res) => {
 });
 
 router.post("/words", async (req, res) => {
+    //Post words into the words table
     try {
         const { word } = req.body;
         if (!word) {
@@ -43,6 +45,7 @@ router.post("/words", async (req, res) => {
 
 //Translations table routes
 router.get("/translations", async (req, res) => {
+    //Get all translations from the translations table
     try {
         const data = await sqlite.getAllTranslations();
         res.status(200).json(data);
@@ -53,6 +56,7 @@ router.get("/translations", async (req, res) => {
 });
 
 router.get("/translations/:id([0-9]+)", async (req, res) => {
+    //Get an specific translation by ID (Translation id not word ID)
     try {
         const data = await sqlite.getTranslationsById(req.params.id);
         res.status(200).json(data);
@@ -60,9 +64,12 @@ router.get("/translations/:id([0-9]+)", async (req, res) => {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
     }
+    /*I will also need a version where you can fetch it by word ID. This
+    is pretty useless for the frontend handling, but I made it anyway*/
 });
 
 router.post("/translations", async (req, res) => {
+    //Post translations to the translations table
     try {
         const { id, transIds } = req.body;
         const data = await sqlite.postTranslations(id, transIds);
