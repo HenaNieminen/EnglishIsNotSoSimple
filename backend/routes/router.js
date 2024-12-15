@@ -3,10 +3,21 @@ const express = require("express");
 const router = express.Router();
 router.use(express.json());
 
+//Words table routes
 router.get("/words", async (req, res) => {
     //Fetch all information from wordpairs table using the getWordPairs function
     try {
         const data = await sqlite.getAllWords();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+router.get("/words/:id([0-9]+)", async (req, res) => {
+    try {
+        const data = await sqlite.getWordsById(req.params.id);
         res.status(200).json(data);
     } catch (error) {
         console.error("Error fetching from database", error);
@@ -28,9 +39,22 @@ router.post("/words", async (req, res) => {
     }
 });
 
+//End of words table routes
+
+//Translations table routes
 router.get("/translations", async (req, res) => {
     try {
         const data = await sqlite.getAllTranslations();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+router.get("/translations/:id([0-9]+)", async (req, res) => {
+    try {
+        const data = await sqlite.getTranslationsById(req.params.id);
         res.status(200).json(data);
     } catch (error) {
         console.error("Error fetching from database", error);
@@ -49,28 +73,6 @@ router.post("/translations", async (req, res) => {
     }
 });
 
-router.get("/words/:id([0-9]+)", async (req, res) => {
-    try {
-        const data = await sqlite.getWordsById(req.params.id);
-        res.status(200).json(data);
-    } catch (error) {
-        console.error("Error fetching from database", error);
-        res.status(error.status).json(error.message);
-    }
-});
-
-router.get("/translations/:id([0-9]+)", async (req, res) => {
-    try {
-        const data = await sqlite.getTranslationsById(req.params.id);
-        res.status(200).json(data);
-    } catch (error) {
-        console.error("Error fetching from database", error);
-        res.status(error.status).json(error.message);
-    }
-});
-
-
-
-
+//End of translation table routes
 
 module.exports = router;
