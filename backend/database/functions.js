@@ -75,10 +75,9 @@ const postWords = (word) => {
         }
         db.run('INSERT INTO words (word) VALUES (?)', [word], function (err) {
             if (err) {
-                /*Handling for unique constraint. Since there is only one constraint,
-                you can just use generic SQLITE_CONSTRAIT and don't need to check
-                if it contains error for uniqueness*/
-                if (err.code === 'SQLITE_CONSTRAINT') {
+                /*On a second thought, it might be a good idea to define the constraint
+                anyways.*/
+                if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
                     return reject({ status: 409, message: 'Word already exists' });
                 }
                 return reject({ status: 500, message: err.message });
@@ -105,12 +104,14 @@ const postTranslations = (id, transIds) => {
             if (!wordRow) {
                 return reject({ status: 404, message: 'Word not found' });
             }
+            //Map out how many ? marks are needed to make the Select statement from transArray
             const queryMarks = transArray.map(() => '?').join(',');
             //Check if the ids of the transIds exist in the words table
             db.all(`SELECT id FROM words WHERE id IN (${queryMarks})`, transArray, (err, rows) => {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
+                //If the query does not return the full length of transArray, some word must be missing
                 if (rows.length !== transArray.length) {
                     return reject({ status: 404, message: 'One or more given word translations not found' });
                 }
@@ -118,11 +119,9 @@ const postTranslations = (id, transIds) => {
                 db.run('INSERT INTO translations (word_id, translations) VALUES (?, ?)', [id, transIds], function (err) {
                     if (err) {
                         //Handling for unique constraint
-                        if (err.code === 'SQLITE_CONSTRAINT') {
+                        if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
                             const message = "Translations for this word already exist. Please use PATCH or PUT to edit them"
                             return reject({ status: 409, message: message });
-                        } else if (err.code === 'SQLITE_CONSTRAINT_FOREIGNKEY') {
-                            return reject({ status: 400, message: 'Foreign key error' });
                         }
                         return reject({ status: 500, message: err.message });
                     }
