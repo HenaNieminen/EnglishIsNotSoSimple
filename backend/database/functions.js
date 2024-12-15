@@ -89,6 +89,51 @@ const postWords = (word) => {
     });
 };
 
+const postTranslations = (id, transIds) => {
+    return new Promise((resolve, reject) => {
+        //Will refuse if any value is empty
+        if (!id || transIds.length === 0) {
+            return reject({ status: 400, message: 'Values cannot be empty' });
+        }
+        //Split the given transIds to an number array
+        const transArray = transIds.split(',').map(Number);
+        //Check if the id for the word exists
+        db.get('SELECT * FROM words WHERE id = ?', [id], (err, wordRow) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (!wordRow) {
+                return reject({ status: 404, message: 'Word not found' });
+            }
+            const queryMarks = transArray.map(() => '?').join(',');
+            //Check if the ids of the transIds exist in the words table
+            db.all(`SELECT id FROM words WHERE id IN (${queryMarks})`, transArray, (err, rows) => {
+                if (err) {
+                    return reject({ status: 500, message: err.message });
+                }
+                if (rows.length !== transArray.length) {
+                    return reject({ status: 404, message: 'One or more given word translations not found' });
+                }
+                //Run the insert after all checks
+                db.run('INSERT INTO translations (word_id, translations) VALUES (?, ?)', [id, transIds], function (err) {
+                    if (err) {
+                        //Handling for unique constraint
+                        if (err.code === 'SQLITE_CONSTRAINT') {
+                            const message = "Translations for this word already exist. Please use PATCH or PUT to edit them"
+                            return reject({ status: 409, message: message });
+                        } else if (err.code === 'SQLITE_CONSTRAINT_FOREIGNKEY') {
+                            return reject({ status: 400, message: 'Foreign key error' });
+                        }
+                        return reject({ status: 500, message: err.message });
+                    }
+                    //Resolve if all goes well
+                    resolve({ id: this.lastID, transIds: transIds });
+                });
+            });
+        });
+    });
+};
+
 
 //Export all the modules for the router.js
 module.exports = {
@@ -97,4 +142,5 @@ module.exports = {
     getWordsById,
     getTranslationsById,
     postWords,
+    postTranslations
 };
