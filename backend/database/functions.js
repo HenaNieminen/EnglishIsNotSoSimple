@@ -52,14 +52,14 @@ const getWordsById = (id) => {
 
 const getTranslationsById = (id) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
+        db.get('SELECT * FROM translations WHERE id = ?', [id], (err, row) => {
             //If something goes wrong in the server
             if (err) {
                 return reject({ status: 500, message: err.message });
             }
             //If not found
             if (!row) {
-                return reject({ status: 404, message: 'Tanslations not found' });
+                return reject({ status: 404, message: 'Translations not found' });
             }
             //Resolve and give the specific row from database
             resolve(row);
