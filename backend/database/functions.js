@@ -152,6 +152,27 @@ const postTranslations = (id, transId) => {
     });
 };
 
+const deleteWord = (id) => {
+    return new Promise((resolve, reject) => {
+        //Delete the word from the database
+        db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (this.changes === 0) {
+                return reject({ status: 404, message: 'Word not found' });
+            }
+            //Delete any translation related to the word
+            db.run('DELETE FROM translations WHERE word_id = ? OR translation_id = ?', [id, id], function (err) {
+                if (err) {
+                    return reject({ status: 500, message: err.message });
+                }
+                resolve();
+            });
+        });
+    });
+};
+
 
 //Export all the modules for the router.js
 module.exports = {
@@ -161,5 +182,6 @@ module.exports = {
     getTranslationsById, //This might be an useless function
     getTranslationsByWordId,
     postWords,
-    postTranslations
+    postTranslations,
+    deleteWord
 };
