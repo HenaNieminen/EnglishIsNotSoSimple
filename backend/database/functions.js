@@ -52,7 +52,7 @@ const getWordsById = (id) => {
 
 const getTranslationsById = (id) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
+        db.get('SELECT * FROM translations WHERE id = ?', [id], (err, row) => {
             //If something goes wrong in the server
             if (err) {
                 return reject({ status: 500, message: err.message });
@@ -88,15 +88,14 @@ const postWords = (word) => {
     });
 };
 
-const postTranslations = (id, transIds) => {
+const postTranslations = (id, transId) => {
     return new Promise((resolve, reject) => {
-        //Will refuse if any value is empty
-        if (!id || transIds.length === 0) {
+        //Reject if any value is empty
+        if (!id || !transId) {
             return reject({ status: 400, message: 'Values cannot be empty' });
         }
-        //Split the given transIds to an number array
-        const transArray = transIds.split(',').map(Number);
-        //Check if the id for the word exists
+
+        //Check if the word id exists
         db.get('SELECT * FROM words WHERE id = ?', [id], (err, wordRow) => {
             if (err) {
                 return reject({ status: 500, message: err.message });
@@ -104,29 +103,33 @@ const postTranslations = (id, transIds) => {
             if (!wordRow) {
                 return reject({ status: 404, message: 'Word not found' });
             }
-            //Map out how many ? marks are needed to make the Select statement from transArray
-            const queryMarks = transArray.map(() => '?').join(',');
-            //Check if the ids of the transIds exist in the words table
-            db.all(`SELECT id FROM words WHERE id IN (${queryMarks})`, transArray, (err, rows) => {
+            //See if word transID exists
+            db.get('SELECT * FROM words WHERE id = ?', [transId], (err, transRow) => {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
-                //If the query does not return the full length of transArray, some word must be missing
-                if (rows.length !== transArray.length) {
-                    return reject({ status: 404, message: 'One or more given word translations not found' });
+                if (!transRow) {
+                    return reject({ status: 404, message: 'Translation word not found' });
                 }
-                //Run the insert after all checks
-                db.run('INSERT INTO translations (word_id, translations) VALUES (?, ?)', [id, transIds], function (err) {
+                //Add the translation
+                db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [id, transId], function (err) {
                     if (err) {
-                        //Handling for unique constraint
-                        if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-                            const message = "Translations for this word already exist. Please use PATCH or PUT to edit them"
-                            return reject({ status: 409, message: message });
+                        if (err.message.includes('UNIQUE')) {
+                            return reject({ status: 409, message: 'Translation already exists' });
                         }
                         return reject({ status: 500, message: err.message });
                     }
-                    //Resolve if all goes well
-                    resolve({ id: this.lastID, transIds: transIds });
+                    /*Add the translation other way around. This was harder to figure out with
+                    comma separation hence the change.*/
+                    db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [transId, id], function (err) {
+                        if (err) {
+                            if (err.message.includes('UNIQUE')) {
+                                return reject({ status: 409, message: 'Reverse translation already exists' });
+                            }
+                            return reject({ status: 500, message: err.message });
+                        }
+                        resolve({ id: this.lastID, wordId: id, transId: transId });
+                    });
                 });
             });
         });

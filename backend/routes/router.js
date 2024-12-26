@@ -68,11 +68,22 @@ router.get("/translations/:id([0-9]+)", async (req, res) => {
     is pretty useless for the frontend handling, but I made it anyway*/
 });
 
+router.get("/translationsforword/:id([0-9]+)", async (req, res) => {
+    //Get an specific translation by word ID
+    try {
+        const data = await sqlite.getTranslationsById(req.params.id);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
 router.post("/translations", async (req, res) => {
     //Post translations to the translations table
     try {
-        const { id, transIds } = req.body;
-        const data = await sqlite.postTranslations(id, transIds);
+        const { id, transId } = req.body;
+        const data = await sqlite.postTranslations(id, transId);
         res.status(200).json(data);
     } catch (error) {
         console.error("Error adding to database", error);
