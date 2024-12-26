@@ -4,6 +4,7 @@ const router = express.Router();
 router.use(express.json());
 
 //Words table routes
+
 router.get("/words", async (req, res) => {
     //Fetch all information from wordpairs table using the getWordPairs function
     try {
@@ -44,6 +45,7 @@ router.post("/words", async (req, res) => {
 //End of words table routes
 
 //Translations table routes
+
 router.get("/translations", async (req, res) => {
     //Get all translations from the translations table
     try {
@@ -79,6 +81,10 @@ router.get("/translationsforword/:id([0-9]+)", async (req, res) => {
     }
 });
 
+//End of translation table routes
+
+//Mixed Table routes
+
 router.post("/translations", async (req, res) => {
     //Post translations to the translations table
     try {
@@ -91,6 +97,16 @@ router.post("/translations", async (req, res) => {
     }
 });
 
-//End of translation table routes
+router.delete("/words/:id([0-9]+)", async (req, res) => {
+    try {
+        await sqlite.deleteWord(req.params.id);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+//End of mixed table routes
 
 module.exports = router;

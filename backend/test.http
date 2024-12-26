@@ -52,7 +52,7 @@ POST http://localhost:3000/api/words
 Content-Type: application/json
 
 {
-    "word": "motor"
+
 }
 
 ###
@@ -83,4 +83,4 @@ GET http://localhost:3000/api/
 
 #
 #
-GET http://localhost:3000/api/
+DELETE http://localhost:3000/api/words/1
