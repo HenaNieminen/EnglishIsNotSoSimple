@@ -50,6 +50,7 @@ const getWordsById = (id) => {
     });
 };
 
+//Probably an useless function. Will most likely be deleted later
 const getTranslationsById = (id) => {
     return new Promise((resolve, reject) => {
         db.get('SELECT * FROM translations WHERE id = ?', [id], (err, row) => {
@@ -66,6 +67,21 @@ const getTranslationsById = (id) => {
         });
     });
 };
+
+//The real shit frontend actually needs
+const getTranslationsByWordId = (id) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM translations WHERE word_id = ?', [id], (err, rows) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (rows.length === 0) {
+                return reject({ status: 404, message: 'Translations not found' });
+            }
+            resolve(rows);
+        });
+    });
+}
 
 const postWords = (word) => {
     return new Promise((resolve, reject) => {
@@ -142,7 +158,8 @@ module.exports = {
     getAllWords,
     getAllTranslations,
     getWordsById,
-    getTranslationsById,
+    getTranslationsById, //This might be an useless function
+    getTranslationsByWordId,
     postWords,
     postTranslations
 };

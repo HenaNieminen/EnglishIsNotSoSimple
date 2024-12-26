@@ -71,7 +71,7 @@ router.get("/translations/:id([0-9]+)", async (req, res) => {
 router.get("/translationsforword/:id([0-9]+)", async (req, res) => {
     //Get an specific translation by word ID
     try {
-        const data = await sqlite.getTranslationsById(req.params.id);
+        const data = await sqlite.getTranslationsByWordId(req.params.id);
         res.status(200).json(data);
     } catch (error) {
         console.error("Error fetching from database", error);
