@@ -12,7 +12,7 @@ const createTranslationsTable = (db) => {
         word_id INTEGER NOT NULL,
         translation_id INTEGER NOT NULL,
         FOREIGN KEY (word_id) REFERENCES words (id),
-        FOREIGN KEY (translation_id REFRENCES words (id),
+        FOREIGN KEY (translation_id) REFERENCES words (id),
         UNIQUE(word_id, translation_id)
     );`);
     /*Converted to use duplication. I realized that comma separating them
