@@ -1,8 +1,18 @@
 const sqlite3 = require("sqlite3").verbose();
 
+//Create a table to store languages
+const createLanguageTable = (db) => {
+    db.run("CREATE TABLE language (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT UNIQUE);");
+};
+
 //Create words table
 const createWordsTable = (db) => {
-    db.run("CREATE TABLE words (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT UNIQUE);");
+    db.run(`CREATE TABLE words (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        lang_id INTEGER,
+        word TEXT UNIQUE,
+        FOREIGN KEY (lang_id) REFERENCES language (id)
+    );`);
 };
 
 //Create translations table
@@ -34,6 +44,7 @@ const db = new sqlite3.Database(":memory:", (error) => {
         return;
     }
     db.serialize(() => {
+        createLanguageTable(db);
         createWordsTable(db);
         createTranslationsTable(db);
         createPlaceHolderData(db);
