@@ -13,9 +13,12 @@ const createWordsTable = (db) => {
     db.run(`CREATE TABLE words (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         lang_id INTEGER,
-        word TEXT UNIQUE,
-        FOREIGN KEY (lang_id) REFERENCES languages (id)
+        word TEXT,
+        FOREIGN KEY (lang_id) REFERENCES languages (id),
+        UNIQUE(lang_id, word)
     );`);
+    /*Unique constaint was modified so that words have to be unique for each language,
+    but will not exclude and reject loan words in other languages*/
 };
 
 //Create translations table
