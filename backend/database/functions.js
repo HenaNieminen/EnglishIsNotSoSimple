@@ -93,7 +93,7 @@ const postWords = (word) => {
             if (err) {
                 /*On a second thought, it might be a good idea to define the constraint
                 anyways.*/
-                if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+                if (err.code === 'SQLITE_CONSTRAINT') {
                     return reject({ status: 409, message: 'Word already exists' });
                 }
                 return reject({ status: 500, message: err.message });

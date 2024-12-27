@@ -84,3 +84,7 @@ GET http://localhost:3000/api/
 #
 #
 DELETE http://localhost:3000/api/words/1
+
+###
+
+DELETE http://localhost:3000/api/translations/1&2
