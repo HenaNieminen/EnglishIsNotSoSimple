@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 //Create a table to store languages
 const createLanguageTable = (db) => {
-    db.run("CREATE TABLE language (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT UNIQUE);");
+    db.run("CREATE TABLE languages (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT UNIQUE);");
 };
 
 //Create words table
@@ -11,7 +11,7 @@ const createWordsTable = (db) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         lang_id INTEGER,
         word TEXT UNIQUE,
-        FOREIGN KEY (lang_id) REFERENCES language (id)
+        FOREIGN KEY (lang_id) REFERENCES languages (id)
     );`);
 };
 
@@ -30,8 +30,9 @@ const createTranslationsTable = (db) => {
 };
 
 const createPlaceHolderData = (db) => {
-    db.run("INSERT INTO words (word) VALUES ('hello'), ('terve'), ('hi')")
-        .run("INSERT INTO translations (word_id, translation_id) VALUES (1, 2), (1, 3), (2, 1);");
+    db.run("INSERT INTO languages (language) VALUES ('finnish'), ('english')")
+    db.run("INSERT INTO words (lang_id, word) VALUES (2, 'hello'), (2, 'hi'), (1, 'terve')")
+    db.run("INSERT INTO translations (word_id, translation_id) VALUES (1, 2), (1, 3), (2, 1);");
     /* Eventually, I will read off all the initial data from a file. Hardcoding should do
     for now. For saving user generated words and translations, I will look into localstorage
     or somehow making this persistent other means */
