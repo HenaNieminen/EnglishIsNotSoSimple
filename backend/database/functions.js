@@ -154,20 +154,53 @@ const postTranslations = (id, transId) => {
 
 const deleteWord = (id) => {
     return new Promise((resolve, reject) => {
-        //Delete the word from the database
-        db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
+        //Check if the word exists first before executing
+        db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
             if (err) {
                 return reject({ status: 500, message: err.message });
             }
-            if (this.changes === 0) {
+            if (!row) {
                 return reject({ status: 404, message: 'Word not found' });
             }
-            //Delete any translation related to the word
-            db.run('DELETE FROM translations WHERE word_id = ? OR translation_id = ?', [id, id], function (err) {
+            //Delete the word from the database
+            db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
-                resolve();
+                //Delete any translation related to the word
+                db.run('DELETE FROM translations WHERE word_id = ? OR translation_id = ?', [id, id], function (err) {
+                    if (err) {
+                        return reject({ status: 500, message: err.message });
+                    }
+                    resolve();
+                });
+            });
+        });
+    });
+};
+
+const deleteTranslation = (id, transId) => {
+    return new Promise((resolve, reject) => {
+        //Check if the translation exists first before executing
+        db.get('SELECT * FROM translations WHERE word_id = ? AND translation_id = ?', [id, transId], (err, row) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (!row) {
+                return reject({ status: 404, message: 'Translation not found' });
+            }
+            //Delete the initial translation
+            db.run('DELETE FROM translations WHERE word_id = ? AND translation_id = ?', [id, transId], function (err) {
+                if (err) {
+                    return reject({ status: 500, message: err.message });
+                }
+                //And the ol' switcheroo
+                db.run('DELETE FROM translations WHERE word_id = ? AND translation_id = ?', [transId, id], function (err) {
+                    if (err) {
+                        return reject({ status: 500, message: err.message });
+                    }
+                    resolve();
+                });
             });
         });
     });
@@ -183,5 +216,6 @@ module.exports = {
     getTranslationsByWordId,
     postWords,
     postTranslations,
-    deleteWord
+    deleteWord,
+    deleteTranslation,
 };
