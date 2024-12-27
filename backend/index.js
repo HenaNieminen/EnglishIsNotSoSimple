@@ -11,7 +11,7 @@ app.get("/", async (req, res) => {
     try {
         res.status(200).send("Welcome to EnglishIsNotSoSimple API");
     } catch (error) {
-        res.status(500).send("Something went terribly wrong");
+        res.status(500).send(`Something went terribly wrong. Here, take a gander ${error.message}`);
     }
 });
 

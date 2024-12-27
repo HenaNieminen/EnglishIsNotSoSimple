@@ -1,6 +1,21 @@
 const db = require("./database.js");
 //Import the database
 
+const getAllLanguages = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM languages', (err, rows) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            //If no languages found (Would be pretty weird huh?)
+            if (rows.length === 0) {
+                return reject({ status: 404, message: 'No languages found' });
+            }
+            resolve(rows);
+        });
+    });
+};
+
 const getAllWords = () => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM words', (err, rows) => {
@@ -50,6 +65,7 @@ const getWordsById = (id) => {
     });
 };
 
+//Probably an useless function. Will most likely be deleted later
 const getTranslationsById = (id) => {
     return new Promise((resolve, reject) => {
         db.get('SELECT * FROM translations WHERE id = ?', [id], (err, row) => {
@@ -67,6 +83,21 @@ const getTranslationsById = (id) => {
     });
 };
 
+//The real shit frontend actually needs
+const getTranslationsByWordId = (id) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM translations WHERE word_id = ?', [id], (err, rows) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (rows.length === 0) {
+                return reject({ status: 404, message: 'Translations not found' });
+            }
+            resolve(rows);
+        });
+    });
+};
+
 const postWords = (word) => {
     return new Promise((resolve, reject) => {
         //Will refuse if the word is empty. Will also be handled in frontend for redundancy
@@ -77,7 +108,7 @@ const postWords = (word) => {
             if (err) {
                 /*On a second thought, it might be a good idea to define the constraint
                 anyways.*/
-                if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+                if (err.code === 'SQLITE_CONSTRAINT') {
                     return reject({ status: 409, message: 'Word already exists' });
                 }
                 return reject({ status: 500, message: err.message });
@@ -88,15 +119,14 @@ const postWords = (word) => {
     });
 };
 
-const postTranslations = (id, transIds) => {
+const postTranslations = (id, transId) => {
     return new Promise((resolve, reject) => {
-        //Will refuse if any value is empty
-        if (!id || transIds.length === 0) {
+        //Reject if any value is empty
+        if (!id || !transId) {
             return reject({ status: 400, message: 'Values cannot be empty' });
         }
-        //Split the given transIds to an number array
-        const transArray = transIds.split(',').map(Number);
-        //Check if the id for the word exists
+
+        //Check if the word id exists
         db.get('SELECT * FROM words WHERE id = ?', [id], (err, wordRow) => {
             if (err) {
                 return reject({ status: 500, message: err.message });
@@ -104,42 +134,121 @@ const postTranslations = (id, transIds) => {
             if (!wordRow) {
                 return reject({ status: 404, message: 'Word not found' });
             }
-            //Map out how many ? marks are needed to make the Select statement from transArray
-            const queryMarks = transArray.map(() => '?').join(',');
-            //Check if the ids of the transIds exist in the words table
-            db.all(`SELECT id FROM words WHERE id IN (${queryMarks})`, transArray, (err, rows) => {
+            //See if word transID exists
+            db.get('SELECT * FROM words WHERE id = ?', [transId], (err, transRow) => {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
-                //If the query does not return the full length of transArray, some word must be missing
-                if (rows.length !== transArray.length) {
-                    return reject({ status: 404, message: 'One or more given word translations not found' });
+                if (!transRow) {
+                    return reject({ status: 404, message: 'Translation word not found' });
                 }
-                //Run the insert after all checks
-                db.run('INSERT INTO translations (word_id, translations) VALUES (?, ?)', [id, transIds], function (err) {
+                //Add the translation
+                db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [id, transId], function (err) {
                     if (err) {
-                        //Handling for unique constraint
-                        if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-                            const message = "Translations for this word already exist. Please use PATCH or PUT to edit them"
-                            return reject({ status: 409, message: message });
+                        if (err.message.includes('UNIQUE')) {
+                            return reject({ status: 409, message: 'Translation already exists' });
                         }
                         return reject({ status: 500, message: err.message });
                     }
-                    //Resolve if all goes well
-                    resolve({ id: this.lastID, transIds: transIds });
+                    /*Add the translation other way around. This was harder to figure out with
+                    comma separation hence the change.*/
+                    db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [transId, id], function (err) {
+                        if (err) {
+                            if (err.message.includes('UNIQUE')) {
+                                return reject({ status: 409, message: 'Reverse translation already exists' });
+                            }
+                            return reject({ status: 500, message: err.message });
+                        }
+                        resolve({ id: this.lastID, wordId: id, transId: transId });
+                    });
                 });
             });
         });
     });
 };
 
+const deleteWord = (id) => {
+    return new Promise((resolve, reject) => {
+        //Check if the word exists first before executing
+        db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (!row) {
+                return reject({ status: 404, message: 'Word not found' });
+            }
+            //Delete the word from the database
+            db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
+                if (err) {
+                    return reject({ status: 500, message: err.message });
+                }
+                //Delete any translation related to the word
+                db.run('DELETE FROM translations WHERE word_id = ? OR translation_id = ?', [id, id], function (err) {
+                    if (err) {
+                        return reject({ status: 500, message: err.message });
+                    }
+                    resolve();
+                });
+            });
+        });
+    });
+};
 
+const deleteTranslation = (id, transId) => {
+    return new Promise((resolve, reject) => {
+        //Check if the translation exists first before executing
+        db.get('SELECT * FROM translations WHERE word_id = ? AND translation_id = ?', [id, transId], (err, row) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (!row) {
+                return reject({ status: 404, message: 'Translation not found' });
+            }
+            //Delete the initial translation
+            db.run('DELETE FROM translations WHERE word_id = ? AND translation_id = ?', [id, transId], function (err) {
+                if (err) {
+                    return reject({ status: 500, message: err.message });
+                }
+                //And the ol' switcheroo
+                db.run('DELETE FROM translations WHERE word_id = ? AND translation_id = ?', [transId, id], function (err) {
+                    if (err) {
+                        return reject({ status: 500, message: err.message });
+                    }
+                    resolve();
+                });
+            });
+        });
+    });
+};
+
+const editWord = (id, newWord) => {
+    return new Promise((resolve, reject) => {
+    });
+};
+
+
+
+
+/*Note to self: Right now, you got most of the main shit nailed down.
+If any other needs arises, you can come back and then make more functions for that specific task.
+Do the edit functions and you should be golden to start nailing down the frontend*/
+
+/*Something to wonder here, do I really need a function to edit translations other than just words?
+Translation swapping can easily be just handled with deletion and re-adding a new one. Plus, words
+can have multiple translations, so it feels unnecessary anyways. Translations table is just there
+to link related words toghter and doesn't necessarily need an edit function*/
+
+/*Oh and right, make a schema for words and go over the error handling still */
 //Export all the modules for the router.js
 module.exports = {
+    getAllLanguages,
     getAllWords,
     getAllTranslations,
     getWordsById,
-    getTranslationsById,
+    getTranslationsById, //This might be an useless function
+    getTranslationsByWordId,
     postWords,
-    postTranslations
+    postTranslations,
+    deleteWord,
+    deleteTranslation,
 };

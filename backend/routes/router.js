@@ -3,7 +3,22 @@ const express = require("express");
 const router = express.Router();
 router.use(express.json());
 
+// Languages table routes
+
+router.get("/languages", async (req, res) => {
+    try {
+        const data = await sqlite.getAllLanguages();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+// End of languages table routes
+
 //Words table routes
+
 router.get("/words", async (req, res) => {
     //Fetch all information from wordpairs table using the getWordPairs function
     try {
@@ -44,6 +59,7 @@ router.post("/words", async (req, res) => {
 //End of words table routes
 
 //Translations table routes
+
 router.get("/translations", async (req, res) => {
     //Get all translations from the translations table
     try {
@@ -68,11 +84,36 @@ router.get("/translations/:id([0-9]+)", async (req, res) => {
     is pretty useless for the frontend handling, but I made it anyway*/
 });
 
+router.get("/translationsforword/:id([0-9]+)", async (req, res) => {
+    //Get an specific translation by word ID
+    try {
+        const data = await sqlite.getTranslationsByWordId(req.params.id);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+router.delete("/translations/:wordId([0-9]+)&:transId([0-9]+)", async (req, res) => {
+    try {
+        await sqlite.deleteTranslation(req.params.wordId, req.params.transId);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+//End of translation table routes
+
+//Mixed Table routes
+
 router.post("/translations", async (req, res) => {
     //Post translations to the translations table
     try {
-        const { id, transIds } = req.body;
-        const data = await sqlite.postTranslations(id, transIds);
+        const { id, transId } = req.body;
+        const data = await sqlite.postTranslations(id, transId);
         res.status(200).json(data);
     } catch (error) {
         console.error("Error adding to database", error);
@@ -80,6 +121,16 @@ router.post("/translations", async (req, res) => {
     }
 });
 
-//End of translation table routes
+router.delete("/words/:id([0-9]+)", async (req, res) => {
+    try {
+        await sqlite.deleteWord(req.params.id);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+//End of mixed table routes
 
 module.exports = router;
