@@ -1,6 +1,9 @@
 const sqlite3 = require("sqlite3").verbose();
 
 //Create a table to store languages
+/*For the time being. I will only make a function to see them all. I will not yet
+start implementing support for multiple languages. These are just for error checking so
+a word from the same language can translate to an other word from the same language */
 const createLanguageTable = (db) => {
     db.run("CREATE TABLE languages (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT UNIQUE);");
 };
