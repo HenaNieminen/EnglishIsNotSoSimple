@@ -207,6 +207,11 @@ const deleteTranslation = (id, transId) => {
 };
 
 
+
+
+/*Note to self: Right now, you got most of the main shit nailed down.
+If any other needs arises, you can come back and then make more functions for that specific task.
+Do the edit functions and you should be golden to start nailing down the frontend*/
 //Export all the modules for the router.js
 module.exports = {
     getAllWords,
