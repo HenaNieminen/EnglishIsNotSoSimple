@@ -81,6 +81,16 @@ router.get("/translationsforword/:id([0-9]+)", async (req, res) => {
     }
 });
 
+router.delete("/translations/:wordId([0-9]+)&:transId([0-9]+)", async (req, res) => {
+    try {
+        await sqlite.deleteTranslation(req.params.wordId, req.params.transId);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
 //End of translation table routes
 
 //Mixed Table routes
