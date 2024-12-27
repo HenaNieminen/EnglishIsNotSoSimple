@@ -1,6 +1,21 @@
 const db = require("./database.js");
 //Import the database
 
+const getAllLanguages = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM languages', (err, rows) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            //If no languages found
+            if (rows.length === 0) {
+                return reject({ status: 404, message: 'No languages found' });
+            }
+            resolve(rows);
+        });
+    });
+}
+
 const getAllWords = () => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM words', (err, rows) => {
@@ -226,6 +241,7 @@ to link related words toghter and doesn't necessarily need an edit function*/
 /*Oh and right, make a schema for words and go over the error handling still */
 //Export all the modules for the router.js
 module.exports = {
+    getAllLanguages,
     getAllWords,
     getAllTranslations,
     getWordsById,

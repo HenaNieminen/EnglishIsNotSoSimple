@@ -3,6 +3,20 @@ const express = require("express");
 const router = express.Router();
 router.use(express.json());
 
+// Languages table routes
+
+router.get("/languages", async (req, res) => {
+    try {
+        const data = await sqlite.getAllLanguages();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
+// End of languages table routes
+
 //Words table routes
 
 router.get("/words", async (req, res) => {
