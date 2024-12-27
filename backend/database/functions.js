@@ -7,14 +7,14 @@ const getAllLanguages = () => {
             if (err) {
                 return reject({ status: 500, message: err.message });
             }
-            //If no languages found
+            //If no languages found (Would be pretty weird huh?)
             if (rows.length === 0) {
                 return reject({ status: 404, message: 'No languages found' });
             }
             resolve(rows);
         });
     });
-}
+};
 
 const getAllWords = () => {
     return new Promise((resolve, reject) => {
@@ -96,7 +96,7 @@ const getTranslationsByWordId = (id) => {
             resolve(rows);
         });
     });
-}
+};
 
 const postWords = (word) => {
     return new Promise((resolve, reject) => {
