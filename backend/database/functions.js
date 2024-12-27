@@ -206,12 +206,22 @@ const deleteTranslation = (id, transId) => {
     });
 };
 
+const editWord = (id, newWord) => {
+    return new Promise((resolve, reject) => {
+    });
+};
+
 
 
 
 /*Note to self: Right now, you got most of the main shit nailed down.
 If any other needs arises, you can come back and then make more functions for that specific task.
 Do the edit functions and you should be golden to start nailing down the frontend*/
+
+/*Something to wonder here, do I really need a function to edit translations other than just words?
+Translation swapping can easily be just handled with deletion and re-adding a new one. Plus, words
+can have multiple translations, so it feels unnecessary anyways. Translations table is just there
+to link related words toghter and doesn't necessarily need an edit function*/
 
 /*Oh and right, make a schema for words and go over the error handling still */
 //Export all the modules for the router.js
