@@ -21,7 +21,7 @@ const createTranslationsTable = (db) => {
 
 const createPlaceHolderData = (db) => {
     db.run("INSERT INTO words (word) VALUES ('hello'), ('terve'), ('hi')")
-        .run("INSERT INTO translations (word_id, translation_id) VALUES (1, 2), (1, 3), (2, 1), (3, 1);");
+        .run("INSERT INTO translations (word_id, translation_id) VALUES (1, 2), (1, 3), (2, 1);");
     /* Eventually, I will read off all the initial data from a file. Hardcoding should do
     for now. For saving user generated words and translations, I will look into localstorage
     or somehow making this persistent other means */
