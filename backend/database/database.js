@@ -42,7 +42,7 @@ const createPlaceHolderData = (db) => {
     /* Eventually, I will read off all the initial data from a file. Hardcoding should do
     for now. For saving user generated words and translations, I will look into localstorage
     or somehow making this persistent other means */
-}
+};
 
 // Initialize the database to RAM
 const db = new sqlite3.Database(":memory:", (error) => {
