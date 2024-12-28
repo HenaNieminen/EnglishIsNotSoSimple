@@ -125,7 +125,6 @@ const postTranslations = (id, transId) => {
         if (!id || !transId) {
             return reject({ status: 400, message: 'Values cannot be empty' });
         }
-
         //Check if the word id exists
         db.get('SELECT * FROM words WHERE id = ?', [id], (err, wordRow) => {
             if (err) {
@@ -141,6 +140,10 @@ const postTranslations = (id, transId) => {
                 }
                 if (!transRow) {
                     return reject({ status: 404, message: 'Translation word not found' });
+                }
+                //Block if both words are in the same language
+                if (wordRow.lang_id === transRow.lang_id) {
+                    return reject({ status: 400, message: 'Words in the same language cannot be linked as translations' });
                 }
                 //Add the translation
                 db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [id, transId], function (err) {

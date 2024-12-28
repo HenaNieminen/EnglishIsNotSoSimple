@@ -65,7 +65,7 @@ POST http://localhost:3000/api/translations
 Content-Type: application/json
 
 {
-    "id": "3",
+    "id": "1",
     "transId": "2"
 }
 
