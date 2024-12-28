@@ -220,6 +220,9 @@ const deleteTranslation = (id, transId) => {
 };
 
 const editWord = async (id, newWord) => {
+    /*This was suggested by chatGPT. Turns out, you can make promises asynchronous as well!
+    This wouldn't work without setting the whole function and the promise as asynchronous. I was stumped when
+    the await wouldn't work inside the promise at first. GPT suggested to make the promise asynchronous*/
     return new Promise(async (resolve, reject) => {
         try {
             /*Use the get wordsid function before to ensure it exists.*/
