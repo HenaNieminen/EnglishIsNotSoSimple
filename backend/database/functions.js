@@ -120,7 +120,7 @@ const postWords = (word) => {
 };
 
 const postTranslations = (id, transId) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         //Reject if any value is empty
         if (!id || !transId) {
             return reject({ status: 400, message: 'Values cannot be empty' });
