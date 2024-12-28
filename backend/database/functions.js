@@ -120,7 +120,7 @@ const postWords = (word) => {
 };
 
 const postTranslations = (id, transId) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         //Reject if any value is empty
         if (!id || !transId) {
             return reject({ status: 400, message: 'Values cannot be empty' });
@@ -146,7 +146,7 @@ const postTranslations = (id, transId) => {
                     return reject({ status: 400, message: 'Words in the same language cannot be linked as translations' });
                 }
                 //Add the translation
-                db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [id, transId], function (err) {
+                db.run('INSERT INTO translations (word_id, trans_id) VALUES (?, ?)', [id, transId], function (err) {
                     if (err) {
                         if (err.message.includes('UNIQUE')) {
                             return reject({ status: 409, message: 'Translation already exists' });
@@ -155,7 +155,7 @@ const postTranslations = (id, transId) => {
                     }
                     /*Add the translation other way around. This was harder to figure out with
                     comma separation hence the change.*/
-                    db.run('INSERT INTO translations (word_id, translation_id) VALUES (?, ?)', [transId, id], function (err) {
+                    db.run('INSERT INTO translations (word_id, trans_id) VALUES (?, ?)', [transId, id], function (err) {
                         if (err) {
                             if (err.message.includes('UNIQUE')) {
                                 return reject({ status: 409, message: 'Reverse translation already exists' });
@@ -170,37 +170,32 @@ const postTranslations = (id, transId) => {
     });
 };
 
-const deleteWord = (id) => {
-    return new Promise((resolve, reject) => {
-        //Check if the word exists first before executing
-        db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
-            if (err) {
-                return reject({ status: 500, message: err.message });
-            }
-            if (!row) {
-                return reject({ status: 404, message: 'Word not found' });
-            }
-            //Delete the word from the database
+const deleteWord = async (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await getWordsById(id);
             db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
                 //Delete any translation related to the word
-                db.run('DELETE FROM translations WHERE word_id = ? OR translation_id = ?', [id, id], function (err) {
+                db.run('DELETE FROM translations WHERE word_id = ? OR trans_id = ?', [id, id], function (err) {
                     if (err) {
                         return reject({ status: 500, message: err.message });
                     }
                     resolve();
                 });
             });
-        });
+        } catch (error) {
+            reject(error)
+        }
     });
 };
 
 const deleteTranslation = (id, transId) => {
     return new Promise((resolve, reject) => {
         //Check if the translation exists first before executing
-        db.get('SELECT * FROM translations WHERE word_id = ? AND translation_id = ?', [id, transId], (err, row) => {
+        db.get('SELECT * FROM translations WHERE word_id = ? AND trans_id = ?', [id, transId], (err, row) => {
             if (err) {
                 return reject({ status: 500, message: err.message });
             }
@@ -208,12 +203,12 @@ const deleteTranslation = (id, transId) => {
                 return reject({ status: 404, message: 'Translation not found' });
             }
             //Delete the initial translation
-            db.run('DELETE FROM translations WHERE word_id = ? AND translation_id = ?', [id, transId], function (err) {
+            db.run('DELETE FROM translations WHERE word_id = ? AND trans_id = ?', [id, transId], function (err) {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
                 //And the ol' switcheroo
-                db.run('DELETE FROM translations WHERE word_id = ? AND translation_id = ?', [transId, id], function (err) {
+                db.run('DELETE FROM translations WHERE word_id = ? AND trans_id = ?', [transId, id], function (err) {
                     if (err) {
                         return reject({ status: 500, message: err.message });
                     }
@@ -224,8 +219,25 @@ const deleteTranslation = (id, transId) => {
     });
 };
 
-const editWord = (id, newWord) => {
-    return new Promise((resolve, reject) => {
+const editWord = async (id, newWord) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            /*Use the get wordsid function before to ensure it exists.*/
+            await getWordsById(id);
+            //update the word
+            db.run('UPDATE words SET word = ? WHERE id = ?', [newWord, id], function (err) {
+                if (err) {
+                    return reject({ status: 500, message: err.message });
+                }
+                if (this.changes === 0) {
+                    return reject({ status: 404, message: 'Word not updated' });
+                }
+                resolve({ status: 200, message: 'Word updated successfully' });
+            });
+            //Catch error with getWordsById
+        } catch (error) {
+            return reject(error);
+        }
     });
 };
 
