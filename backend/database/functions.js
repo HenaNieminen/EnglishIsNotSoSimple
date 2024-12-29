@@ -113,13 +113,13 @@ const getTranslationsByWordId = (id) => {
     });
 };
 
-const postWords = (word) => {
+const postWords = (langId, word) => {
     return new Promise((resolve, reject) => {
         //Will refuse if the word is empty. Will also be handled in frontend for redundancy
         if (word.length < 1) {
             return reject({ status: 400, message: 'Word cannot be empty' });
         }
-        db.run('INSERT INTO words (word) VALUES (?)', [word], function (err) {
+        db.run('INSERT INTO words (lang_id, word) VALUES (?, ?)', [langId, word], function (err) {
             if (err) {
                 /*On a second thought, it might be a good idea to define the constraint
                 anyways.*/
