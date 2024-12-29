@@ -31,6 +31,20 @@ const getAllLanguages = () => {
     });
 };
 
+const getLanguageById = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM languages WHERE id = ?', (err, row) => {
+            if (err) {
+                return reject({ status: 500, message: err.message });
+            }
+            if (row.length === 0) {
+                return reject({ status: 404, message: 'Inserted language not found' });
+            }
+            resolve(row);
+        });
+    });
+};
+
 const getAllWords = () => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM words', (err, rows) => {
