@@ -56,6 +56,20 @@ router.post("/words", async (req, res) => {
     }
 });
 
+router.patch("/words", async (req, res) => {
+    try {
+        const { id, word } = req.body;
+        if (!word) {
+            throw { status: 400, message: "Word is required" };
+        }
+        const data = await sqlite.editWord(id, word);
+        res.status(201).json("Word updated succesfully!");
+    } catch (error) {
+        console.error("Error editing database", error);
+        res.status(error.status).json(error.message);
+    }
+});
+
 //End of words table routes
 
 //Translations table routes

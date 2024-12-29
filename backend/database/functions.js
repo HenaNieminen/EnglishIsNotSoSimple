@@ -171,8 +171,10 @@ const postTranslations = (id, transId) => {
 };
 
 const deleteWord = async (id) => {
+    //Reuse the async promise to get it to work
     return new Promise(async (resolve, reject) => {
         try {
+            //Ensure the word exists
             await getWordsById(id);
             db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
                 if (err) {
@@ -186,6 +188,7 @@ const deleteWord = async (id) => {
                     resolve();
                 });
             });
+            //Catch getwordsbyid error
         } catch (error) {
             reject(error)
         }
@@ -235,11 +238,11 @@ const editWord = async (id, newWord) => {
                 if (this.changes === 0) {
                     return reject({ status: 404, message: 'Word not updated' });
                 }
-                resolve({ status: 200, message: 'Word updated successfully' });
+                resolve();
             });
             //Catch error with getWordsById
         } catch (error) {
-            return reject(error);
+            return reject({ status: 404, message: 'Edited word not found. Double check the ID' });
         }
     });
 };
@@ -269,4 +272,5 @@ module.exports = {
     postTranslations,
     deleteWord,
     deleteTranslation,
+    editWord,
 };

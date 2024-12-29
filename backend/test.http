@@ -5,6 +5,14 @@ GET http://localhost:3000/
 
 ###
 
+PATCH  http://localhost:3000/api/words/
+Content-Type: application/json
+
+{
+    "id": "6",
+    "word": "moottori"
+}
+
 ###
 
 GET http://localhost:3000/api/languages
