@@ -1,4 +1,10 @@
 const db = require("./database.js");
+const joi = require("joi");
+
+
+const wordSchema = joi.object({
+
+});
 //Import the database
 
 const getAllLanguages = () => {
