@@ -147,7 +147,10 @@ const postWords = async (langId, word) => {
         try {
             const { error } = wordSchema.validate({ lang_id: langId, word: word });
             if (error) {
-                reject({ status: 400, message: "Incorrect data inputted. LangID should be an integer and text coherent without any special characters" });
+                reject({
+                    status: 400,
+                    message: "Incorrect data inputted. LangID should be an integer and text coherent without any special characters"
+                });
                 return;
             }
             await getLanguageById(langId);
@@ -173,8 +176,12 @@ const postWords = async (langId, word) => {
 const postTranslations = (id, transId) => {
     return new Promise((resolve, reject) => {
         //Reject if any value is empty
-        if (!id || !transId) {
-            reject({ status: 400, message: 'Values cannot be empty' });
+        const { error } = transSchema.validate({ word_id: id, trans_id: transId });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. Make sure IDs are correctly sent as integers"
+            })
             return;
         };
         //Check if the word id exists
