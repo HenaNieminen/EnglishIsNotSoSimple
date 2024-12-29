@@ -121,15 +121,14 @@ const postWords = (langId, word) => {
         }
         db.run('INSERT INTO words (lang_id, word) VALUES (?, ?)', [langId, word], function (err) {
             if (err) {
-                /*On a second thought, it might be a good idea to define the constraint
-                anyways.*/
+                //Unique constraint error
                 if (err.code === 'SQLITE_CONSTRAINT') {
                     return reject({ status: 409, message: 'Word already exists' });
                 }
                 return reject({ status: 500, message: err.message });
             }
-            //Resolve the word and the last id in the autoincrement
-            resolve({ id: this.lastID, word: word });
+            //Resolve and show the data
+            resolve({ id: this.lastID, lang_id: langId, word: word });
         });
     });
 };
