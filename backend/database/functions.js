@@ -145,8 +145,10 @@ const postWords = async (langId, word) => {
     return new Promise(async (resolve, reject) => {
         //Will refuse if the word is empty. Will also be handled in frontend for redundancy
         try {
-            if (word.length < 1) {
-                reject({ status: 400, message: 'Word cannot be empty' });
+            const { error } = wordSchema.validate({ lang_id: langId, word: word });
+            if (error) {
+                reject({ status: 400, message: "Incorrect data inputted. LangID should be an integer and text coherent without any special characters" });
+                return;
             }
             await getLanguageById(langId);
             db.run('INSERT INTO words (lang_id, word) VALUES (?, ?)', [langId, word], function (err) {
