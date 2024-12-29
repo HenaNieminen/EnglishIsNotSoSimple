@@ -44,11 +44,13 @@ router.get("/words/:id([0-9]+)", async (req, res) => {
 router.post("/words", async (req, res) => {
     //Post words into the words table
     try {
-        const { word } = req.body;
+        const { langId, word } = req.body;
         if (!word) {
             throw { status: 400, message: "Word is required" };
+        } else if (!langId) {
+            throw { status: 400, message: "Language ID is required" };
         }
-        const data = await sqlite.postWords(word);
+        const data = await sqlite.postWords(langId, word);
         res.status(201).json(data);
     } catch (error) {
         console.error("Error adding to database", error);
