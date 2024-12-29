@@ -1,11 +1,20 @@
 const db = require("./database.js");
-const joi = require("joi");
-
-
-const wordSchema = joi.object({
-
-});
 //Import the database
+const joi = require("joi");
+//Import joi
+
+
+//Schemas for joi validation
+const wordSchema = joi.object({
+    lang_id: joi.number().integer().required(),
+    /*Words regex will need some work. Numbers will probably need their own table and language but we will figure it out later*/
+    word: joi.string().pattern(/^[a-zA-Z-' ]+$/).required(),
+});
+
+const transSchema = joi.object({
+    word_id: joi.number().integer().required(),
+    trans_id: joi.number().integer().required(),
+});
 
 const getAllLanguages = () => {
     return new Promise((resolve, reject) => {
