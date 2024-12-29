@@ -37,7 +37,7 @@ const getLanguageById = (id) => {
             if (err) {
                 return reject({ status: 500, message: err.message });
             }
-            if (row.length === 0) {
+            if (!row) {
                 return reject({ status: 404, message: 'Inserted language not found' });
             }
             resolve(row);
