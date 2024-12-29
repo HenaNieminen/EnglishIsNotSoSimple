@@ -235,9 +235,6 @@ const editWord = async (id, newWord) => {
                 if (err) {
                     return reject({ status: 500, message: err.message });
                 }
-                if (this.changes === 0) {
-                    return reject({ status: 404, message: 'Word not updated' });
-                }
                 resolve();
             });
             //Catch error with getWordsById
