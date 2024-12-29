@@ -291,6 +291,7 @@ module.exports = {
     getAllWords,
     getAllTranslations,
     getWordsById,
+    getLanguageById,
     getTranslationsById, //This might be an useless function
     getTranslationsByWordId,
     postWords,
