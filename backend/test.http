@@ -5,9 +5,17 @@ GET http://localhost:3000/
 
 ###
 
+PATCH  http://localhost:3000/api/words/
+Content-Type: application/json
+
+{
+    "id": "6",
+    "word": "moottori"
+}
+
 ###
 
-GET http://localhost:3000/api/languages
+GET http://localhost:3000/api/languages/1
 
 ###
 GET http://localhost:3000/api/words
@@ -37,7 +45,8 @@ POST http://localhost:3000/api/words
 Content-Type: application/json
 
 {
-    "word": "moottori"
+    "langId": "4",
+    "word": "aatana"
 }
 
 
@@ -65,7 +74,7 @@ POST http://localhost:3000/api/translations
 Content-Type: application/json
 
 {
-    "id": "3",
+    "id": "1",
     "transId": "2"
 }
 

@@ -12,7 +12,18 @@ router.get("/languages", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
+});
+
+router.get("/languages/:id([0-9]+)", async (req, res) => {
+    //Fetch an specific word by ID from the words table
+    try {
+        const data = await sqlite.getLanguageById(req.params.id);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Error fetching from database", error);
+        res.status(error.status).json(error.message);
+    };
 });
 
 // End of languages table routes
@@ -27,7 +38,7 @@ router.get("/words", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 router.get("/words/:id([0-9]+)", async (req, res) => {
@@ -38,22 +49,38 @@ router.get("/words/:id([0-9]+)", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 router.post("/words", async (req, res) => {
     //Post words into the words table
     try {
-        const { word } = req.body;
+        const { langId, word } = req.body;
         if (!word) {
             throw { status: 400, message: "Word is required" };
+        } else if (!langId) {
+            throw { status: 400, message: "Language ID is required" };
         }
-        const data = await sqlite.postWords(word);
+        const data = await sqlite.postWords(langId, word);
         res.status(201).json(data);
     } catch (error) {
         console.error("Error adding to database", error);
         res.status(error.status).json(error.message);
-    }
+    };
+});
+
+router.patch("/words", async (req, res) => {
+    try {
+        const { id, word } = req.body;
+        if (!word) {
+            throw { status: 400, message: "Word is required" };
+        }
+        const data = await sqlite.editWord(id, word);
+        res.status(201).json("Word updated succesfully!");
+    } catch (error) {
+        console.error("Error editing database", error);
+        res.status(error.status).json(error.message);
+    };
 });
 
 //End of words table routes
@@ -68,7 +95,7 @@ router.get("/translations", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 router.get("/translations/:id([0-9]+)", async (req, res) => {
@@ -79,7 +106,7 @@ router.get("/translations/:id([0-9]+)", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
     /*I will also need a version where you can fetch it by word ID. This
     is pretty useless for the frontend handling, but I made it anyway*/
 });
@@ -92,7 +119,7 @@ router.get("/translationsforword/:id([0-9]+)", async (req, res) => {
     } catch (error) {
         console.error("Error fetching from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 router.delete("/translations/:wordId([0-9]+)&:transId([0-9]+)", async (req, res) => {
@@ -102,7 +129,7 @@ router.delete("/translations/:wordId([0-9]+)&:transId([0-9]+)", async (req, res)
     } catch (error) {
         console.error("Error deleting from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 //End of translation table routes
@@ -118,7 +145,7 @@ router.post("/translations", async (req, res) => {
     } catch (error) {
         console.error("Error adding to database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 router.delete("/words/:id([0-9]+)", async (req, res) => {
@@ -128,7 +155,7 @@ router.delete("/words/:id([0-9]+)", async (req, res) => {
     } catch (error) {
         console.error("Error deleting from database", error);
         res.status(error.status).json(error.message);
-    }
+    };
 });
 
 //End of mixed table routes
