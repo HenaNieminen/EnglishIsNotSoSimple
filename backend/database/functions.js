@@ -3,7 +3,9 @@ const db = require("./database.js");
 const joi = require("joi");
 //Import joi
 
-
+const idSchema = joi.object({
+    id: joi.number().integer().required()
+});
 //Schemas for joi validation
 const wordSchema = joi.object({
     lang_id: joi.number().integer().required(),
