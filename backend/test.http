@@ -9,7 +9,7 @@ PATCH  http://localhost:3000/api/words/
 Content-Type: application/json
 
 {
-    "id": "6",
+    "id": "4",
     "word": "moottori"
 }
 
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 {
     "langId": "1",
-    "word": "....."
+    "word": "dsaassada"
 }
 
 

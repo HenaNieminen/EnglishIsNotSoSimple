@@ -43,6 +43,14 @@ const getAllLanguages = () => {
 
 const getLanguageById = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.get('SELECT * FROM languages WHERE id = ?', [id], (err, row) => {
             if (err) {
                 reject({
@@ -113,6 +121,14 @@ const getAllTranslations = () => {
 
 const getWordsById = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
             //If something goes wrong in the server
             if (err) {
@@ -139,6 +155,14 @@ const getWordsById = (id) => {
 //Probably an useless function. Will most likely be deleted later
 const getTranslationsById = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.get('SELECT * FROM translations WHERE id = ?', [id], (err, row) => {
             //If something goes wrong in the server
             if (err) {
@@ -165,6 +189,14 @@ const getTranslationsById = (id) => {
 //The real shit frontend actually needs
 const getTranslationsByWordId = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.all('SELECT * FROM translations WHERE word_id = ?', [id], (err, rows) => {
             if (err) {
                 reject({
@@ -327,6 +359,14 @@ const deleteWord = async (id) => {
     //Reuse the async promise to get it to work
     return new Promise(async (resolve, reject) => {
         try {
+            const { error } = idSchema.validate({ id: id });
+            if (error) {
+                reject({
+                    status: 400,
+                    message: "Incorrect data inputted. ID should be an integer"
+                });
+                return;
+            }
             //Ensure the word exists
             await getWordsById(id);
             db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
@@ -358,6 +398,14 @@ const deleteWord = async (id) => {
 
 const deleteTranslation = (id, transId) => {
     return new Promise((resolve, reject) => {
+        const { error } = transSchema.validate({ word_id: id, trans_id: transId });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. Make sure IDs are correctly sent as integers"
+            })
+            return;
+        };
         //Check if the translation exists first before executing
         db.get('SELECT * FROM translations WHERE word_id = ? AND trans_id = ?', [id, transId], (err, row) => {
             if (err) {
@@ -405,11 +453,26 @@ const editWord = async (id, newWord) => {
     the await wouldn't work inside the promise at first. GPT suggested to make the promise asynchronous*/
     return new Promise(async (resolve, reject) => {
         try {
+            const { error } = wordSchema.validate({ lang_id: id, word: newWord });
+            if (error) {
+                reject({
+                    status: 400,
+                    message: "Incorrect data inputted. ID should be an integer and text coherent without any special characters"
+                });
+                return;
+            }
             /*Use the get wordsid function before to ensure it exists.*/
             await getWordsById(id);
             //update the word
             db.run('UPDATE words SET word = ? WHERE id = ?', [newWord, id], function (err) {
                 if (err) {
+                    if (err.code === 'SQLITE_CONSTRAINT') {
+                        reject({
+                            status: 409,
+                            message: 'Edited word already exists'
+                        });
+                        return;
+                    };
                     reject({
                         status: 500,
                         message: err.message
