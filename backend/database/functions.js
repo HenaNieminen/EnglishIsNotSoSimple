@@ -3,7 +3,9 @@ const db = require("./database.js");
 const joi = require("joi");
 //Import joi
 
-
+const idSchema = joi.object({
+    id: joi.number().integer().required()
+});
 //Schemas for joi validation
 const wordSchema = joi.object({
     lang_id: joi.number().integer().required(),
@@ -20,12 +22,18 @@ const getAllLanguages = () => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM languages', (err, rows) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             //If no languages found (Would be pretty weird huh?)
             if (rows.length === 0) {
-                reject({ status: 404, message: 'No languages found' });
+                reject({
+                    status: 404,
+                    message: 'No languages found'
+                });
                 return;
             };
             resolve(rows);
@@ -35,13 +43,27 @@ const getAllLanguages = () => {
 
 const getLanguageById = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.get('SELECT * FROM languages WHERE id = ?', [id], (err, row) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             if (!row) {
-                reject({ status: 404, message: 'Inserted language not found' });
+                reject({
+                    status: 404,
+                    message: 'Inserted language not found'
+                });
                 return;
             };
             resolve(row);
@@ -53,12 +75,18 @@ const getAllWords = () => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM words', (err, rows) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             //If no words found
             if (rows.length === 0) {
-                reject({ status: 404, message: 'No words found' });
+                reject({
+                    status: 404,
+                    message: 'No words found'
+                });
                 return;
             };
             //Resolve returns all taken data
@@ -71,12 +99,18 @@ const getAllTranslations = () => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM translations', (err, rows) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             //If no translations found
             if (rows.length === 0) {
-                reject({ status: 404, message: 'No translations found' });
+                reject({
+                    status: 404,
+                    message: 'No translations found'
+                });
                 return;
             };
             //Resolve returns all taken data
@@ -87,15 +121,29 @@ const getAllTranslations = () => {
 
 const getWordsById = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.get('SELECT * FROM words WHERE id = ?', [id], (err, row) => {
             //If something goes wrong in the server
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             //If not found
             if (!row) {
-                reject({ status: 404, message: 'Word not found' });
+                reject({
+                    status: 404,
+                    message: 'Word not found'
+                });
                 return;
             };
             //Resolve and give the specific row from database
@@ -107,15 +155,29 @@ const getWordsById = (id) => {
 //Probably an useless function. Will most likely be deleted later
 const getTranslationsById = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.get('SELECT * FROM translations WHERE id = ?', [id], (err, row) => {
             //If something goes wrong in the server
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             //If not found
             if (!row) {
-                reject({ status: 404, message: 'Tanslations not found' });
+                reject({
+                    status: 404,
+                    message: 'Tanslations not found'
+                });
                 return;
             };
             //Resolve and give the specific row from database
@@ -127,13 +189,27 @@ const getTranslationsById = (id) => {
 //The real shit frontend actually needs
 const getTranslationsByWordId = (id) => {
     return new Promise((resolve, reject) => {
+        const { error } = idSchema.validate({ id: id });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. ID should be an integer"
+            });
+            return;
+        }
         db.all('SELECT * FROM translations WHERE word_id = ?', [id], (err, rows) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             if (rows.length === 0) {
-                reject({ status: 404, message: 'Translations not found' });
+                reject({
+                    status: 404,
+                    message: 'Translations not found'
+                });
                 return;
             };
             resolve(rows);
@@ -145,22 +221,37 @@ const postWords = async (langId, word) => {
     return new Promise(async (resolve, reject) => {
         //Will refuse if the word is empty. Will also be handled in frontend for redundancy
         try {
-            if (word.length < 1) {
-                reject({ status: 400, message: 'Word cannot be empty' });
+            const { error } = wordSchema.validate({ lang_id: langId, word: word });
+            if (error) {
+                reject({
+                    status: 400,
+                    message: "Incorrect data inputted. LangID should be an integer and text coherent without any special characters"
+                });
+                return;
             }
             await getLanguageById(langId);
             db.run('INSERT INTO words (lang_id, word) VALUES (?, ?)', [langId, word], function (err) {
                 if (err) {
                     //Unique constraint error
                     if (err.code === 'SQLITE_CONSTRAINT') {
-                        reject({ status: 409, message: 'Word already exists' });
+                        reject({
+                            status: 409,
+                            message: 'Word already exists'
+                        });
                         return;
                     };
-                    reject({ status: 500, message: err.message });
+                    reject({
+                        status: 500,
+                        message: err.message
+                    });
                     return;
                 }
                 //Resolve and show the data
-                resolve({ id: this.lastID, lang_id: langId, word: word });
+                resolve({
+                    id: this.lastID,
+                    lang_id: langId,
+                    word: word
+                });
             });
         } catch (error) {
             reject(error);
@@ -171,43 +262,68 @@ const postWords = async (langId, word) => {
 const postTranslations = (id, transId) => {
     return new Promise((resolve, reject) => {
         //Reject if any value is empty
-        if (!id || !transId) {
-            reject({ status: 400, message: 'Values cannot be empty' });
+        const { error } = transSchema.validate({ word_id: id, trans_id: transId });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. Make sure IDs are correctly sent as integers"
+            })
             return;
         };
         //Check if the word id exists
         db.get('SELECT * FROM words WHERE id = ?', [id], (err, wordRow) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             if (!wordRow) {
-                reject({ status: 404, message: 'Word not found' });
+                reject({
+                    status: 404,
+                    message: 'Word not found'
+                });
                 return;
             };
             //See if word transID exists
             db.get('SELECT * FROM words WHERE id = ?', [transId], (err, transRow) => {
                 if (err) {
-                    reject({ status: 500, message: err.message });
+                    reject({
+                        status: 500,
+                        message: err.message
+                    });
                     return;
                 };
                 if (!transRow) {
-                    reject({ status: 404, message: 'Translation word not found' });
+                    reject({
+                        status: 404,
+                        message: 'Translation word not found'
+                    });
                     return;
                 };
                 //Block if both words are in the same language
                 if (wordRow.lang_id === transRow.lang_id) {
-                    reject({ status: 400, message: 'Words in the same language cannot be linked as translations' });
+                    reject({
+                        status: 400,
+                        message: 'Words in the same language cannot be linked as translations'
+                    });
                     return;
                 };
                 //Add the translation
                 db.run('INSERT INTO translations (word_id, trans_id) VALUES (?, ?)', [id, transId], function (err) {
                     if (err) {
                         if (err.message.includes('UNIQUE')) {
-                            reject({ status: 409, message: 'Translation already exists' });
+                            reject({
+                                status: 409,
+                                message: 'Translation already exists'
+                            });
                             return;
                         }
-                        reject({ status: 500, message: err.message });
+                        reject({
+                            status: 500,
+                            message: err.message
+                        });
                         return;
                     };
                     /*Add the translation other way around. This was harder to figure out with
@@ -215,13 +331,23 @@ const postTranslations = (id, transId) => {
                     db.run('INSERT INTO translations (word_id, trans_id) VALUES (?, ?)', [transId, id], function (err) {
                         if (err) {
                             if (err.message.includes('UNIQUE')) {
-                                reject({ status: 409, message: 'Reverse translation already exists' });
+                                reject({
+                                    status: 409,
+                                    message: 'Reverse translation already exists'
+                                });
                                 return;
                             };
-                            reject({ status: 500, message: err.message });
+                            reject({
+                                status: 500,
+                                message: err.message
+                            });
                             return;
                         };
-                        resolve({ id: this.lastID, wordId: id, transId: transId });
+                        resolve({
+                            id: this.lastID,
+                            wordId: id,
+                            transId: transId
+                        });
                     });
                 });
             });
@@ -233,17 +359,31 @@ const deleteWord = async (id) => {
     //Reuse the async promise to get it to work
     return new Promise(async (resolve, reject) => {
         try {
+            const { error } = idSchema.validate({ id: id });
+            if (error) {
+                reject({
+                    status: 400,
+                    message: "Incorrect data inputted. ID should be an integer"
+                });
+                return;
+            }
             //Ensure the word exists
             await getWordsById(id);
             db.run('DELETE FROM words WHERE id = ?', [id], function (err) {
                 if (err) {
-                    reject({ status: 500, message: err.message });
+                    reject({
+                        status: 500,
+                        message: err.message
+                    });
                     return;
                 };
                 //Delete any translation related to the word
                 db.run('DELETE FROM translations WHERE word_id = ? OR trans_id = ?', [id, id], function (err) {
                     if (err) {
-                        reject({ status: 500, message: err.message });
+                        reject({
+                            status: 500,
+                            message: err.message
+                        });
                         return;
                     };
                     resolve();
@@ -258,26 +398,46 @@ const deleteWord = async (id) => {
 
 const deleteTranslation = (id, transId) => {
     return new Promise((resolve, reject) => {
+        const { error } = transSchema.validate({ word_id: id, trans_id: transId });
+        if (error) {
+            reject({
+                status: 400,
+                message: "Incorrect data inputted. Make sure IDs are correctly sent as integers"
+            })
+            return;
+        };
         //Check if the translation exists first before executing
         db.get('SELECT * FROM translations WHERE word_id = ? AND trans_id = ?', [id, transId], (err, row) => {
             if (err) {
-                reject({ status: 500, message: err.message });
+                reject({
+                    status: 500,
+                    message: err.message
+                });
                 return;
             };
             if (!row) {
-                reject({ status: 404, message: 'Translation not found' });
+                reject({
+                    status: 404,
+                    message: 'Translation not found'
+                });
                 return;
             };
             //Delete the initial translation
             db.run('DELETE FROM translations WHERE word_id = ? AND trans_id = ?', [id, transId], function (err) {
                 if (err) {
-                    reject({ status: 500, message: err.message });
+                    reject({
+                        status: 500,
+                        message: err.message
+                    });
                     return;
                 };
                 //And the ol' switcheroo
                 db.run('DELETE FROM translations WHERE word_id = ? AND trans_id = ?', [transId, id], function (err) {
                     if (err) {
-                        reject({ status: 500, message: err.message });
+                        reject({
+                            status: 500,
+                            message: err.message
+                        });
                         return;
                     };
                     resolve();
@@ -293,19 +453,40 @@ const editWord = async (id, newWord) => {
     the await wouldn't work inside the promise at first. GPT suggested to make the promise asynchronous*/
     return new Promise(async (resolve, reject) => {
         try {
+            const { error } = wordSchema.validate({ lang_id: id, word: newWord });
+            if (error) {
+                reject({
+                    status: 400,
+                    message: "Incorrect data inputted. ID should be an integer and text coherent without any special characters"
+                });
+                return;
+            }
             /*Use the get wordsid function before to ensure it exists.*/
             await getWordsById(id);
             //update the word
             db.run('UPDATE words SET word = ? WHERE id = ?', [newWord, id], function (err) {
                 if (err) {
-                    reject({ status: 500, message: err.message });
+                    if (err.code === 'SQLITE_CONSTRAINT') {
+                        reject({
+                            status: 409,
+                            message: 'Edited word already exists'
+                        });
+                        return;
+                    };
+                    reject({
+                        status: 500,
+                        message: err.message
+                    });
                     return;
                 };
                 resolve();
             });
             //Catch error with getWordsById
         } catch (error) {
-            reject({ status: 404, message: 'Edited word not found. Double check the ID' });
+            reject({
+                status: 404,
+                message: 'Edited word not found. Double check the ID'
+            });
         };
     });
 };
