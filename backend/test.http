@@ -10,6 +10,7 @@ Content-Type: application/json
 
 {
     "id": "4",
+    "langId": "1",
     "word": "moottori"
 }
 
