@@ -3,19 +3,28 @@ const db = require("./database.js");
 const joi = require("joi");
 //Import joi
 
+//Schemas for joi validation
+
+//ID schema
 const idSchema = joi.object({
     id: joi.number().integer().required()
 });
-//Schemas for joi validation
+//Word schema
 const wordSchema = joi.object({
     lang_id: joi.number().integer().required(),
     /*Words regex will need some work. Numbers will probably need their own table and language but we will figure it out later*/
     word: joi.string().pattern(/^[a-zA-Z-' ]+$/).required(),
 });
-
+//Trans schema
 const transSchema = joi.object({
     word_id: joi.number().integer().required(),
     trans_id: joi.number().integer().required(),
+});
+//Edit schema
+const editSchema = joi.object({
+    id: joi.number().integer().required(),
+    lang_id: joi.number().integer().required(),
+    word: joi.string().pattern(/^[a-zA-Z-' ]+$/).required(),
 });
 
 const getAllLanguages = () => {
@@ -447,24 +456,24 @@ const deleteTranslation = (id, transId) => {
     });
 };
 
-const editWord = async (id, newWord) => {
+const editWord = async (id, newLang, newWord) => {
     /*This was suggested by chatGPT. Turns out, you can make promises asynchronous as well!
     This wouldn't work without setting the whole function and the promise as asynchronous. I was stumped when
     the await wouldn't work inside the promise at first. GPT suggested to make the promise asynchronous*/
     return new Promise(async (resolve, reject) => {
         try {
-            const { error } = wordSchema.validate({ lang_id: id, word: newWord });
+            const { error } = editSchema.validate({ id: id, lang_id: newLang, word: newWord });
             if (error) {
                 reject({
                     status: 400,
-                    message: "Incorrect data inputted. ID should be an integer and text coherent without any special characters"
+                    message: "Incorrect data inputted. IDs should be integers and text coherent without any special characters"
                 });
                 return;
             }
             /*Use the get wordsid function before to ensure it exists.*/
             await getWordsById(id);
             //update the word
-            db.run('UPDATE words SET word = ? WHERE id = ?', [newWord, id], function (err) {
+            db.run('UPDATE words SET lang_id = ?, word = ? WHERE id = ?', [newLang, newWord, id], function (err) {
                 if (err) {
                     if (err.code === 'SQLITE_CONSTRAINT') {
                         reject({
