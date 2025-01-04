@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -16,9 +15,6 @@ export default defineConfig({
             "react-dom": path.resolve(__dirname, "../node_modules/react-dom"),
         },
         preserveSymlinks: true,
-    },
-    rollupOptions: {
-        external: ['react-leaflet']
     },
     cacheDir: path.resolve(__dirname, "../.vite-cache"), // Set cache directory outside frontend
 });
