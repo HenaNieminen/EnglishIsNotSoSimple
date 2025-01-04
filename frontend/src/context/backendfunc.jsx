@@ -2,9 +2,8 @@ import axios from 'axios';
 
 const fetchLang = async (setLanguages) => {
     try {
-        //Get the env for the api url from the viteconfig
-        const URL = import.meta.env.VITE_API_URL;
-        const response = await axios.get(`${URL}languages`);
+        const response = await axios.get(`/api/languages`);
+        console.log(response);
         setLanguages(response.data);
     } catch (error) {
         console.error('Error fetching languages:', error);
@@ -13,9 +12,8 @@ const fetchLang = async (setLanguages) => {
 
 const fetchWords = async (setWords) => {
     try {
-        //Get the env for the api url from the viteconfig
-        const URL = import.meta.env.VITE_API_URL;
-        const response = await axios.get(`${URL}words`);
+        const response = await axios.get(`/api/words`);
+        console.log(response);
         setWords(response.data);
     } catch (error) {
         console.error('Error fetching words:', error);
@@ -24,9 +22,8 @@ const fetchWords = async (setWords) => {
 
 const fetchTrans = async (setTranslations) => {
     try {
-        //Get the env for the api url from the viteconfig
-        const URL = import.meta.env.VITE_API_URL;
-        const response = await axios.get(`${URL}translations`);
+        const response = await axios.get(`api/translations`);
+        console.log(response);
         setTranslations(response.data);
     } catch (error) {
         console.error('Error fetching translations:', error);
