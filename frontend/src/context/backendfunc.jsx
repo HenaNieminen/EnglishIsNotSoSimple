@@ -18,7 +18,7 @@ const fetchWords = async () => {
     } catch (error) {
         console.error('Error fetching words:', error);
     }
-}
+};
 
 const fetchTrans = async () => {
     try {
@@ -28,11 +28,50 @@ const fetchTrans = async () => {
     } catch (error) {
         console.error('Error fetching translations:', error);
     }
-}
+};
 
+const fetchLangById = async (id) => {
+
+};
+
+const fetchWordsById = async (id) => {
+
+};
+
+const fetchTransForWordId = async (id) => {
+
+};
+
+const postWords = async (langId, word) => {
+
+};
+
+const postTrans = async (id, transId) => {
+
+};
+
+const deleteWords = async (id) => {
+
+};
+
+const deleteTrans = async (wordId, transId) => {
+
+};
+
+const patchWords = async (id, langId, word) => {
+
+};
 
 export {
     fetchLang,
     fetchWords,
-    fetchTrans
+    fetchTrans,
+    fetchLangById,
+    fetchWordsById,
+    fetchTransForWordId,
+    postWords,
+    postTrans,
+    deleteWords,
+    deleteTrans,
+    patchWords,
 };
