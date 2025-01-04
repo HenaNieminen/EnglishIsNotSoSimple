@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const fetchLanguages = async (setLanguages) => {
+const fetchLang = async (setLanguages) => {
     try {
         //Get the env for the api url from the viteconfig
         const URL = import.meta.env.VITE_API_URL;
@@ -22,7 +22,7 @@ const fetchWords = async (setWords) => {
     }
 }
 
-const fetchTranslations = async (setTranslations) => {
+const fetchTrans = async (setTranslations) => {
     try {
         //Get the env for the api url from the viteconfig
         const URL = import.meta.env.VITE_API_URL;
@@ -35,7 +35,7 @@ const fetchTranslations = async (setTranslations) => {
 
 
 export {
-    fetchLanguages,
+    fetchLang,
     fetchWords,
-    fetchTranslations
+    fetchTrans
 };
