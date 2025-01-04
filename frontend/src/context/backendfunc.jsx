@@ -1,30 +1,30 @@
 import axios from 'axios';
 
-const fetchLang = async (setLanguages) => {
+const fetchLang = async () => {
     try {
         const response = await axios.get(`/api/languages`);
         console.log(response);
-        setLanguages(response.data);
+        return response.data;
     } catch (error) {
         console.error('Error fetching languages:', error);
     }
 };
 
-const fetchWords = async (setWords) => {
+const fetchWords = async () => {
     try {
         const response = await axios.get(`/api/words`);
         console.log(response);
-        setWords(response.data);
+        return response.data;
     } catch (error) {
         console.error('Error fetching words:', error);
     }
 }
 
-const fetchTrans = async (setTranslations) => {
+const fetchTrans = async () => {
     try {
         const response = await axios.get(`api/translations`);
         console.log(response);
-        setTranslations(response.data);
+        return response.data;
     } catch (error) {
         console.error('Error fetching translations:', error);
     }
