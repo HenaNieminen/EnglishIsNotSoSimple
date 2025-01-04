@@ -29,7 +29,7 @@ const fetchTranslations = async (setTranslations) => {
         const response = await axios.get(`${URL}translations`);
         setTranslations(response.data);
     } catch (error) {
-        console.error('Error fetching words:', error);
+        console.error('Error fetching translations:', error);
     }
 }
 
