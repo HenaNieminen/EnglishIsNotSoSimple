@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import "../styles/main.css"
 
 const MainPage = () => {
     return (
@@ -6,7 +7,7 @@ const MainPage = () => {
         <h1>
             Hola hola
         </h1>
-        <Link to="/settings">Admin/settings</Link>
+            <Link class="navButton" to="/settings">Admin/settings</Link>
         </>
     );
 };
