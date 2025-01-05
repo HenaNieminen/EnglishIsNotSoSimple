@@ -22,7 +22,7 @@ const fetchWords = async () => {
 
 const fetchTrans = async () => {
     try {
-        const response = await axios.get(`api/translations`);
+        const response = await axios.get(`/api/translations`);
         console.log(response);
         return response.data;
     } catch (error) {
@@ -32,25 +32,25 @@ const fetchTrans = async () => {
 
 const fetchLangById = async (id) => {
     try {
-
+        await axios.get(`/api/languages/${id}`);
     } catch (error) {
-
+        console.error('Error fetching language', error);
     }
 };
 
 const fetchWordsById = async (id) => {
     try {
-
+        await axios.get(`/api/words/${id}`);
     } catch (error) {
-
+        console.error('Error fetching word', error);
     }
 };
 
 const fetchTransForWordId = async (id) => {
     try {
-
+        await axios.get(`/api/translationsforword/${id}`);
     } catch (error) {
-
+        console.error('Error fetching word', error);
     }
 };
 
