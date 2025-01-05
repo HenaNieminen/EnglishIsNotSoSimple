@@ -29,7 +29,7 @@ const idSchema = joi.object({
 const wordSchema = joi.object({
     lang_id: joi.number().integer().required(),
     //Words need to be capitalized
-    word: joi.string().pattern(/^[A-ZÄÖ]+[a-zA-ZÄÖäö-' ]*$/).required(),
+    word: joi.string().pattern(/^[a-zA-ZÄÖäö' -]*$/).required(),
 });
 
 /**
@@ -308,6 +308,7 @@ const postWords = async (langId, word) => {
     return new Promise(async (resolve, reject) => {
         //Will refuse if the word is empty. Will also be handled in frontend for redundancy
         try {
+            word = word.charAt(0).toUpperCase() + word.slice(1);
             const { error } = wordSchema.validate({ lang_id: langId, word: word });
             if (error) {
                 reject({
