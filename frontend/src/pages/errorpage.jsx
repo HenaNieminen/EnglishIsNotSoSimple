@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     return (
         <div>
             <h1>404: Not found</h1>
-            <div>
+            <div className='navBar'>
                 <Link class="navButton" to="/"> Go back to the main page</Link>
             </div>
         </div>

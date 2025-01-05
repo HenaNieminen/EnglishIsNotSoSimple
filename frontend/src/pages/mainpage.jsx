@@ -3,12 +3,10 @@ import "../styles/main.css"
 
 const MainPage = () => {
     return (
-        <>
-        <h1>
-            Hola hola
-        </h1>
+        <div className="mainContainer">
+            <h1>Hola hola</h1>
             <Link class="navButton" to="/settings">Admin/settings</Link>
-        </>
+        </div>
     );
 };
 

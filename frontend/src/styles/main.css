@@ -25,4 +25,11 @@ p {
   text-decoration: none;
   border-radius: 10px;
   font-family: "Roboto";
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }/*# sourceMappingURL=main.css.map */

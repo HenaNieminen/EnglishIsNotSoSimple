@@ -2,7 +2,7 @@ body {
     background-color: #3d3838;
 }
 
-//Set all text elements to use Roboto. Hail Google
+//Set all text elements to use Roboto.
 h1,
 h2,
 h3,
@@ -28,4 +28,12 @@ p {
     text-decoration: none;
     border-radius: 10px;
     font-family: "Roboto";
+}
+
+//Main container to just center everything (for now)
+.mainContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
