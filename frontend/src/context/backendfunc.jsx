@@ -59,41 +59,46 @@ const postWords = async (word) => {
     try {
         await axios.post(`/api/words/`, word);
     } catch (error) {
-        console.error('Error fetching word', error);
+        console.error('Error posting word', error);
     }
 };
 
-const postTrans = async (id, transId) => {
+const postTrans = async (trans) => {
+    //Trans should contain id and trans_id
     try {
-
+        await axios.post(`/api/translations`, trans);
     } catch (error) {
-
+        console.error('Error posting translation', error);
     }
 };
 
 const deleteWords = async (id) => {
     try {
-
+        await axios.delete(`/api/words/${id}`);
     } catch (error) {
-
+        console.error('Error deleting word', error);
     }
 };
 
 const deleteTrans = async (wordId, transId) => {
     try {
-
+        await axios.delete(`/api/words/${wordId}&${transId}`);
     } catch (error) {
-
+        console.error('Error deleting translation', error);
     }
 };
 
-const patchWords = async (id, langId, word) => {
+const patchWords = async (newWord) => {
+    //newWord object assumes id, langId and word are all there
     try {
-
+        await axios.patch(`/api/words/`, newWord);
     } catch (error) {
-
+        console.error('Error editing word', error);
     }
 };
+
+/*Consistency may become a problem. I need to make sure that the variable names align
+with the database at some point if problems arise*/
 
 export {
     fetchLang,
