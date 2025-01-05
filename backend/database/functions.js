@@ -28,7 +28,8 @@ const idSchema = joi.object({
 //Word schema
 const wordSchema = joi.object({
     lang_id: joi.number().integer().required(),
-    word: joi.string().pattern(/^[a-zA-Z]+[a-zA-Z-' ]*$/).required(),
+    //Words need to be capitalized
+    word: joi.string().pattern(/^[A-ZÄÖ]+[a-zA-ZÄÖäö-' ]*$/).required(),
 });
 
 /**
