@@ -1,4 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css';
 
 const MainPage = () => {
     return (
