@@ -50,15 +50,16 @@ const fetchTransForWordId = async (id) => {
     try {
         await axios.get(`/api/translationsforword/${id}`);
     } catch (error) {
-        console.error('Error fetching word', error);
+        console.error('Error fetching translations for word', error);
     }
 };
 
-const postWords = async (langId, word) => {
+const postWords = async (word) => {
+    //Word object should contain the langId and the word as text
     try {
-
+        await axios.post(`/api/words/`, word);
     } catch (error) {
-
+        console.error('Error fetching word', error);
     }
 };
 
