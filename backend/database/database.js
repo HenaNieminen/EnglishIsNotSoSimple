@@ -39,51 +39,56 @@ const createTranslationsTable = (db) => {
 //Read the initialData.json file and insert all contents to the database
 const createPlaceHolderData = (db) => {
     fs.readFile(__dirname + "/initialData.json", "utf8", (err, data) => {
+        //If an error occurs with reading the file
         if (err) {
             console.error("Error reading file:", err);
             return;
-        }
+        };
 
         try {
             //Parse and read the data and then insert the each json object
             const { languages, words, translations } = JSON.parse(data);
             //Serialize to make sure they run in order
             db.serialize(() => {
+                //Run languages
                 languages.forEach((language) => {
                     db.run("INSERT INTO languages (language) VALUES (?)", [language], (err) => {
                         if (err) {
                             console.error("Error inserting language:", err);
-                        }
+                        };
                     });
                 });
-
+                //Run words
                 words.forEach(({ lang_id, word }) => {
                     db.run("INSERT INTO words (lang_id, word) VALUES (?, ?)", [lang_id, word], (err) => {
                         if (err) {
                             console.error("Error inserting word:", err);
-                        }
+                        };
                     });
                 });
-
+                //Run translations
                 translations.forEach(({ word_id, trans_id }) => {
                     db.run("INSERT INTO translations (word_id, trans_id) VALUES (?, ?)", [word_id, trans_id], (err) => {
                         if (err) {
                             console.error("Error inserting translation:", err);
-                        }
+                        };
                     });
                 });
             });
+            //Catch parsing issues
         } catch (parseError) {
             console.error("Error parsing file:", parseError);
-        }
+        };
     });
 };
 
+//Create the database and all its values into memory
 const db = new sqlite3.Database(":memory:", (error) => {
+    //If an error occurs
     if (error) {
         console.error("Database creation failed:", error);
         return;
-    }
+    };
     //Run all database initializations in a series
     db.serialize(() => {
         createLanguageTable(db);
