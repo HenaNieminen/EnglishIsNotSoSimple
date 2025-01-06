@@ -1,10 +1,8 @@
-import "../styles/main.css"
+import { useContext, useState } from 'react';
+import { DataContext } from '../context/datacontext';
 
 const QuizPage = () => {
-    return (
-        <>
-        </>
-    );
+
 };
 
 export default QuizPage;
