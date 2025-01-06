@@ -98,19 +98,4 @@ const db = new sqlite3.Database(":memory:", (error) => {
     });
 });
 
-
-/*NOTES:
-The database needs to be persisted somehow. The initial idea is to store it in browser localstorage,
-but a lot of people say it is haram and generally frowned upon. Honestly, I have no clue how to make a solid
-database that is unique for each user without having to resort to storing it locally in someones browser.
-This will probably change a lot coming along, but at least the final structure is somewhat there, (could do with
-a language table for future expansion) and the functions are somewhat nailed down already.
-
-
-Found a solution: IndexedDB. This restufl api will only run the defaults for the user, but when making changes into
-the database, IndexedDB will also save those changes in the frontend and will also take the default values if empty.
-When the user loads up the web app again, the indexedDB will scan the database, force add its own values that the user
-has manipulated the database with in the past.
-*/
-
 module.exports = db;
