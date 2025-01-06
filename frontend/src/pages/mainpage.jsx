@@ -5,7 +5,7 @@ const MainPage = () => {
     return (
         <div className="mainContainer">
             <h1>Hola hola</h1>
-            <Link class="navButton" to="/settings">Admin/settings</Link>
+            <Link className="navButton" to="/settings">Admin/settings</Link>
         </div>
     );
 };
