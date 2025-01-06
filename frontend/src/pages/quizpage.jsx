@@ -28,7 +28,6 @@ const QuizPage = () => {
                 minWidth: 400,
                 maxWidth: 500,
                 margin: 'auto',
-                backgroundColor: 'white'
             }}>
                 <FormControl fullWidth>
                     <InputLabel id="language-select-label">Select Language</InputLabel>
@@ -37,7 +36,7 @@ const QuizPage = () => {
                         value={selectedLang}
                         onChange={handleLangChange}
                         label="Select Language"
-                        sx={{ minWidth: 400, maxWidth: 500 }}
+                        sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
                     >
                         {langs.map((lang) => (
                             <MenuItem key={lang.id} value={lang.id}>
@@ -53,7 +52,7 @@ const QuizPage = () => {
                     onChange={handleLengthChange}
                     inputProps={{ min: 1, max: 10 }}
                     fullWidth
-                    sx={{ minWidth: 400, maxWidth: 500 }}
+                    sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
                 />
                 <Quiz langId={selectedLang} length={quizLength} />
             </Box>
