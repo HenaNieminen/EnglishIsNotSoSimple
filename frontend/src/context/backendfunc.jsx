@@ -32,7 +32,8 @@ const fetchTrans = async () => {
 
 const fetchLangById = async (id) => {
     try {
-        await axios.get(`/api/languages/${id}`);
+        const response = await axios.get(`/api/languages/${id}`);
+        return response.data;
     } catch (error) {
         console.error('Error fetching language', error);
     }
@@ -40,7 +41,8 @@ const fetchLangById = async (id) => {
 
 const fetchWordsById = async (id) => {
     try {
-        await axios.get(`/api/words/${id}`);
+        const response = await axios.get(`/api/words/${id}`);
+        return response.data
     } catch (error) {
         console.error('Error fetching word', error);
     }
@@ -48,7 +50,8 @@ const fetchWordsById = async (id) => {
 
 const fetchTransForWordId = async (id) => {
     try {
-        await axios.get(`/api/translationsforword/${id}`);
+        const response = await axios.get(`/api/translationsforword/${id}`);
+        return response.data;
     } catch (error) {
         console.error('Error fetching translations for word', error);
     }
