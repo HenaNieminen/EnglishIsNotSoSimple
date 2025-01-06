@@ -1,4 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
 
 //Create a table to store languages
 /*For the time being. I will only make a function to see them all. I will not yet
@@ -35,21 +36,55 @@ const createTranslationsTable = (db) => {
     will cause headaches in the future. Luckily this is still easily correctable*/
 };
 
+//Read the initialData.json file and insert all contents to the database
 const createPlaceHolderData = (db) => {
-    db.run("INSERT INTO languages (language) VALUES ('finnish'), ('english')")
-    db.run("INSERT INTO words (lang_id, word) VALUES (2, 'hello'), (2, 'hi'), (1, 'terve')")
-    db.run("INSERT INTO translations (word_id, trans_id) VALUES (1, 3), (2, 3), (3, 2), (3, 1);");
-    /* Eventually, I will read off all the initial data from a file. Hardcoding should do
-    for now. For saving user generated words and translations, I will look into localstorage
-    or somehow making this persistent other means */
+    fs.readFile(__dirname + "/initialData.json", "utf8", (err, data) => {
+        if (err) {
+            console.error("Error reading file:", err);
+            return;
+        }
+
+        try {
+            //Parse and read the data and then insert the each json object
+            const { languages, words, translations } = JSON.parse(data);
+            //Serialize to make sure they run in order
+            db.serialize(() => {
+                languages.forEach((language) => {
+                    db.run("INSERT INTO languages (language) VALUES (?)", [language], (err) => {
+                        if (err) {
+                            console.error("Error inserting language:", err);
+                        }
+                    });
+                });
+
+                words.forEach(({ lang_id, word }) => {
+                    db.run("INSERT INTO words (lang_id, word) VALUES (?, ?)", [lang_id, word], (err) => {
+                        if (err) {
+                            console.error("Error inserting word:", err);
+                        }
+                    });
+                });
+
+                translations.forEach(({ word_id, trans_id }) => {
+                    db.run("INSERT INTO translations (word_id, trans_id) VALUES (?, ?)", [word_id, trans_id], (err) => {
+                        if (err) {
+                            console.error("Error inserting translation:", err);
+                        }
+                    });
+                });
+            });
+        } catch (parseError) {
+            console.error("Error parsing file:", parseError);
+        }
+    });
 };
 
-// Initialize the database to RAM
 const db = new sqlite3.Database(":memory:", (error) => {
     if (error) {
         console.error("Database creation failed:", error);
         return;
     }
+    //Run all database initializations in a series
     db.serialize(() => {
         createLanguageTable(db);
         createWordsTable(db);
