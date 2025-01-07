@@ -2,9 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import { fetchTransForWordId } from '../context/backendfunc';
 import { DataContext } from '../context/datacontext';
 
-const Quiz = ({ language, length }) => {
+const Quiz = ({ language, length, active }) => {
     const { words } = useContext(DataContext);
     const [questions, setQuestions] = useState([]);
+    const [score, setScore] = useState(0);
 
     useEffect(() => {
         const generateQuestions = async () => {
@@ -52,7 +53,7 @@ const Quiz = ({ language, length }) => {
         [language, length, words]);
 
     return (
-        //For testing now, show all generated stuff before adding answering
+        //For testing now, show all generated stuff for debugging purposes before adding functionality
         <div>
             {questions.map((q, index) => (
                 <div key={index}>
