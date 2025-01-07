@@ -6,6 +6,8 @@ const Quiz = ({ language, length, active }) => {
     const { words } = useContext(DataContext);
     const [questions, setQuestions] = useState([]);
     const [score, setScore] = useState(0);
+    const [quizOver, setQuizOver] = useState(false);
+    const [userAnswers, setUserAnswers] = useState([]);
 
     useEffect(() => {
         const generateQuestions = async () => {
@@ -31,7 +33,6 @@ const Quiz = ({ language, length, active }) => {
                 };
                 try {
                     const translations = await fetchTransForWordId(randomWord.id);
-
                     const transIds = translations.map(trans => trans.trans_id);
                     const answers = words.filter(word => transIds.includes(word.id));
 
