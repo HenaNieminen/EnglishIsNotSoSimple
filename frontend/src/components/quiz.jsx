@@ -55,30 +55,57 @@ const Quiz = ({ language, length, active }) => {
     const handleSubmit = () => {
         //Handle the submitted answers
         let tempScore = 0;
+
         questions.forEach((q, index) => {
-            //Check through each answer by the user and see if the question holds what user has answered
-            if (userAnswers[index] && q.answers.includes(userAnswers[index].toLowerCase())) {
+            const userAnswer = userAnswers[index].toLowerCase();
+            const correctAnswers = q.answers.map(answer => answer.toLowerCase());
+
+            //Check if the user's answer matches any correct answer
+            if (userAnswer && correctAnswers.includes(userAnswer)) {
                 tempScore += 1;
-            };
+            }
         });
         //Set the final score and end the quiz
         setScore(tempScore);
         setQuizOver(true);
     };
 
+    const handleInputChange = (e, index) => {
+        //Handle user typing in their answer, taking the event target value
+        const { value } = e.target;
+        setUserAnswers({
+            ...userAnswers,
+            [index]: value,
+        });
+    };
+
     return (
-        //For testing now, show all generated stuff for debugging purposes before adding functionality
         <div>
             {questions.map((q, index) => (
                 <div key={index}>
                     <h3>Question: {q.question}</h3>
-                    <ul>
-                        {q.answers.map((answer, i) => (
-                            <li key={i}>{answer}</li>
-                        ))}
-                    </ul>
+                    <input
+                        type="text"
+                        value={userAnswers[index] || ''}
+                        onChange={(e) => handleInputChange(e, index)}
+                        disabled={quizOver}
+                    />
+                    {quizOver && (
+                        <div>
+                            <p>Correct Answer: {q.answers}</p>
+                            <p>Your Answer: {userAnswers[index]}</p>
+                        </div>
+                    )}
                 </div>
             ))}
+            <button
+                onClick={handleSubmit}
+                disabled={quizOver}>
+                Submit
+            </button>
+            {quizOver &&
+                <h2>Your Score: {score} / {questions.length}</h2>
+            }
         </div>
     );
 };
