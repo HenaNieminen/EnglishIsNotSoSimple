@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DataContext } from '../context/datacontext';
 import Quiz from '../components/quiz';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Box } from '@mui/material';
@@ -9,11 +10,12 @@ const QuizPage = () => {
     //User selectable values
     const [selectedLang, setSelectedLang] = useState('');
     const [quizLength, setQuizLength] = useState(1);
-
+    const [startQuiz, setStartQuiz] = useState(false);
+    //Handle the language value
     const handleLangChange = (e) => {
         setSelectedLang(e.target.value);
     };
-
+    //User can set the quiz length between 1 and 10
     const handleLengthChange = (e) => {
         setQuizLength(Math.min(10, Math.max(1, e.target.value)));
     };
@@ -21,6 +23,7 @@ const QuizPage = () => {
     once I get more familiar with it*/
     return (
         <div className="mainContainer">
+            <Link className="navButton" to="/">Go back</Link>
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -56,8 +59,8 @@ const QuizPage = () => {
                     fullWidth
                     sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
                 />
-                <Quiz langId={selectedLang} length={quizLength} />
             </Box>
+            <Quiz language={selectedLang} length={quizLength}></Quiz>
         </div>
     );
 };
