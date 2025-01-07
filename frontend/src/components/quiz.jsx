@@ -49,9 +49,22 @@ const Quiz = ({ language, length, active }) => {
             }
             setQuestions(tempArray);
         };
-
         generateQuestions();},
         [language, length, words]);
+
+    const handleSubmit = () => {
+        //Handle the submitted answers
+        let tempScore = 0;
+        questions.forEach((q, index) => {
+            //Check through each answer by the user and see if the question holds what user has answered
+            if (userAnswers[index] && q.answers.includes(userAnswers[index].toLowerCase())) {
+                tempScore += 1;
+            };
+        });
+        //Set the final score and end the quiz
+        setScore(tempScore);
+        setQuizOver(true);
+    };
 
     return (
         //For testing now, show all generated stuff for debugging purposes before adding functionality
