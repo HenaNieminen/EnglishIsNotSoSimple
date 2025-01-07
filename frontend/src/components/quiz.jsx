@@ -103,9 +103,15 @@ const Quiz = ({ language, length, active }) => {
                 disabled={quizOver}>
                 Submit
             </button>
-            {quizOver &&
-                <h2>Your Score: {score} / {questions.length}</h2>
-            }
+            {quizOver && (
+                <div>
+                    <h2>Your Score: {score} / {questions.length}</h2>
+                    {/*Return the quizpage back to normal state */}
+                    <button onClick={() => active(false)}>
+                        Exit
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
