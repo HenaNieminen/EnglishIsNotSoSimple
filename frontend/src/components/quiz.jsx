@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { fetchTransForWordId } from '../context/backendfunc';
 import { DataContext } from '../context/datacontext';
+import PropTypes from 'prop-types'
 
 const Quiz = ({ language, length, active }) => {
     const { words } = useContext(DataContext);
@@ -115,5 +116,11 @@ const Quiz = ({ language, length, active }) => {
         </div>
     );
 };
+
+Quiz.propTypes = {
+    language: PropTypes.number.isRequired,
+    length: PropTypes.number.isRequired,
+    active: PropTypes.func.isRequired
+}
 
 export default Quiz;
