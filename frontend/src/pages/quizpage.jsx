@@ -9,7 +9,7 @@ const QuizPage = () => {
     const { langs } = useContext(DataContext);
     //User selectable values
     const [selectedLang, setSelectedLang] = useState('');
-    const [quizLength, setQuizLength] = useState(1);
+    const [quizLength, setQuizLength] = useState('');
     //This will handle the status of the quiz and allows exit out of it once done
     const [startQuiz, setStartQuiz] = useState(false);
     //Handle the language value
@@ -18,14 +18,17 @@ const QuizPage = () => {
     };
     //User can set the quiz length between 1 and 10
     const handleLengthChange = (e) => {
-        setQuizLength(Math.min(10, Math.max(1, e.target.value)));
+        const changeValue = e.target.value;
+        if (changeValue >= 1 && changeValue <= 10) {
+            setQuizLength(changeValue);
+        }
     };
     /*The use of material UI syntax was assisted with co-pilot. These may not be final
     once I get more familiar with it*/
     return (
         <div className="mainContainer">
             {/*When quiz is not active, show all elements to manipulate the quiz for the user */}
-            {!startQuiz && (
+            {!startQuiz &&
                 <>
                     <Link className="navButton" to="/">Go back</Link>
                     <Box sx={{
@@ -47,16 +50,16 @@ const QuizPage = () => {
                                 label="Select Language"
                                 sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
                             >
-                                {langs.map((lang) => (
-                                    <MenuItem key={lang.id} value={lang.id}>
-                                        {lang.language}
-                                    </MenuItem>
-                                ))}
+                            {langs.map((lang) => (
+                                <MenuItem key={lang.id} value={lang.id}>
+                                    {lang.language}
+                                </MenuItem>
+                            ))}
                             </Select>
                         </FormControl>
                         <TextField
                             label="Quiz Length"
-                            type="text"
+                            type="number"
                             value={quizLength}
                             onChange={handleLengthChange}
                             fullWidth
@@ -66,14 +69,16 @@ const QuizPage = () => {
                             variant="contained"
                             color="primary"
                             onClick={() => setStartQuiz(true)}
+                            disabled={!quizLength ||!selectedLang}
                         >
+                        {/*Stops the user from moving on if both values are missing */}
                             Start Quiz
                         </Button>
                     </Box>
                 </>
-            )}
+            }
             {/*When user starts the quiz, pass all the props and the active status */}
-            {startQuiz && <Quiz language={selectedLang} length={quizLength} active={setStartQuiz} />}
+            {startQuiz && <Quiz language={selectedLang} length={Number(quizLength)} active={setStartQuiz} />}
         </div>
     );
 };
