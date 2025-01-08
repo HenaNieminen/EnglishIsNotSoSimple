@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { fetchTransForWordId } from '../context/backendfunc';
 import { DataContext } from '../context/datacontext';
 import PropTypes from 'prop-types'
+import { TextField, Typography, Button, Box } from '@mui/material/';
 
 const Quiz = ({ language, length, active }) => {
     const { words } = useContext(DataContext);
@@ -24,7 +25,6 @@ const Quiz = ({ language, length, active }) => {
             const usedWordIds = new Set();
             //Maxlength will make questions as much as possible if user picks more than there are words
             const maxLength = Math.min(length, langWords.length);
-
             while (tempArray.length < maxLength) {
                 const randomIndex = Math.floor(Math.random() * langWords.length);
                 const randomWord = langWords[randomIndex];
@@ -36,7 +36,6 @@ const Quiz = ({ language, length, active }) => {
                     const translations = await fetchTransForWordId(randomWord.id);
                     const transIds = translations.map(trans => trans.trans_id);
                     const answers = words.filter(word => transIds.includes(word.id));
-
                     if (answers.length > 0) {
                         tempArray.push({
                             question: randomWord.word,
@@ -50,8 +49,8 @@ const Quiz = ({ language, length, active }) => {
             }
             setQuestions(tempArray);
         };
-        generateQuestions();},
-        [language, length, words]);
+        generateQuestions();
+    }, [language, length, words]);
 
     const handleSubmit = () => {
         //Handle the submitted answers
@@ -60,9 +59,8 @@ const Quiz = ({ language, length, active }) => {
         questions.forEach((q, index) => {
             const userAnswer = userAnswers[index].toLowerCase();
             const correctAnswers = q.answers.map(answer => answer.toLowerCase());
-
             //Check if the user's answer matches any correct answer
-            if (userAnswer && correctAnswers.includes(userAnswer)) {
+            if (correctAnswers.includes(userAnswer)) {
                 tempScore += 1;
             }
         });
@@ -81,39 +79,62 @@ const Quiz = ({ language, length, active }) => {
     };
 
     return (
-        <div>
-            {questions.map((q, index) => (
-                <div key={index}>
-                    <h3>Question: {q.question}</h3>
-                    <input
-                        type="text"
-                        value={userAnswers[index] || ''}
-                        onChange={(e) => handleInputChange(e, index)}
-                        disabled={quizOver}
-                    />
-                    {quizOver && (
-                        <div>
-                            <p>Correct Answer: {q.answers}</p>
-                            <p>Your Answer: {userAnswers[index]}</p>
-                        </div>
-                    )}
-                </div>
-            ))}
-            <button
-                onClick={handleSubmit}
-                disabled={quizOver}>
-                Submit
-            </button>
-            {quizOver && (
-                <div>
-                    <h2>Your Score: {score} / {questions.length}</h2>
-                    {/*Return the quizpage back to normal state */}
-                    <button onClick={() => active(false)}>
-                        Exit
-                    </button>
-                </div>
-            )}
-        </div>
+        <>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 400,
+                maxWidth: 500,
+                margin: 'auto',
+                padding: 5,
+                backgroundColor: 'lightgray'
+            }}>
+                {questions.map((q, index) => (
+                    <div key={index}>
+                        <h3>Translate: {q.question}</h3>
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            value={userAnswers[index]}
+                            onChange={(e) => handleInputChange(e, index)}
+                            disabled={quizOver}
+                            margin="normal"
+                        />
+                        {quizOver && (
+                            <div>
+                                <Typography > Correct Answer: {q.answers.join(', ')}</Typography>
+                                <Typography > Your Answer: {userAnswers[index]}</Typography>
+                                {/*Show the answers after the quiz*/}
+                            </div>
+                        )}
+                    </div>
+                ))}
+                <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    disabled={quizOver}
+                    style={{ marginTop: '20px', justifyItems: "center" }}
+                >
+                    Submit
+                </Button>
+                {/*Submit the quiz and give out the score*/}
+                {quizOver && (
+                    <div>
+                        <Typography variant="h5" style={{ marginTop: '20px' }}>
+                            Your Score: {score} / {questions.length}
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            onClick={() => active(false)}
+                            style={{ marginTop: '10px' }}
+                        >
+                            Exit
+                        </Button>
+                        {/*Return back to quiz page */}
+                    </div>
+                )}
+            </Box>
+        </>
     );
 };
 
