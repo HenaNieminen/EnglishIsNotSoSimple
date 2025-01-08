@@ -18,7 +18,7 @@ const QuizPage = () => {
     };
     //User can set the quiz length between 1 and 10
     const handleLengthChange = (e) => {
-        const changeValue = e.target.value;
+        const changeValue = Number(e.target.value);
         if (changeValue >= 1 && changeValue <= 10) {
             setQuizLength(changeValue);
         }
@@ -59,7 +59,7 @@ const QuizPage = () => {
                         </FormControl>
                         <TextField
                             label="Quiz Length"
-                            type="number"
+                            type="text"
                             value={quizLength}
                             onChange={handleLengthChange}
                             fullWidth
