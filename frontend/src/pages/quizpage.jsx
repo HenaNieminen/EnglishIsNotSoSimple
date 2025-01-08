@@ -18,8 +18,8 @@ const QuizPage = () => {
     };
     //User can set the quiz length between 1 and 10
     const handleLengthChange = (e) => {
-        const changeValue = Number(e.target.value);
-        if (changeValue >= 1 && changeValue <= 10) {
+        const changeValue = e.target.value;
+        if (changeValue === '' || (changeValue) >= 1 && changeValue <= 10) {
             setQuizLength(changeValue);
         }
     };
@@ -39,15 +39,15 @@ const QuizPage = () => {
                         maxWidth: 500,
                         margin: 'auto',
                         padding: 5,
-                        backgroundColor: 'white'
+                        backgroundColor: 'lightgray'
                     }}>
                         <FormControl fullWidth>
-                            <InputLabel id="language-select-label">Select exercise Language</InputLabel>
+                            <InputLabel id="language-select-label" sx={{ marginBottom: 20 }}>Quiz language</InputLabel>
                             <Select
                                 labelId="language-select-label"
                                 value={selectedLang}
                                 onChange={handleLangChange}
-                                label="Select Language"
+                                label="Quiz language"
                                 sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
                             >
                             {langs.map((lang) => (
@@ -59,8 +59,8 @@ const QuizPage = () => {
                         </FormControl>
                         <TextField
                             label="Quiz Length"
-                            type="text"
-                            value={quizLength}
+                            type="number"
+                            value={quizLength || ""}
                             onChange={handleLengthChange}
                             fullWidth
                             sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
@@ -78,7 +78,7 @@ const QuizPage = () => {
                 </>
             }
             {/*When user starts the quiz, pass all the props and the active status */}
-            {startQuiz && <Quiz language={selectedLang} length={Number(quizLength)} active={setStartQuiz} />}
+            {startQuiz && <Quiz language={selectedLang} length={quizLength} active={setStartQuiz} />}
         </div>
     );
 };
