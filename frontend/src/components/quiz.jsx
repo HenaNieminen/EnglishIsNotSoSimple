@@ -57,7 +57,7 @@ const Quiz = ({ language, length, active }) => {
         let tempScore = 0;
 
         questions.forEach((q, index) => {
-            const userAnswer = userAnswers[index].toLowerCase();
+            const userAnswer = userAnswers[index]?.toLowerCase() || "";
             const correctAnswers = q.answers.map(answer => answer.toLowerCase());
             //Check if the user's answer matches any correct answer
             if (correctAnswers.includes(userAnswer)) {
