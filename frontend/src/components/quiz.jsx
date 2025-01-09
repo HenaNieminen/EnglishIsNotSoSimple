@@ -90,7 +90,7 @@ const Quiz = ({ language, length, active }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 minWidth: 400,
-                maxWidth: 500,
+                maxWidth: 700,
                 margin: 'auto',
                 padding: 5,
                 backgroundColor: '#525252'
@@ -104,12 +104,14 @@ const Quiz = ({ language, length, active }) => {
                         <TextField
                             variant="outlined"
                             fullWidth
+                            size="small"
                             value={userAnswers[index]}
                             onChange={(e) => handleInputChange(e, index)}
                             disabled={quizOver}
                             margin="normal"
-                            style={{
+                            sx={{
                                 backgroundColor: "white",
+                                size: "small",
                             }}
                         />
                         {quizOver && (
