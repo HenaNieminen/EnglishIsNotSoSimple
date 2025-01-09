@@ -71,11 +71,11 @@ router.post("/words", async (req, res) => {
 
 router.patch("/words", async (req, res) => {
     try {
-        const { id, word } = req.body;
-        if (!word) {
-            throw { status: 400, message: "Word is required" };
+        const { id, langId, word } = req.body;
+        if (!id || !langId || !word) {
+            throw { status: 400, message: "Id, language id and updated word is required" };
         }
-        const data = await sqlite.editWord(id, word);
+        const data = await sqlite.editWord(id, langId, word);
         res.status(201).json("Word updated succesfully!");
     } catch (error) {
         console.error("Error editing database", error);

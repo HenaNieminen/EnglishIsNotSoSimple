@@ -1,0 +1,234 @@
+{
+    "languages": [
+        "Finnish",
+        "English"
+    ],
+    "words": [
+        {
+            "lang_id": 2,
+            "word": "Hello"
+        },
+        {
+            "lang_id": 2,
+            "word": "Hi"
+        },
+        {
+            "lang_id": 1,
+            "word": "Moi"
+        },
+        {
+            "lang_id": 1,
+            "word": "Terve"
+        },
+        {
+            "lang_id": 1,
+            "word": "Koira"
+        },
+        {
+            "lang_id": 2,
+            "word": "Dog"
+        },
+        {
+            "lang_id": 1,
+            "word": "Auto"
+        },
+        {
+            "lang_id": 2,
+            "word": "Car"
+        },
+        {
+            "lang_id": 1,
+            "word": "Juna"
+        },
+        {
+            "lang_id": 2,
+            "word": "Train"
+        },
+        {
+            "lang_id": 1,
+            "word": "Moottori"
+        },
+        {
+            "lang_id": 2,
+            "word": "Engine"
+        },
+        {
+            "lang_id": 2,
+            "word": "Motor"
+        },
+        {
+            "lang_id": 1,
+            "word": "Tietokone"
+        },
+        {
+            "lang_id": 2,
+            "word": "Computer"
+        },
+        {
+            "lang_id": 1,
+            "word": "Hävittäjä"
+        },
+        {
+            "lang_id": 2,
+            "word": "Jet fighter"
+        },
+        {
+            "lang_id": 1,
+            "word": "Panssarivaunu"
+        },
+        {
+            "lang_id": 1,
+            "word": "Tankki"
+        },
+        {
+            "lang_id": 2,
+            "word": "Tank"
+        },
+        {
+            "lang_id": 1,
+            "word": "Ilmatorjunta"
+        },
+        {
+            "lang_id": 2,
+            "word": "Anti-air"
+        },
+        {
+            "lang_id": 1,
+            "word": "Panssarituhooja"
+        },
+        {
+            "lang_id": 2,
+            "word": "Tank destroyer"
+        },
+        {
+            "lang_id": 1,
+            "word": "Kirja"
+        },
+        {
+            "lang_id": 2,
+            "word": "Book"
+        },
+        {
+            "lang_id": 1,
+            "word": "Maito"
+        },
+        {
+            "lang_id": 2,
+            "word": "Milk"
+        }
+    ],
+    "translations": [
+        {
+            "word_id": 1,
+            "trans_id": 3
+        },
+        {
+            "word_id": 2,
+            "trans_id": 3
+        },
+        {
+            "word_id": 3,
+            "trans_id": 1
+        },
+        {
+            "word_id": 4,
+            "trans_id": 1
+        },
+        {
+            "word_id": 5,
+            "trans_id": 6
+        },
+        {
+            "word_id": 6,
+            "trans_id": 5
+        },
+        {
+            "word_id": 7,
+            "trans_id": 8
+        },
+        {
+            "word_id": 8,
+            "trans_id": 7
+        },
+        {
+            "word_id": 9,
+            "trans_id": 10
+        },
+        {
+            "word_id": 10,
+            "trans_id": 9
+        },
+        {
+            "word_id": 11,
+            "trans_id": 12
+        },
+        {
+            "word_id": 12,
+            "trans_id": 11
+        },
+        {
+            "word_id": 13,
+            "trans_id": 11
+        },
+        {
+            "word_id": 14,
+            "trans_id": 15
+        },
+        {
+            "word_id": 15,
+            "trans_id": 14
+        },
+        {
+            "word_id": 16,
+            "trans_id": 17
+        },
+        {
+            "word_id": 17,
+            "trans_id": 16
+        },
+        {
+            "word_id": 18,
+            "trans_id": 20
+        },
+        {
+            "word_id": 19,
+            "trans_id": 20
+        },
+        {
+            "word_id": 20,
+            "trans_id": 18
+        },
+        {
+            "word_id": 21,
+            "trans_id": 22
+        },
+        {
+            "word_id": 22,
+            "trans_id": 21
+        },
+        {
+            "word_id": 23,
+            "trans_id": 24
+        },
+        {
+            "word_id": 24,
+            "trans_id": 23
+        },
+        {
+            "word_id": 25,
+            "trans_id": 26
+        },
+        {
+            "word_id": 26,
+            "trans_id": 25
+        },
+        {
+            "word_id": 27,
+            "trans_id": 28
+        },
+        {
+            "word_id": 28,
+            "trans_id": 27
+        }
+    ]
+}

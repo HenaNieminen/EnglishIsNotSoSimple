@@ -1,0 +1,39 @@
+body {
+    background-color: #3d3838;
+}
+
+//Set all text elements to use Roboto.
+h1,
+h2,
+h3,
+h4,
+p {
+    font-family: "Roboto";
+    color: white;
+}
+
+//Placements for the link buttons (Will be refined)
+.navBar {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+//Settings for the react link buttons
+.navButton {
+    margin: 10px;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-family: "Roboto";
+}
+
+//Main container to just center everything (for now)
+.mainContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

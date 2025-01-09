@@ -1,0 +1,35 @@
+body {
+  background-color: #3d3838;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  font-family: "Roboto";
+  color: white;
+}
+
+.navBar {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.navButton {
+  margin: 10px;
+  background-color: black;
+  color: white;
+  padding: 20px;
+  text-decoration: none;
+  border-radius: 10px;
+  font-family: "Roboto";
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}/*# sourceMappingURL=main.css.map */
