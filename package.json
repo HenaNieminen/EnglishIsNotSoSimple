@@ -27,5 +27,8 @@
         "prop-types": "^15.8.1",
         "react-router-dom": "^7.1.1",
         "react-toastify": "^11.0.2"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.9.5"
     }
 }
