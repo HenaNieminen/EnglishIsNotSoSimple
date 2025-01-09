@@ -80,14 +80,14 @@ const Quiz = ({ language, length, active }) => {
 
     return (
         <>
-            <Box sx={{
+            <Box style={{
                 display: 'flex',
                 flexDirection: 'column',
                 minWidth: 400,
                 maxWidth: 500,
                 margin: 'auto',
                 padding: 5,
-                backgroundColor: '#2f2f2f' // Darker gray
+                backgroundColor: '#525252'
             }}>
                 {!questions.length && (
                     <Typography>Loading...</Typography>
