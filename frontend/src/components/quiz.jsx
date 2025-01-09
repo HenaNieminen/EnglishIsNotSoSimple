@@ -89,6 +89,9 @@ const Quiz = ({ language, length, active }) => {
                 padding: 5,
                 backgroundColor: '#2f2f2f' // Darker gray
             }}>
+                {!questions.length && (
+                    <Typography>Loading...</Typography>
+                )}
                 {questions.map((q, index) => (
                     <div key={index}>
                         <h3>Translate: {q.question}</h3>
@@ -99,14 +102,14 @@ const Quiz = ({ language, length, active }) => {
                             onChange={(e) => handleInputChange(e, index)}
                             disabled={quizOver}
                             margin="normal"
-                            sx={{
+                            style={{
                                 backgroundColor: "white",
                             }}
                         />
                         {quizOver && (
                             <div>
-                                <Typography > Correct Answer: {q.answers.join(', ')}</Typography>
-                                <Typography > Your Answer: {userAnswers[index]}</Typography>
+                                <Typography > Correct answer: {q.answers.join(', ')}</Typography>
+                                <Typography > Your answer: {userAnswers[index]}</Typography>
                                 {/*Show the answers after the quiz*/}
                             </div>
                         )}
@@ -123,13 +126,14 @@ const Quiz = ({ language, length, active }) => {
                 {/*Submit the quiz and give out the score*/}
                 {quizOver && (
                     <div>
-                        <Typography variant="h5" style={{ marginTop: '20px' }}>
-                            Your Score: {score} / {questions.length}
+                        <Typography variant="h5" sx={{ marginTop: '20px', color:"white" }}>
+                            Your score: {score} / {questions.length}
                         </Typography>
                         <Button
                             variant="contained"
                             onClick={() => active(false)}
                             style={{ marginTop: '10px' }}
+                            disabled={!questions}
                         >
                             Exit
                         </Button>
