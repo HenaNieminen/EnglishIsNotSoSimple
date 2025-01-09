@@ -6,7 +6,17 @@ export default defineConfig({
     plugins: [react()],
     build: {
         rollupOptions: {
-            external: Object.keys(dependencies),
+            external: [
+                '@emotion/react',
+                '@emotion/styled',
+                'react-router-dom',
+                'react-toastify',
+                'react-toastify/dist/ReactToastify.css',
+                '@mui/material',
+                'axios',
+                'joi',
+                'prop-types',
+            ]
         },
     },
     server: {
