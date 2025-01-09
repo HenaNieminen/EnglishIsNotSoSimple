@@ -118,7 +118,7 @@ const Quiz = ({ language, length, active }) => {
                 <Button
                     variant="contained"
                     onClick={handleSubmit}
-                    disabled={quizOver}
+                    disabled={quizOver || !questions}
                     style={{ marginTop: '20px', justifyItems: "center" }}
                 >
                     Submit
@@ -133,7 +133,6 @@ const Quiz = ({ language, length, active }) => {
                             variant="contained"
                             onClick={() => active(false)}
                             style={{ marginTop: '10px' }}
-                            disabled={!questions}
                         >
                             Exit
                         </Button>
