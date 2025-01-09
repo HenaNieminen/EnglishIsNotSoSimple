@@ -118,7 +118,7 @@ const Quiz = ({ language, length, active }) => {
                 <Button
                     variant="contained"
                     onClick={handleSubmit}
-                    disabled={quizOver || !questions}
+                    disabled={quizOver || questions.length === 0}
                     style={{ marginTop: '20px', justifyItems: "center" }}
                 >
                     Submit
