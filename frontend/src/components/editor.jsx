@@ -14,7 +14,7 @@ const Editor = () => {
     const [ editedWord, setEditedWord ] = useState('');
 
     const adjustWord = async (id, lang_id, word) => {
-        const updatedWord = { id, lang_id, word };
+        const updatedWord = [ id, lang_id, word ];
         try {
             patchWords(updatedWord);
         } catch (error) {
@@ -24,18 +24,21 @@ const Editor = () => {
 
     return (
         <>
-            <Box style={{
+            <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 minWidth: 400,
-                maxWidth: 700,
+                maxWidth: 900,
+                maxHeight: 1000,
                 margin: 'auto',
-                backgroundColor: 'white'
+                backgroundColor: '#525252',
+                padding: 5,
+                overflowY: scroll
             }}>
                 {words.map((word, index) => {
                     return (
                         <Typography key={index}>
-                            {word}
+                            {word.word}
                         </Typography>
                     );
                 })}
