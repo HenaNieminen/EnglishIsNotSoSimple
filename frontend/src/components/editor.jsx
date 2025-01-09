@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
 import {
     deleteWords,
@@ -32,7 +32,13 @@ const Editor = () => {
                 margin: 'auto',
                 backgroundColor: 'white'
             }}>
-
+                {words.map((word, index) => {
+                    return (
+                        <Typography key={index}>
+                            {word}
+                        </Typography>
+                    );
+                })}
             </Box>
         </>
     );
