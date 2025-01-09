@@ -6,10 +6,6 @@
     "words": [
         {
             "lang_id": 2,
-            "word": "Hello"
-        },
-        {
-            "lang_id": 2,
             "word": "Hi"
         },
         {
@@ -19,6 +15,14 @@
         {
             "lang_id": 1,
             "word": "Terve"
+        },
+        {
+            "lang_id": 2,
+            "word": "Hello"
+        },
+        {
+            "lang_id": 2,
+            "word": "Healthy"
         },
         {
             "lang_id": 1,
@@ -66,42 +70,6 @@
         },
         {
             "lang_id": 1,
-            "word": "Hävittäjä"
-        },
-        {
-            "lang_id": 2,
-            "word": "Jet fighter"
-        },
-        {
-            "lang_id": 1,
-            "word": "Panssarivaunu"
-        },
-        {
-            "lang_id": 1,
-            "word": "Tankki"
-        },
-        {
-            "lang_id": 2,
-            "word": "Tank"
-        },
-        {
-            "lang_id": 1,
-            "word": "Ilmatorjunta"
-        },
-        {
-            "lang_id": 2,
-            "word": "Anti-air"
-        },
-        {
-            "lang_id": 1,
-            "word": "Panssarituhooja"
-        },
-        {
-            "lang_id": 2,
-            "word": "Tank destroyer"
-        },
-        {
-            "lang_id": 1,
             "word": "Kirja"
         },
         {
@@ -115,80 +83,152 @@
         {
             "lang_id": 2,
             "word": "Milk"
+        },
+        {
+            "lang_id": 2,
+            "word": "Cat"
+        },
+        {
+            "lang_id": 1,
+            "word": "Kissa"
+        },
+        {
+            "lang_id": 1,
+            "word": "Presidentti"
+        },
+        {
+            "lang_id": 2,
+            "word": "President"
+        },
+        {
+            "lang_id": 1,
+            "word": "Kansanedustaja"
+        },
+        {
+            "lang_id": 2,
+            "word": "Congressman"
+        },
+        {
+            "lang_id": 2,
+            "word": "Company"
+        },
+        {
+            "lang_id": 1,
+            "word": "Yritys"
+        },
+        {
+            "lang_id": 2,
+            "word": "Corporation"
+        },
+        {
+            "lang_id": 1,
+            "word": "Yhtiö"
+        },
+        {
+            "lang_id": 1,
+            "word": "Äänekäs"
+        },
+        {
+            "lang_id": 2,
+            "word": "Noisy"
+        },
+        {
+            "lang_id": 1,
+            "word": "Ärsyttävä"
+        },
+        {
+            "lang_id": 2,
+            "word": "Irritating"
+        },
+        {
+            "lang_id": 1,
+            "word": "Ärsyttävää"
+        },
+        {
+            "lang_id": 2,
+            "word": "Annoying"
         }
     ],
     "translations": [
         {
             "word_id": 1,
-            "trans_id": 3
+            "trans_id": 2
         },
         {
             "word_id": 2,
-            "trans_id": 3
+            "trans_id": 1
         },
         {
             "word_id": 3,
-            "trans_id": 1
+            "trans_id": 4
         },
         {
-            "word_id": 4,
-            "trans_id": 1
-        },
-        {
-            "word_id": 5,
-            "trans_id": 6
-        },
-        {
-            "word_id": 6,
+            "word_id": 3,
             "trans_id": 5
         },
         {
-            "word_id": 7,
-            "trans_id": 8
+            "word_id": 4,
+            "trans_id": 3
         },
         {
-            "word_id": 8,
+            "word_id": 5,
+            "trans_id": 3
+        },
+        {
+            "word_id": 6,
             "trans_id": 7
         },
         {
-            "word_id": 9,
-            "trans_id": 10
+            "word_id": 7,
+            "trans_id": 6
         },
         {
-            "word_id": 10,
+            "word_id": 8,
             "trans_id": 9
         },
         {
+            "word_id": 9,
+            "trans_id": 8
+        },
+        {
+            "word_id": 10,
+            "trans_id": 11
+        },
+        {
             "word_id": 11,
+            "trans_id": 10
+        },
+        {
+            "word_id": 12,
+            "trans_id": 13
+        },
+        {
+            "word_id": 13,
             "trans_id": 12
         },
         {
             "word_id": 12,
-            "trans_id": 11
-        },
-        {
-            "word_id": 13,
-            "trans_id": 11
-        },
-        {
-            "word_id": 14,
-            "trans_id": 15
-        },
-        {
-            "word_id": 15,
             "trans_id": 14
         },
         {
-            "word_id": 16,
-            "trans_id": 17
+            "word_id": 14,
+            "trans_id": 12
         },
         {
-            "word_id": 17,
+            "word_id": 15,
             "trans_id": 16
         },
         {
+            "word_id": 16,
+            "trans_id": 15
+        },
+        {
+            "word_id": 17,
+            "trans_id": 18
+        },
+        {
             "word_id": 18,
-            "trans_id": 20
+            "trans_id": 17
         },
         {
             "word_id": 19,
@@ -196,7 +236,7 @@
         },
         {
             "word_id": 20,
-            "trans_id": 18
+            "trans_id": 19
         },
         {
             "word_id": 21,
@@ -229,6 +269,38 @@
         {
             "word_id": 28,
             "trans_id": 27
+        },
+        {
+            "word_id": 29,
+            "trans_id": 30
+        },
+        {
+            "word_id": 30,
+            "trans_id": 29
+        },
+        {
+            "word_id": 31,
+            "trans_id": 32
+        },
+        {
+            "word_id": 32,
+            "trans_id": 31
+        },
+        {
+            "word_id": 33,
+            "trans_id": 34
+        },
+        {
+            "word_id": 34,
+            "trans_id": 33
+        },
+        {
+            "word_id": 35,
+            "trans_id": 36
+        },
+        {
+            "word_id": 36,
+            "trans_id": 35
         }
     ]
 }
