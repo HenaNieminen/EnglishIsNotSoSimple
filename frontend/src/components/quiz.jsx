@@ -87,7 +87,7 @@ const Quiz = ({ language, length, active }) => {
                 maxWidth: 500,
                 margin: 'auto',
                 padding: 5,
-                backgroundColor: 'lightgray'
+                backgroundColor: '#2f2f2f' // Darker gray
             }}>
                 {questions.map((q, index) => (
                     <div key={index}>
@@ -99,6 +99,9 @@ const Quiz = ({ language, length, active }) => {
                             onChange={(e) => handleInputChange(e, index)}
                             disabled={quizOver}
                             margin="normal"
+                            sx={{
+                                backgroundColor: "white",
+                            }}
                         />
                         {quizOver && (
                             <div>

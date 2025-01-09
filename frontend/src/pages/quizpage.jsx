@@ -39,7 +39,7 @@ const QuizPage = () => {
                         maxWidth: 500,
                         margin: 'auto',
                         padding: 5,
-                        backgroundColor: 'lightgray'
+                        backgroundColor: '#f5f5f5'
                     }}>
                         <FormControl fullWidth>
                             <InputLabel id="language-select-label" sx={{ marginBottom: 20 }}>Quiz language</InputLabel>
