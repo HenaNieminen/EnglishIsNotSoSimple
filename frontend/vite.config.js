@@ -4,6 +4,11 @@ import path from "path";
 
 export default defineConfig({
     plugins: [react()],
+    build: {
+        rollupOptions: {
+            external: [],
+        },
+    },
     server: {
         proxy: {
             "/api": "http://localhost:3000", // Adjust the port to your backend's port
