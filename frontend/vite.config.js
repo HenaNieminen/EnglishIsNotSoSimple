@@ -6,17 +6,7 @@ export default defineConfig({
     plugins: [react()],
     build: {
         rollupOptions: {
-            external: [
-                '@emotion/react',
-                '@emotion/styled',
-                'react-router-dom',
-                'react-toastify',
-                'react-toastify/dist/ReactToastify.css',
-                '@mui/material',
-                'axios',
-                'joi',
-                'prop-types',
-            ],
+            external: [],
             output: {
                 globals: {
                     "react-router-dom": "ReactRouterDOM",
