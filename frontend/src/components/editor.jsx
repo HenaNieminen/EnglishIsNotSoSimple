@@ -12,6 +12,7 @@ import { TextField, Typography, Button, Box } from '@mui/material/';
 const Editor = () => {
     const { langs, words, trans, syncData } = useContext(DataContext);
     const [ editedWord, setEditedWord ] = useState('');
+    const [ editMode, setEditMode ] = useState(null);
 
     const adjustWord = async (id, lang_id, word) => {
         const updatedWord = [ id, lang_id, word ];
@@ -33,18 +34,30 @@ const Editor = () => {
                 margin: 'auto',
                 backgroundColor: '#525252',
                 padding: 5,
-                overflowY: scroll
+                overflowY: 'scroll'
             }}>
-                {words.map((word, index) => {
-                    return (
+                {words.map((word, index) => (
+                    editMode === word.id ? (
+                        <>
                         <Typography key={index}>
                             {word.word}
                         </Typography>
-                    );
-                })}
+                        </>
+                    ) : (
+                        <>
+                            <Typography>
+                                {word.word}
+                            </Typography>
+                            <Button onClick={() => setEditMode(word.id)}>
+                                Edit
+                            </Button>
+                        </>
+                    )
+                ))}
             </Box>
         </>
     );
 };
 
 export default Editor;
+
