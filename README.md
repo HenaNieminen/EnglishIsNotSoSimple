@@ -9,10 +9,9 @@ Don't mind the first commits as they are only for testing purposes. This app wil
 English learning app with few basic functionalities at first, but then in the future, may have some extra features
 to show how ridiculous English can be at times. (If I can get that far)
 
-### Ignore the current render service
+### Render service
 
-I will probably make a new Render instance since it will now start screwing up all around once I started shuffling things
-around and will hit into build errors. Also the URL will definitely not match anymore (LocationsReact as opposed to EnglishIsNotThatSimple).
+https://englishisnotsosimple.onrender.com/
 
 ## What will be implemented for release 1?
 Basic backend and functionality will hopefully be implemented by release 1. It will start out very basic and will be expanded
