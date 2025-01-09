@@ -13,6 +13,16 @@ const Editor = () => {
     const { langs, words, trans, syncData } = useContext(DataContext);
     const [ editedWord, setEditedWord ] = useState('');
 
+    const adjustWord = async (id, lang_id, word) => {
+        const updatedWord = { id, lang_id, word };
+        try {
+            patchWords(updatedWord);
+        } catch (error) {
+            console.error("Updating word failed:", error);
+        }
+    }
+
+    // You can now use updatedWord as needed
     return (
         <>
 
