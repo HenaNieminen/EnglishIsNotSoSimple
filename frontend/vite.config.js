@@ -16,7 +16,12 @@ export default defineConfig({
                 'axios',
                 'joi',
                 'prop-types',
-            ]
+            ],
+            output: {
+                globals: {
+                    "react-router-dom": "ReactRouterDOM",
+                },
+            },
         },
     },
     server: {
