@@ -20,12 +20,20 @@ const Editor = () => {
         } catch (error) {
             console.error("Updating word failed:", error);
         }
-    }
+    };
 
-    // You can now use updatedWord as needed
     return (
         <>
+            <Box style={{
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 400,
+                maxWidth: 700,
+                margin: 'auto',
+                backgroundColor: 'white'
+            }}>
 
+            </Box>
         </>
     );
 };
