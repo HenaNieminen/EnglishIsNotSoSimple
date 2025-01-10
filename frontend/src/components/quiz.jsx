@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { DataContext } from '../context/datacontext';
 import { fetchTransForWordId } from '../context/backendfunc';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { TextField, Typography, Button, Box } from '@mui/material/';
 
 const Quiz = ({ language, length, active }) => {
@@ -11,8 +11,8 @@ const Quiz = ({ language, length, active }) => {
     const [quizOver, setQuizOver] = useState(false);
     const [userAnswers, setUserAnswers] = useState([]);
 
-
     useEffect(() => {
+        let quizLength = length;
         const generateQuestions = async () => {
             const langWords = words.filter(word => word.lang_id === language);
             const wordsWithTran = langWords.filter(word => trans.some(tran => tran.word_id === word.id));
@@ -20,16 +20,16 @@ const Quiz = ({ language, length, active }) => {
                 console.warn('No translations available for the selected words.');
                 active(false);
                 return;
-            }
+            };
 
             const tempArray = [];
             /*This new technique of using sets was suggested by co-pilot. Pretty good for
             weeding out anomalies and duplicates*/
             const usedWordIds = new Set();
             //Will set the length as long as possible if there are not enough words than user requested
-            if (wordsWithTran.length < length) {
-                length = wordsWithTran.length;
-            }
+            if (wordsWithTran.length < quizLength) {
+                quizLength = wordsWithTran.length;
+            };
 
             while (tempArray.length < length) {
                 const randomIndex = Math.floor(Math.random() * length);
@@ -49,13 +49,13 @@ const Quiz = ({ language, length, active }) => {
                     usedWordIds.add(randomWord.id);//Add used word to the Set
                 } catch (error) {
                     console.error(`Error fetching translations for word ID ${randomWord.id}:`, error);
-                }
-            }
+                };
+            };
             setQuestions(tempArray);
         };
         if (!quizOver) {
             generateQuestions();
-        }
+        };
     }, [language, length, words, trans, active, quizOver]);
 
     const handleSubmit = () => {
@@ -68,7 +68,7 @@ const Quiz = ({ language, length, active }) => {
             //Check if the user's answer matches any correct answer
             if (correctAnswers.includes(userAnswer)) {
                 tempScore += 1;
-            }
+            };
         });
         //Set the final score and end the quiz
         setScore(tempScore);
@@ -77,10 +77,10 @@ const Quiz = ({ language, length, active }) => {
 
     const handleInputChange = (e, index) => {
         //Handle user typing in their answer, taking the event target value
-        const { value } = e.target;
+        const answer = e.target.value;
         setUserAnswers({
             ...userAnswers,
-            [index]: value,
+            [index]: answer,
         });
     };
 
@@ -98,6 +98,7 @@ const Quiz = ({ language, length, active }) => {
                 {!questions.length && (
                     <Typography>Loading...</Typography>
                 )}
+                {/*Display this when questions haven't loaded in yet*/}
                 {questions.map((q, index) => (
                     <div key={index}>
                         <h3>Translate: {q.question}</h3>
@@ -156,6 +157,6 @@ Quiz.propTypes = {
     language: PropTypes.number.isRequired,
     length: PropTypes.number.isRequired,
     active: PropTypes.func.isRequired
-}
+};
 
 export default Quiz;
