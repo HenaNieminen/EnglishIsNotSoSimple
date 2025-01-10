@@ -20,6 +20,12 @@ const router = createBrowserRouter([
         element: <QuizPage />,
         errorElement: <NotFoundPage />,
     },
+    /*In case you went directly to the quiz page, this will
+    redirect you back to the main page*/
+    {
+        path: '*',
+        element: <NotFoundPage />,
+    },
 ]);
 
 export default router;

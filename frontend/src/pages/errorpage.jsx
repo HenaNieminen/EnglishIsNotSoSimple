@@ -4,10 +4,10 @@ import "../styles/main.css"
 export default function NotFoundPage() {
     //Returns an error element for the router
     return (
-        <div>
-            <h1>404: Not found</h1>
+        <div className='mainContainer'>
+            <h1>Something went wrong</h1>
             <div className='navBar'>
-                <Link className="navButton" to="/"> Go back to the main page</Link>
+                <Link className="navButton" to="/"> Return to main menu </Link>
             </div>
         </div>
     );
