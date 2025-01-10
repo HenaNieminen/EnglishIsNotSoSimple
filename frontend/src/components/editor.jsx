@@ -26,7 +26,10 @@ const Editor = () => {
 
     const seekTrans = async (id) => {
         try {
-            const trans = await fetchTransForWordId(id);
+            let trans = await fetchTransForWordId(id);
+            if (trans === null) {
+                return [];
+            };
             const transIds = trans.map(t => t.trans_id);
             //Map out all words it translates to
             const transWords = transIds
