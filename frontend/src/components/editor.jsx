@@ -36,24 +36,32 @@ const Editor = () => {
                 padding: 5,
                 overflowY: 'scroll'
             }}>
-                {words.map((word, index) => (
-                    editMode === word.id ? (
+                {words.map((word, index) => {
+                    return editMode === word.id ? (
                         <>
-                        <Typography key={index}>
-                            {word.word}
-                        </Typography>
+                            <Box>
+                                <Typography key={index}>
+                                    {word.word}
+                                </Typography>
+                            </Box>
                         </>
-                    ) : (
+                        ) : (
                         <>
-                            <Typography>
-                                {word.word}
-                            </Typography>
-                            <Button onClick={() => setEditMode(word.id)}>
-                                Edit
-                            </Button>
+                            <Box>
+                                <Typography key={index}>
+                                    {word.word}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setEditMode(word.id)}
+                                    sx={{}}
+                                >
+                                    Edit
+                                </Button>
+                            </Box>
                         </>
                     )
-                ))}
+                })}
             </Box>
         </>
     );
