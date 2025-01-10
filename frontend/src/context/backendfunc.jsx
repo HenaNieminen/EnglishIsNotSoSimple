@@ -6,6 +6,9 @@ const fetchLang = async () => {
         console.log(response);
         return response.data;
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error fetching languages:', error);
     }
 };
@@ -16,6 +19,9 @@ const fetchWords = async () => {
         console.log(response);
         return response.data;
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error fetching words:', error);
     }
 };
@@ -26,6 +32,9 @@ const fetchTrans = async () => {
         console.log(response);
         return response.data;
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error fetching translations:', error);
     }
 };
@@ -35,6 +44,9 @@ const fetchLangById = async (id) => {
         const response = await axios.get(`/api/languages/${id}`);
         return response.data;
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error fetching language', error);
     }
 };
@@ -44,6 +56,9 @@ const fetchWordsById = async (id) => {
         const response = await axios.get(`/api/words/${id}`);
         return response.data
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error fetching word', error);
     }
 };
@@ -53,7 +68,12 @@ const fetchTransForWordId = async (id) => {
         const response = await axios.get(`/api/translationsforword/${id}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching translations for word', error);
+        //If not found, just return nothing.
+        if (error.status === 404) {
+            return null;
+        } else {
+            console.error('Error fetching translations for word', error);
+        }
     }
 };
 
@@ -62,6 +82,9 @@ const postWords = async (word) => {
     try {
         await axios.post(`/api/words/`, word);
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error posting word', error);
     }
 };
@@ -71,6 +94,9 @@ const postTrans = async (trans) => {
     try {
         await axios.post(`/api/translations`, trans);
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error posting translation', error);
     }
 };
@@ -79,6 +105,9 @@ const deleteWords = async (id) => {
     try {
         await axios.delete(`/api/words/${id}`);
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error deleting word', error);
     }
 };
@@ -87,6 +116,9 @@ const deleteTrans = async (wordId, transId) => {
     try {
         await axios.delete(`/api/words/${wordId}&${transId}`);
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error deleting translation', error);
     }
 };
@@ -96,6 +128,9 @@ const patchWords = async (newWord) => {
     try {
         await axios.patch(`/api/words/`, newWord);
     } catch (error) {
+        if (error.status === 404) {
+            return null;
+        }
         console.error('Error editing word', error);
     }
 };
