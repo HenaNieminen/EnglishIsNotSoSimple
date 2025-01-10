@@ -13,6 +13,7 @@ const Editor = () => {
     const { langs, words, trans, syncData } = useContext(DataContext);
     const [ editedWord, setEditedWord ] = useState('');
     const [ editMode, setEditMode ] = useState(null);
+    const [tempTranslations, setTempTranslations] = useState([]);
 
     const adjustWord = async (id, lang_id, word) => {
         const updatedWord = [ id, lang_id, word ];
@@ -21,6 +22,27 @@ const Editor = () => {
         } catch (error) {
             console.error("Updating word failed:", error);
         }
+    };
+
+    const seekTrans = async (id) => {
+        try {
+            const trans = await fetchTransForWordId(id);
+            const transIds = trans.map(t => t.trans_id);
+            //Map out all words it translates to
+            const transWords = transIds
+                .map((transId) => words.find((word) => word.id === transId))
+                .map((word) => word.word);
+            return transWords;
+        } catch (error) {
+            console.error("Error fetching trans", error);
+            return [];
+        }
+    };
+
+    const handleEdit = async (word) => {
+        setEditMode(word.id);
+        const translations = await seekTrans(word.id); //Fetch translations for the word
+        setTempTranslations(translations);
     };
 
     return (
@@ -39,7 +61,7 @@ const Editor = () => {
                 {words.map((word, index) => {
                     return editMode === word.id ? (
                         <>
-                            <Box>
+                            <Box sx={{ display: 'flex', gap: 5, flexDirection: 'row', marginBottom: 5, justifyContent: 'space-between'}}>
                                 <Typography key={index}>
                                     {word.word}
                                 </Typography>
@@ -47,13 +69,13 @@ const Editor = () => {
                         </>
                         ) : (
                         <>
-                            <Box>
+                            <Box sx={{display: 'flex', gap: 5, flexDirection: 'row', marginBottom: 5, justifyContent: 'space-between'}}>
                                 <Typography key={index}>
                                     {word.word}
                                 </Typography>
                                 <Button
                                     variant="contained"
-                                    onClick={() => setEditMode(word.id)}
+                                    onClick={() => handleEdit(word)}
                                     sx={{}}
                                 >
                                     Edit
