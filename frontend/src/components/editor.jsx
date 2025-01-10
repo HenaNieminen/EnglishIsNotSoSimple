@@ -28,13 +28,13 @@ const Editor = () => {
         try {
             let trans = await fetchTransForWordId(id);
             if (trans === null) {
-                return [];
+            return [];
             };
             const transIds = trans.map(t => t.trans_id);
-            //Map out all words it translates to
+            // Map out all words it translates to along with their ids
             const transWords = transIds
                 .map((transId) => words.find((word) => word.id === transId))
-                .map((word) => word.word);
+                .map((word) => ({ id: word.id, word: word.word }));
             return transWords;
         } catch (error) {
             console.error("Error fetching trans", error);
@@ -67,6 +67,9 @@ const Editor = () => {
                             <Box sx={{ display: 'flex', gap: 5, flexDirection: 'row', marginBottom: 5, justifyContent: 'space-between'}}>
                                 <Typography key={index}>
                                     {word.word}
+                                </Typography>
+                                <Typography key={index}>
+                                    {tempTranslations}
                                 </Typography>
                             </Box>
                         </>
