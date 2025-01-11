@@ -81,7 +81,6 @@ const postWords = async (word) => {
     //Word object should contain the langId and the word as text
     try {
         await axios.patch(`/api/words`, {
-            id: word.id,
             langId: word.lang_id,
             word: word.word,
         });
