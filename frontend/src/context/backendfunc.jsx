@@ -124,11 +124,15 @@ const deleteTrans = async (wordId, transId) => {
 };
 
 const patchWords = async (newWord) => {
-    //newWord object assumes id, langId and word are all there
+    //Seems like I was passing it incorrectly hence edits did not work
     try {
-        await axios.patch(`/api/words/`, newWord);
+        await axios.patch(`/api/words`, {
+            id: newWord.id,
+            langId: newWord.lang_id,
+            word: newWord.word,
+        });
     } catch (error) {
-        if (error.status === 404) {
+        if (error.response?.status === 404) {
             return null;
         }
         console.error('Error editing word', error);
