@@ -23,7 +23,7 @@ const Editor = () => {
             await syncData();
         } catch (error) {
             console.error("Updating word failed:", error);
-        }
+        };
     };
 
     const seekTrans = async (id) => {
@@ -41,7 +41,7 @@ const Editor = () => {
         } catch (error) {
             console.error("Error fetching trans", error);
             return [];
-        }
+        };
     };
 
     const handleEdit = async (word) => {
@@ -49,6 +49,16 @@ const Editor = () => {
         const translations = await seekTrans(word.id); //Fetch translations for the word
         setTempTranslations(translations);
     };
+
+    const handleDelete = async (id) => {
+        try {
+            await deleteWords(id);
+            setEditMode(null);
+            await syncData();
+        } catch (error) {
+            console.error("Deleting word failed:", error);
+        };
+    }
 
     const handleAddTranslation = async (wordId, transId) => {
         try {
@@ -58,7 +68,7 @@ const Editor = () => {
             await syncData();
         } catch (error) {
             console.error("Adding translation failed:", error);
-        }
+        };
     };
 
     const handleDeleteTranslation = async (wordId, transId) => {
@@ -69,7 +79,7 @@ const Editor = () => {
             await syncData();
         } catch (error) {
             console.error("Deleting translation failed:", error);
-        }
+        };
     };
 
     return (
@@ -124,6 +134,14 @@ const Editor = () => {
                             marginBottom: 5,
                         }}
                     >
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => handleDelete(word.id)}
+                            sx={{ marginLeft: 2 }}
+                        >
+                            Delete
+                        </Button>
                         <Typography sx={{ color: "white" }}>{word.word}</Typography>
                         <Button
                             variant="contained"
