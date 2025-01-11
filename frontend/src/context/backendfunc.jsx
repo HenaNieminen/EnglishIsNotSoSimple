@@ -80,7 +80,11 @@ const fetchTransForWordId = async (id) => {
 const postWords = async (word) => {
     //Word object should contain the langId and the word as text
     try {
-        await axios.post(`/api/words/`, word);
+        await axios.patch(`/api/words`, {
+            id: word.id,
+            langId: word.lang_id,
+            word: word.word,
+        });
     } catch (error) {
         if (error.status === 404) {
             return null;
@@ -132,7 +136,7 @@ const patchWords = async (newWord) => {
             word: newWord.word,
         });
     } catch (error) {
-        if (error.response?.status === 404) {
+        if (error.status === 404) {
             return null;
         }
         console.error('Error editing word', error);
