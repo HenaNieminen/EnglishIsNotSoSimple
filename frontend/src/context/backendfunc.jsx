@@ -9,7 +9,7 @@ const fetchLang = async () => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error fetching languages:', error);
+        return error;
     }
 };
 
@@ -22,7 +22,7 @@ const fetchWords = async () => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error fetching words:', error);
+        return error;
     }
 };
 
@@ -35,7 +35,7 @@ const fetchTrans = async () => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error fetching translations:', error);
+        return error;
     }
 };
 
@@ -47,7 +47,7 @@ const fetchLangById = async (id) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error fetching language', error);
+        return error;
     }
 };
 
@@ -59,7 +59,7 @@ const fetchWordsById = async (id) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error fetching word', error);
+        return error;
     }
 };
 
@@ -71,9 +71,8 @@ const fetchTransForWordId = async (id) => {
         //If not found, just return nothing.
         if (error.status === 404) {
             return null;
-        } else {
-            console.error('Error fetching translations for word', error);
-        }
+        };
+        return error;
     }
 };
 
@@ -111,7 +110,7 @@ const deleteWords = async (id) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error deleting word', error);
+        return error;
     }
 };
 
@@ -122,7 +121,7 @@ const deleteTrans = async (wordId, transId) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error deleting translation', error);
+        return error;
     }
 };
 
@@ -138,7 +137,7 @@ const patchWords = async (newWord) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error editing word', error);
+        return error;
     }
 };
 
