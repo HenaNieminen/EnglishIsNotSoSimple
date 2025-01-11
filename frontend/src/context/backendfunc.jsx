@@ -88,7 +88,7 @@ const postWords = async (word) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error posting word', error);
+        return error;
     }
 };
 
@@ -100,7 +100,7 @@ const postTrans = async (trans) => {
         if (error.status === 404) {
             return null;
         }
-        console.error('Error posting translation', error);
+        return error;
     }
 };
 
