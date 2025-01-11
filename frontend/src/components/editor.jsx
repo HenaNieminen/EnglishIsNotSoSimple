@@ -3,6 +3,7 @@ import { DataContext } from '../context/datacontext';
 import {
     deleteWords,
     deleteTrans,
+    postTrans,
     patchWords,
     fetchTransForWordId,
 } from '../context/backendfunc';
@@ -46,6 +47,28 @@ const Editor = () => {
         setEditMode(word.id);
         const translations = await seekTrans(word.id); //Fetch translations for the word
         setTempTranslations(translations);
+    };
+
+    const handleAddTranslation = async (wordId, transId) => {
+        try {
+            await postTrans({ word_id: wordId, trans_id: transId });
+            const updatedTranslations = await seekTrans(wordId);
+            setTempTranslations(updatedTranslations);
+            syncData();
+        } catch (error) {
+            console.error("Adding translation failed:", error);
+        }
+    };
+
+    const handleDeleteTranslation = async (wordId, transId) => {
+        try {
+            await deleteTrans({ word_id: wordId, trans_id: transId });
+            const updatedTranslations = await seekTrans(wordId);
+            setTempTranslations(updatedTranslations);
+            syncData();
+        } catch (error) {
+            console.error("Deleting translation failed:", error);
+        }
     };
 
     return (
