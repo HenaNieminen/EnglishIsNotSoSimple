@@ -17,9 +17,10 @@ const Editor = () => {
     const [tempTranslations, setTempTranslations] = useState([]);
 
     const adjustWord = async (id, lang_id, word) => {
-        const updatedWord = [ id, lang_id, word ];
+        const updatedWord = { id, lang_id, word };
         try {
-            patchWords(updatedWord);
+            await patchWords(updatedWord);
+            await syncData();
         } catch (error) {
             console.error("Updating word failed:", error);
         }
@@ -54,7 +55,7 @@ const Editor = () => {
             await postTrans({ word_id: wordId, trans_id: transId });
             const updatedTranslations = await seekTrans(wordId);
             setTempTranslations(updatedTranslations);
-            syncData();
+            await syncData();
         } catch (error) {
             console.error("Adding translation failed:", error);
         }
@@ -65,56 +66,78 @@ const Editor = () => {
             await deleteTrans({ word_id: wordId, trans_id: transId });
             const updatedTranslations = await seekTrans(wordId);
             setTempTranslations(updatedTranslations);
-            syncData();
+            await syncData();
         } catch (error) {
             console.error("Deleting translation failed:", error);
         }
     };
 
     return (
-        <>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                minWidth: 400,
-                maxWidth: 900,
-                maxHeight: 1000,
-                margin: 'auto',
-                backgroundColor: '#525252',
-                padding: 5,
-                overflowY: 'scroll'
-            }}>
-                {words.map((word, index) => {
-                    return editMode === word.id ? (
-                        <>
-                            <Box sx={{ display: 'flex', gap: 5, flexDirection: 'row', marginBottom: 5, justifyContent: 'space-between'}}>
-                                <Typography key={index}>
-                                    {word.word}
-                                </Typography>
-                                <Typography key={index}>
-                                    {tempTranslations}
-                                </Typography>
-                            </Box>
-                        </>
-                        ) : (
-                        <>
-                            <Box sx={{display: 'flex', gap: 5, flexDirection: 'row', marginBottom: 5, justifyContent: 'space-between'}}>
-                                <Typography key={index}>
-                                    {word.word}
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    onClick={() => handleEdit(word)}
-                                    sx={{}}
-                                >
-                                    Edit
-                                </Button>
-                            </Box>
-                        </>
-                    )
-                })}
-            </Box>
-        </>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 400,
+            maxWidth: 900,
+            maxHeight: 1000,
+            margin: 'auto',
+            backgroundColor: '#525252',
+            padding: 5,
+            overflowY: 'scroll'
+        }}>
+            {words.map((word) => {
+                return editMode === word.id ? (
+                    <Box key={word.id} sx={{ marginBottom: 5 }}>
+                        <TextField
+                            variant="outlined"
+                            value={editedWord}
+                            onChange={(e) => setEditedWord(e.target.value)}
+                            sx={{ backgroundColor: "white", marginBottom: 2 }}
+                        />
+                        <Typography>
+                            Translations: {tempTranslations.map((tran) => tran.word).join(', ')}
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            onClick={async () => {
+                                adjustWord(word.id, word.lang_id, editedWord);
+                                setEditMode(null);
+                            }}
+                            sx={{ marginTop: 3 }}
+                        >
+                            Save
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={() => setEditMode(null)}
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
+                ) : (
+                    <Box
+                        key={word.id}
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginBottom: 5,
+                        }}
+                    >
+                        <Typography sx={{ color: "white" }}>{word.word}</Typography>
+                        <Button
+                            variant="contained"
+                            onClick={() => {
+                                setEditedWord(word.word);
+                                handleEdit(word);
+                            }}
+                        >
+                            Edit
+                        </Button>
+                    </Box>
+                );
+            })}
+        </Box>
     );
 };
 
