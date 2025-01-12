@@ -9,7 +9,7 @@ const fetchLang = async () => {
         if (error.status === 404) {
             return [];
         }
-        return [];
+        throw error;
     }
 };
 
@@ -22,7 +22,7 @@ const fetchWords = async () => {
         if (error.status === 404) {
             return [];
         }
-        return [];
+        throw error;
     }
 };
 
@@ -35,7 +35,7 @@ const fetchTrans = async () => {
         if (error.status === 404) {
             return [];
         }
-        return [];
+        throw error;
     }
 };
 
@@ -47,7 +47,7 @@ const fetchLangById = async (id) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
@@ -59,7 +59,7 @@ const fetchWordsById = async (id) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
@@ -72,7 +72,7 @@ const fetchTransForWordId = async (id) => {
         if (error.status === 404) {
             return null;
         };
-        return error;
+        throw error;
     }
 };
 
@@ -87,7 +87,7 @@ const postWords = async (word) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
@@ -99,7 +99,7 @@ const postTrans = async (trans) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
@@ -110,7 +110,7 @@ const deleteWords = async (id) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
@@ -121,7 +121,7 @@ const deleteTrans = async (wordId, transId) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
@@ -137,7 +137,7 @@ const patchWords = async (newWord) => {
         if (error.status === 404) {
             return null;
         }
-        return error;
+        throw error;
     }
 };
 
