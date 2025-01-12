@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
 import { postWords } from '../context/backendfunc'
 import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
+//Did I ever tell you the definition, of insanity?
 
 const Adder = () => {
     const { langs, syncData } = useContext(DataContext);
@@ -29,6 +30,7 @@ const Adder = () => {
             backgroundColor: '#525252',
             padding: 5
         }}>
+            <Typography variant="h5" sx={{color: 'white'}}>Add a new word</Typography>
             <FormControl sx={{ marginBottom: 2 }}>
                 <InputLabel id="language-select-label">Language</InputLabel>
                 <Select
