@@ -6,7 +6,7 @@ import { FormControl, InputLabel, Select, MenuItem, TextField, Box, Button } fro
 
 const QuizPage = () => {
     //Take language context from Datacontext
-    const { langs } = useContext(DataContext);
+    const { langs, trans } = useContext(DataContext);
     //User selectable values
     const [selectedLang, setSelectedLang] = useState('');
     const [quizLength, setQuizLength] = useState('');
@@ -69,7 +69,7 @@ const QuizPage = () => {
                             variant="contained"
                             color="primary"
                             onClick={() => setStartQuiz(true)}
-                            disabled={!quizLength ||!selectedLang}
+                            disabled={!quizLength ||!selectedLang || trans.length === 0}
                         >
                         {/*Stops the user from moving on if both values are missing */}
                             Start Quiz
@@ -77,6 +77,7 @@ const QuizPage = () => {
                     </Box>
                 </>
             }
+            {trans.length === 0 && <p>Quiz cannot be started as no words have been translated.</p>}
             {/*When user starts the quiz, pass all the props and the active status */}
             {startQuiz && <Quiz language={selectedLang} length={quizLength} active={setStartQuiz} />}
         </div>
