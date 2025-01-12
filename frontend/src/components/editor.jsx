@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
+import { toast } from 'react-toastify';
 import {
     deleteWords,
     deleteTrans,
@@ -25,6 +26,11 @@ const Editor = () => {
             await syncData();
         } catch (error) {
             console.error("Updating word failed:", error);
+            if (error.response.status === 409) {
+                toast.error("Updating word failed: word already exists.");
+            } else {
+                toast.error("Updating word failed:", error);
+            }
         };
     };
 
