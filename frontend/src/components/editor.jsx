@@ -30,7 +30,7 @@ const Editor = () => {
         try {
             let trans = await fetchTransForWordId(id);
             if (trans === null) {
-            return [];
+                return [];
             };
             const transIds = trans.map(t => t.trans_id);
             // Map out all words it translates to along with their ids
@@ -94,70 +94,73 @@ const Editor = () => {
             padding: 5,
             overflowY: 'scroll'
         }}>
-            {words.map((word) => {
-                return editMode === word.id ? (
-                    <Box key={word.id} sx={{ marginBottom: 5 }}>
-                        <TextField
-                            variant="outlined"
-                            value={editedWord}
-                            onChange={(e) => setEditedWord(e.target.value)}
-                            sx={{ backgroundColor: "white", marginBottom: 2 }}
-                        />
-                        <Typography>
-                            Translations: {tempTranslations.map((tran) => tran.word).join(', ')}
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            onClick={async () => {
-                                adjustWord(word.id, word.lang_id, editedWord);
-                                setEditMode(null);
-                            }}
-                            sx={{ marginTop: 3 }}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={() => setEditMode(null)}
-                            sx={{ marginTop: 3, marginLeft: 2 }}
-                        >
-                            Cancel
-                        </Button>
-                    </Box>
-                ) : (
-                    <Box
-                        key={word.id}
-                        sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            marginBottom: 5,
-                        }}
-                    >
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() => handleDelete(word.id)}
-                            sx={{ marginLeft: 2 }}
-                        >
-                            Delete
-                        </Button>
-                        <Typography sx={{ color: "white" }}>{word.word}</Typography>
-                        <Button
-                            variant="contained"
-                            onClick={() => {
-                                setEditedWord(word.word);
-                                handleEdit(word);
+            {words.length === 0 ? (
+                <Typography variant="h4" sx={{ color: "white", textAlign: "center" }}>Database is empty</Typography>
+            ) : (
+                words.map((word) => {
+                    return editMode === word.id ? (
+                        <Box key={word.id} sx={{ marginBottom: 5 }}>
+                            <TextField
+                                variant="outlined"
+                                value={editedWord}
+                                onChange={(e) => setEditedWord(e.target.value)}
+                                sx={{ backgroundColor: "white", marginBottom: 2 }}
+                            />
+                            <Typography>
+                                Translations: {tempTranslations.map((tran) => tran.word).join(', ')}
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                onClick={async () => {
+                                    adjustWord(word.id, word.lang_id, editedWord);
+                                    setEditMode(null);
+                                }}
+                                sx={{ marginTop: 3 }}
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                variant="contained"
+                                onClick={() => setEditMode(null)}
+                                sx={{ marginTop: 3, marginLeft: 2 }}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
+                    ) : (
+                        <Box
+                            key={word.id}
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: 5,
                             }}
                         >
-                            Edit
-                        </Button>
-                    </Box>
-                );
-            })}
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => handleDelete(word.id)}
+                                sx={{ marginLeft: 2 }}
+                            >
+                                Delete
+                            </Button>
+                            <Typography sx={{ color: "white" }}>{word.word}</Typography>
+                            <Button
+                                variant="contained"
+                                onClick={() => {
+                                    setEditedWord(word.word);
+                                    handleEdit(word);
+                                }}
+                            >
+                                Edit
+                            </Button>
+                        </Box>
+                    );
+                })
+            )}
         </Box>
     );
 };
 
 export default Editor;
-
