@@ -1,17 +1,18 @@
 import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
 import { postWords } from '../context/backendfunc'
-import { TextField, Typography, Button, Box } from '@mui/material/';
+import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
 
 const Adder = () => {
-    const { langs, words, syncData } = useContext(DataContext);
+    const { langs, syncData } = useContext(DataContext);
     const [ postedWord, setPostedWord ] = useState('');
-    const [ postedLang, setPostedLang ] = useState(0);
+    const [ postedLang, setPostedLang ] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
             const postedWord = { lang_id, word };
-            postWords(postedWord);
+            await postWords(postedWord);
+            await syncData();
         } catch (error) {
             console.error('Error posting word', error);
         };
@@ -28,8 +29,27 @@ const Adder = () => {
             backgroundColor: '#525252',
             padding: 5
         }}>
+            <FormControl sx={{ marginBottom: 2 }}>
+                <InputLabel id="language-select-label">Language</InputLabel>
+                <Select
+                    labelId="language-select-label"
+                    value={postedLang}
+                    size="small"
+                    onChange={(e) => setPostedLang(e.target.value)}
+                    label="Language"
+                    sx={{ backgroundColor: "white" }}
+                >
+                    {langs.map((lang) => (
+                        <MenuItem key={lang.id} value={lang.id}>
+                            {lang.language}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
             <TextField
                 variant="outlined"
+                size="small"
+                label="New word"
                 value={postedWord}
                 onChange={(e) => setPostedWord(e.target.value)}
                 sx={{ backgroundColor: "white", marginBottom: 2 }}
@@ -37,7 +57,7 @@ const Adder = () => {
             <Button
                 variant="contained"
                 onClick={async () => {
-                    sendWord(postedLang, postedWord);
+                    await sendWord(postedLang, postedWord);
                 }}
                 sx={{ marginTop: 3 }}
             >
