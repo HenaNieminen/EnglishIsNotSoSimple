@@ -116,7 +116,7 @@ const deleteWords = async (id) => {
 
 const deleteTrans = async (wordId, transId) => {
     try {
-        await axios.delete(`/api/words/${wordId}&${transId}`);
+        await axios.delete(`/api/translations/${wordId}&${transId}`);
     } catch (error) {
         if (error.status === 404) {
             return null;
