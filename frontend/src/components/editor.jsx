@@ -17,8 +17,10 @@ const Editor = () => {
     const [tempTranslations, setTempTranslations] = useState([]);
 
     const adjustWord = async (id, lang_id, word) => {
+        //Structure the updated word into an object
         const updatedWord = { id, lang_id, word };
         try {
+            //Send it over and sync the data again
             await patchWords(updatedWord);
             await syncData();
         } catch (error) {
@@ -28,15 +30,18 @@ const Editor = () => {
 
     const seekTrans = async (id) => {
         try {
+            //Fetch the translations for the word
             let trans = await fetchTransForWordId(id);
             if (trans === null) {
                 return [];
             };
+            //Map the transIDs for the word
             const transIds = trans.map(t => t.trans_id);
-            // Map out all words it translates to along with their ids
+            //Find all the words from the words datacontext and then map them
             const transWords = transIds
                 .map((transId) => words.find((word) => word.id === transId))
                 .map((word) => ({ id: word.id, word: word.word }));
+            //Return the transwords as an array clump
             return transWords;
         } catch (error) {
             console.error("Error fetching trans", error);
@@ -52,8 +57,11 @@ const Editor = () => {
 
     const handleDelete = async (id) => {
         try {
+            //Delete the word
             await deleteWords(id);
+            //Exit the edit mode
             setEditMode(null);
+            //Sync the data from context
             await syncData();
         } catch (error) {
             console.error("Deleting word failed:", error);
@@ -62,9 +70,13 @@ const Editor = () => {
 
     const handleAddTranslation = async (wordId, transId) => {
         try {
+            //Post the translation
             await postTrans({ word_id: wordId, trans_id: transId });
+            //Seek the translations again for that word
             const updatedTranslations = await seekTrans(wordId);
+            //Set the new translations
             setTempTranslations(updatedTranslations);
+            //Sync data overall again
             await syncData();
         } catch (error) {
             console.error("Adding translation failed:", error);
@@ -73,9 +85,13 @@ const Editor = () => {
 
     const handleDeleteTranslation = async (wordId, transId) => {
         try {
+            //Delete the trans
             await deleteTrans({ word_id: wordId, trans_id: transId });
+            //Seek trans for that word
             const updatedTranslations = await seekTrans(wordId);
+            //Set it
             setTempTranslations(updatedTranslations);
+            //Sync
             await syncData();
         } catch (error) {
             console.error("Deleting translation failed:", error);
@@ -94,10 +110,12 @@ const Editor = () => {
             padding: 5,
             overflowY: 'scroll'
         }}>
+            {/*If empty*/}
             {words.length === 0 ? (
                 <Typography variant="h4" sx={{ color: "white", textAlign: "center" }}>Database is empty</Typography>
             ) : (
                 words.map((word) => {
+                    {/*Edit mode view*/ }
                     return editMode === word.id ? (
                         <Box key={word.id} sx={{ marginBottom: 5 }}>
                             <TextField
@@ -137,6 +155,7 @@ const Editor = () => {
                                 marginBottom: 5,
                             }}
                         >
+                        {/*Normal view*/}
                             <Button
                                 variant="contained"
                                 color="error"
