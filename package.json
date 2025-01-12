@@ -21,6 +21,7 @@
         "axios": "^1.7.9",
         "joi": "^17.13.3",
         "prop-types": "^15.8.1",
+        "react-hot-toast": "^2.5.1",
         "react-router-dom": "^7.1.1",
         "react-toastify": "^11.0.2"
     },
