@@ -141,9 +141,6 @@ const patchWords = async (newWord) => {
     }
 };
 
-/*Consistency may become a problem. I need to make sure that the variable names align
-with the database at some point if problems arise*/
-
 export {
     fetchLang,
     fetchWords,
