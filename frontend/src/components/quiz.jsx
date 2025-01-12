@@ -78,10 +78,10 @@ const Quiz = ({ language, length, active }) => {
     const handleInputChange = (e, index) => {
         //Handle user typing in their answer, taking the event target value
         const answer = e.target.value;
-        setUserAnswers({
-            ...userAnswers,
+        setUserAnswers((prevAnswers) => ({
+            ...prevAnswers,
             [index]: answer,
-        });
+        }));
     };
 
     return (
@@ -106,7 +106,7 @@ const Quiz = ({ language, length, active }) => {
                             variant="outlined"
                             fullWidth
                             size="small"
-                            value={userAnswers[index]}
+                            value={userAnswers[index] || ""}
                             onChange={(e) => handleInputChange(e, index)}
                             disabled={quizOver}
                             margin="normal"
