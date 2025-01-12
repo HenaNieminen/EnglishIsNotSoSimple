@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 import { fetchLang, fetchWords, fetchTrans } from './backendfunc.jsx';
 import { toast } from 'react-toastify';
 
+
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
@@ -23,10 +24,9 @@ export const DataProvider = ({ children }) => {
             console.log('Fetched translations:', fetchedTrans);
         } catch (error) {
             console.error('Error syncing data:', error);
-            toast.error('Error syncing data');
+            toast.error(`Error syncing data: ${error.message}`);
         }
     };
-
     useEffect(() => {
         console.log("Syncing data");
         syncData();
