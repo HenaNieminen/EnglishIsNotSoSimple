@@ -77,7 +77,7 @@ const Editor = () => {
     const handleAddTranslation = async (wordId, transId) => {
         try {
             //Post the translation
-            await postTrans({ word_id: wordId, trans_id: transId });
+            await postTrans(wordId, transId);
             //Seek the translations again for that word
             const updatedTranslations = await seekTrans(wordId);
             //Set the new translations
@@ -91,8 +91,10 @@ const Editor = () => {
 
     const handleDeleteTranslation = async (wordId, transId) => {
         try {
+            console.log(wordId);
+            console.log(transId);
             //Delete the trans
-            await deleteTrans({ word_id: wordId, trans_id: transId });
+            await deleteTrans(wordId, transId);
             //Seek trans for that word
             const updatedTranslations = await seekTrans(wordId);
             //Set it
@@ -130,9 +132,17 @@ const Editor = () => {
                                 onChange={(e) => setEditedWord(e.target.value)}
                                 sx={{ backgroundColor: "white", marginBottom: 2 }}
                             />
-                            <Typography>
-                                Translations: {tempTranslations.map((tran) => tran.word).join(', ')}
-                            </Typography>
+                            {tempTranslations.map((tran) => (
+                                <Button
+                                    key={tran.id}
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => handleDeleteTranslation(word.id, tran.id)}
+                                    sx={{ marginBottom: 1 }}
+                                >
+                                    {tran.word}
+                                </Button>
+                            ))}
                             <Button
                                 variant="contained"
                                 onClick={async () => {
