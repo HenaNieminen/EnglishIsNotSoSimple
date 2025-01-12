@@ -7,9 +7,9 @@ const fetchLang = async () => {
         return response.data;
     } catch (error) {
         if (error.status === 404) {
-            return null;
+            return [];
         }
-        return error;
+        return [];
     }
 };
 
@@ -20,9 +20,9 @@ const fetchWords = async () => {
         return response.data;
     } catch (error) {
         if (error.status === 404) {
-            return null;
+            return [];
         }
-        return error;
+        return [];
     }
 };
 
@@ -33,9 +33,9 @@ const fetchTrans = async () => {
         return response.data;
     } catch (error) {
         if (error.status === 404) {
-            return null;
+            return [];
         }
-        return error;
+        return [];
     }
 };
 
@@ -79,7 +79,7 @@ const fetchTransForWordId = async (id) => {
 const postWords = async (word) => {
     //Word object should contain the langId and the word as text
     try {
-        await axios.patch(`/api/words`, {
+        await axios.post(`/api/words`, {
             langId: word.lang_id,
             word: word.word,
         });
