@@ -25,7 +25,7 @@ const Editor = () => {
     const [ editedWord, setEditedWord ] = useState('');
     const [ editLang, setEditLang ] = useState('');
     const [ editMode, setEditMode ] = useState(null);
-    const [tempTranslations, setTempTranslations] = useState([]);
+    const [ tempTranslations, setTempTranslations ] = useState([]);
 
     const adjustWord = async (id, lang_id, word) => {
         //Structure the updated word into an object
@@ -40,7 +40,7 @@ const Editor = () => {
                 toast.error("Updating word failed: word already exists.");
             } else {
                 toast.error("Updating word failed:", error);
-            }
+            };
         };
     };
 
@@ -211,18 +211,20 @@ const Editor = () => {
                                 variant="contained"
                                 onClick={async () => {
                                     adjustWord(word.id, editLang, editedWord);
-                                    setEditMode(null);
                                 }}
                                 sx={{ marginTop: 3 }}
                             >
-                                Save
+                                Save word edit
                             </Button>
+                            {/*Due to how the functions are set up, editing the word has to be saved manually and trans edits
+                            will automatically execte themselves. Edited the wordings to match how they worked. Don't have time
+                            or patience to shift things around now*/}
                             <Button
                                 variant="contained"
                                 onClick={() => setEditMode(null)}
                                 sx={{ marginTop: 3, marginLeft: 2 }}
                             >
-                                Cancel
+                                Exit
                             </Button>
                         </Box>
                     ) : (
@@ -257,7 +259,7 @@ const Editor = () => {
                         </Box>
                     );
                 })
-            )}
+            )};
         </Box>
     );
 };
