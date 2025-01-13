@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
-import { postWords } from '../context/backendfunc'
+import { postWords, postTrans } from '../context/backendfunc'
 import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
 //Did I ever tell you the definition, of insanity?
 
@@ -8,6 +8,7 @@ const Adder = () => {
     const { langs, syncData } = useContext(DataContext);
     const [ postedWord, setPostedWord ] = useState('');
     const [ postedLang, setPostedLang ] = useState('');
+    const [ postedTrans, setPostedTrans ] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
