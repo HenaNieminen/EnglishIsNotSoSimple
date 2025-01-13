@@ -125,24 +125,35 @@ const Editor = () => {
                 words.map((word) => {
                     {/*Edit mode view*/ }
                     return editMode === word.id ? (
-                        <Box key={word.id} sx={{ marginBottom: 5 }}>
+                        <Box key={word.id}
+                            sx={{
+                                marginBottom: 5,
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}>
                             <TextField
                                 variant="outlined"
                                 value={editedWord}
                                 onChange={(e) => setEditedWord(e.target.value)}
                                 sx={{ backgroundColor: "white", marginBottom: 2 }}
                             />
-                            {tempTranslations.map((tran) => (
-                                <Button
-                                    key={tran.id}
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick={() => handleDeleteTranslation(word.id, tran.id)}
-                                    sx={{ marginBottom: 1 }}
-                                >
-                                    {tran.word}
-                                </Button>
-                            ))}
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: "row"
+                            }}>
+                                {tempTranslations.map((tran) => (
+                                    <Button
+                                        key={tran.id}
+                                        variant="contained"
+                                        size="small"
+                                        color="error"
+                                        onClick={() => handleDeleteTranslation(word.id, tran.id)}
+                                        sx={{ marginBottom: 1 }}
+                                    >
+                                        {tran.word}  X
+                                    </Button>
+                                ))}
+                            </Box>
                             <Button
                                 variant="contained"
                                 onClick={async () => {
@@ -176,7 +187,7 @@ const Editor = () => {
                                 variant="contained"
                                 color="error"
                                 onClick={() => handleDelete(word.id)}
-                                sx={{ marginLeft: 2 }}
+                                sx={{ marginLeft: 2, backgroundColor: 'red' }}
                             >
                                 Delete
                             </Button>
