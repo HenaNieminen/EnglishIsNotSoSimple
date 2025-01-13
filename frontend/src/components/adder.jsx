@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
 import { postWords, postTrans } from '../context/backendfunc'
 import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
-//Did I ever tell you the definition, of insanity?
+import { toast } from 'react-toastify';
 
 const Adder = () => {
     const { langs, syncData } = useContext(DataContext);
@@ -15,8 +15,13 @@ const Adder = () => {
             const postedWord = { lang_id, word };
             await postWords(postedWord);
             await syncData();
+            toast.success("Word added succesfully!");
         } catch (error) {
+            if (error.status === 409) {
+                toast.error("Word already exists!");
+            };
             console.error('Error posting word', error);
+            toast.error(`Something went wrong. Error code: ${error.status}`);
         };
     };
 
@@ -59,6 +64,7 @@ const Adder = () => {
             />
             <Button
                 variant="contained"
+                disabled={!postedLang || !postedWord}
                 onClick={async () => {
                     await sendWord(postedLang, postedWord);
                 }}
