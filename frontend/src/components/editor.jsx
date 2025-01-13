@@ -8,12 +8,22 @@ import {
     patchWords,
     fetchTransForWordId,
 } from '../context/backendfunc';
-import { TextField, Typography, Button, Box } from '@mui/material/';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+    Typography,
+    Button,
+    Box
+} from '@mui/material/';
 //I am become import, the destroyer of coherency
 
 const Editor = () => {
     const { langs, words, trans, syncData } = useContext(DataContext);
     const [ editedWord, setEditedWord ] = useState('');
+    const [ editLang, setEditLang ] = useState('');
     const [ editMode, setEditMode ] = useState(null);
     const [tempTranslations, setTempTranslations] = useState([]);
 
@@ -91,8 +101,6 @@ const Editor = () => {
 
     const handleDeleteTranslation = async (wordId, transId) => {
         try {
-            console.log(wordId);
-            console.log(transId);
             //Delete the trans
             await deleteTrans(wordId, transId);
             //Seek trans for that word
@@ -131,6 +139,23 @@ const Editor = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                             }}>
+                            <FormControl sx={{ marginBottom: 2 }}>
+                                <InputLabel id="language-select-label">Language</InputLabel>
+                                <Select
+                                    labelId="language-select-label"
+                                    value={editLang || word.lang_id}
+                                    size="small"
+                                    onChange={(e) => setEditLang(e.target.value)}
+                                    label="Language"
+                                    sx={{ backgroundColor: "white" }}
+                                >
+                                    {langs.map((lang) => (
+                                        <MenuItem key={lang.id} value={lang.id}>
+                                            {lang.language}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                             <TextField
                                 variant="outlined"
                                 value={editedWord}
@@ -139,7 +164,8 @@ const Editor = () => {
                             />
                             <Box sx={{
                                 display: 'flex',
-                                flexDirection: "row"
+                                flexDirection: "row",
+                                marginBottom: 2,
                             }}>
                                 {tempTranslations.map((tran) => (
                                     <Button
@@ -150,14 +176,41 @@ const Editor = () => {
                                         onClick={() => handleDeleteTranslation(word.id, tran.id)}
                                         sx={{ marginBottom: 1 }}
                                     >
-                                        {tran.word}  X
+                                        {tran.word}  X {/*To signify this deletes */}
                                     </Button>
                                 ))}
+                            </Box>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                marginBottom: 5
+                            }}>
+                                <Box key={word.id}
+                                    sx={{
+                                        marginBottom: 2,
+                                        maxWidth: 400,
+                                        maxHeight: 200,
+                                        overflowY: 'scroll'
+                                    }}>
+                                    {/*Make easy buttons out of all words from the opposing language */}
+                                    {words
+                                        .filter((w) => w.lang_id !== word.lang_id)
+                                        .map((w) => (
+                                                <Button
+                                                    key={w.id}
+                                                    variant="outlined"
+                                                    onClick={() => handleAddTranslation(word.id, w.id)}
+                                                    sx={{ margin: 1, color: "white", borderColor: "white" }}
+                                                >
+                                                    {w.word}
+                                                </Button>
+                                            ))}
+                                    </Box>
                             </Box>
                             <Button
                                 variant="contained"
                                 onClick={async () => {
-                                    adjustWord(word.id, word.lang_id, editedWord);
+                                    adjustWord(word.id, editLang, editedWord);
                                     setEditMode(null);
                                 }}
                                 sx={{ marginTop: 3 }}
