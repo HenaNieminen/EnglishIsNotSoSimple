@@ -91,10 +91,14 @@ const postWords = async (word) => {
     }
 };
 
-const postTrans = async (trans) => {
+const postTrans = async (wordId, transId) => {
     //Trans should contain id and trans_id
     try {
-        await axios.post(`/api/translations`, trans);
+        //Scratch that. Its id and transId
+        await axios.post(`/api/translations`, {
+            id: wordId,
+            transId: transId
+        });
     } catch (error) {
         if (error.status === 404) {
             return null;
