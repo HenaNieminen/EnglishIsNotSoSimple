@@ -20,6 +20,7 @@ const Adder = () => {
         } catch (error) {
             if (error.status === 409) {
                 toast.error("Word already exists!");
+                return;
             };
             console.error('Error posting word', error);
             toast.error(`Something went wrong. Error code: ${error.status}`);
@@ -42,7 +43,7 @@ const Adder = () => {
                 onClick={() => setAddMode(true)}
                 sx={{ marginBottom: 3 }}
             >
-                Add new word
+                Add a new word
             </Button>
             )}
         {addMode && (
