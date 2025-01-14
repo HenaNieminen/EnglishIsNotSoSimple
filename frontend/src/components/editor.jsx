@@ -120,7 +120,7 @@ const Editor = () => {
             flexDirection: 'column',
             minWidth: 400,
             maxWidth: 900,
-            maxHeight: 1000,
+            maxHeight: 700,
             margin: 'auto',
             backgroundColor: '#525252',
             padding: 5,
@@ -159,6 +159,7 @@ const Editor = () => {
                             <TextField
                                 variant="outlined"
                                 value={editedWord}
+                                size="small"
                                 onChange={(e) => setEditedWord(e.target.value)}
                                 sx={{ backgroundColor: "white", marginBottom: 2 }}
                             />
@@ -183,7 +184,6 @@ const Editor = () => {
                             <Box sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                marginBottom: 5
                             }}>
                                 <Box key={word.id}
                                     sx={{
@@ -214,7 +214,7 @@ const Editor = () => {
                                 }}
                                 sx={{ marginTop: 3 }}
                             >
-                                Save word edit
+                                Save word and language edit
                             </Button>
                             {/*Due to how the functions are set up, editing the word has to be saved manually and trans edits
                             will automatically execte themselves. Edited the wordings to match how they worked. Don't have time
