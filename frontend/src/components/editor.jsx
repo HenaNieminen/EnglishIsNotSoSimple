@@ -18,7 +18,6 @@ import {
     Button,
     Box
 } from '@mui/material/';
-//I am become import, the destroyer of coherency
 
 const Editor = () => {
     const { langs, words, syncData } = useContext(DataContext);
@@ -35,12 +34,13 @@ const Editor = () => {
             await patchWords(updatedWord);
             await syncData();
         } catch (error) {
-            console.error("Updating word failed:", error);
-            if (error.response.status === 409) {
+            //Error handling. Conflicts will have their unique toast notification
+            if (error.status === 409) {
                 toast.error("Updating word failed: word already exists.");
-            } else {
-                toast.error("Updating word failed:", error);
+                return
             };
+            toast.error("Updating word failed:", error);
+            console.error("Updating word failed:", error);
         };
     };
 
@@ -60,12 +60,14 @@ const Editor = () => {
             //Return the transwords as an array clump
             return transWords;
         } catch (error) {
+            //Handle errors and return an empty array
             console.error("Error fetching trans", error);
             return [];
         };
     };
 
     const handleEdit = async (word) => {
+        //Handle edits. Set the edit mode to the particular word and seek all translations for it
         setEditMode(word.id);
         const translations = await seekTrans(word.id); //Fetch translations for the word
         setTempTranslations(translations);
@@ -80,6 +82,7 @@ const Editor = () => {
             //Sync the data from context
             await syncData();
         } catch (error) {
+            //Error handling
             console.error("Deleting word failed:", error);
         };
     }
@@ -231,7 +234,7 @@ const Editor = () => {
                                 </Button>
                             </Box>
                         </Box>
-                    ) : (
+                    ) : {/*Normal view when not edited*/ }(
                         <Box
                             key={word.id}
                             sx={{
