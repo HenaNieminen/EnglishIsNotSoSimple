@@ -118,40 +118,46 @@ const Editor = () => {
     };
 
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minWidth: 400,
-            maxWidth: 900,
-            maxHeight: 700,
-            margin: 'auto',
-            backgroundColor: '#525252',
-            padding: 5,
-            overflowY: 'scroll'
-        }}>
-            {/*If empty*/}
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 400,
+                maxWidth: 900,
+                maxHeight: 700,
+                margin: 'auto',
+                backgroundColor: '#525252',
+                padding: 5,
+                overflowY: 'scroll',
+            }}
+        >
+            {/*If the database is empty */}
             {words.length === 0 ? (
-                <Typography variant="h4" sx={{ color: "white", textAlign: "center" }}>Database is empty</Typography>
+                <Typography variant='h4' sx={{ color: 'white', textAlign: 'center' }}>
+                    Database is empty
+                </Typography>
             ) : (
                 words.map((word) => {
                     {/*Edit mode view*/ }
                     return editMode === word.id ? (
-                        <Box key={word.id}
+                        <Box
+                            key={word.id}
                             sx={{
                                 marginBottom: 5,
                                 display: 'flex',
                                 flexDirection: 'column',
-                            }}>
-                            <Box sx={{backgroundColor: "white", marginBottom: 1}}>
+                            }}
+                        >
+                            <Box sx={{ backgroundColor: 'white', marginBottom: 1 }}>
                                 <FormControl sx={{ marginTop: 1, width: '100%' }}>
-                                    <InputLabel id="language-select-label" sx={{}}>Language</InputLabel>
+                                    <InputLabel id='language-select-label'>Language</InputLabel>
                                     <Select
-                                        labelId="language-select-label"
+                                        labelId='language-select-label'
                                         value={editLang}
-                                        size="small"
+                                        size='small'
                                         onChange={(e) => setEditLang(e.target.value)}
-                                        label="Language"
-                                        sx={{ backgroundColor: "white" }}
+                                        label='Language'
+                                        sx={{ backgroundColor: 'white' }}
                                     >
                                         {langs.map((lang) => (
                                             <MenuItem key={lang.id} value={lang.id}>
@@ -165,14 +171,21 @@ const Editor = () => {
                                     value={editedWord}
                                     size="small"
                                     onChange={(e) => setEditedWord(e.target.value)}
-                                    sx={{ backgroundColor: "white", marginBottom: 1, width: '100%', marginTop: 1 }}
+                                    sx={{
+                                        backgroundColor: 'white',
+                                        marginBottom: 1,
+                                        width: '100%',
+                                        marginTop: 1,
+                                    }}
                                 />
                             </Box>
-                            <Box sx={{
-                                display: 'flex',
-                                flexDirection: "row",
-                                marginBottom: 2,
-                            }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    marginBottom: 2,
+                                }}
+                            >
                                 {tempTranslations.map((tran) => (
                                     <Button
                                         key={tran.id}
@@ -186,35 +199,38 @@ const Editor = () => {
                                     </Button>
                                 ))}
                             </Box>
-                            <Box sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}>
-                                <Box key={word.id}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
+                                <Box
                                     sx={{
                                         marginBottom: 2,
                                         maxWidth: 400,
                                         maxHeight: 200,
-                                        overflowY: 'scroll'
-                                    }}>
+                                        overflowY: 'scroll',
+                                    }}
+                                >
                                     {/*Make easy buttons out of all words from the opposing language */}
                                     {words
                                         .filter((w) => w.lang_id !== word.lang_id)
                                         .map((w) => (
-                                                <Button
-                                                    key={w.id}
-                                                    variant="outlined"
-                                                    onClick={() => handleAddTranslation(word.id, w.id)}
-                                                    sx={{ margin: 1, color: "white", borderColor: "white" }}
-                                                >
-                                                    {w.word}
-                                                </Button>
-                                            ))}
-                                    </Box>
+                                            <Button
+                                                key={w.id}
+                                                variant='outlined'
+                                                onClick={() => handleAddTranslation(word.id, w.id)}
+                                                sx={{ margin: 1, color: 'white', borderColor: 'white' }}
+                                            >
+                                                {w.word}
+                                            </Button>
+                                        ))}
+                                </Box>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Button
-                                    variant="contained"
+                                    variant='contained'
                                     onClick={async () => {
                                         adjustWord(word.id, editLang, editedWord);
                                     }}
@@ -222,11 +238,8 @@ const Editor = () => {
                                 >
                                     Save word and language edit
                                 </Button>
-                                {/*Due to how the functions are set up, editing the word has to be saved manually and trans edits
-                                will automatically execte themselves. Edited the wordings to match how they worked. Don't have time
-                                or patience to shift things around now*/}
                                 <Button
-                                    variant="contained"
+                                    variant='contained'
                                     onClick={() => setEditMode(null)}
                                     sx={{ marginTop: 3, marginLeft: 2 }}
                                 >
@@ -234,28 +247,27 @@ const Editor = () => {
                                 </Button>
                             </Box>
                         </Box>
-                    ) : {/*Normal view when not edited*/ }(
+                    ) : (
                         <Box
                             key={word.id}
                             sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                                 marginBottom: 5,
                             }}
                         >
-                        {/*Normal view*/}
                             <Button
-                                variant="contained"
-                                color="error"
+                                variant='contained'
+                                color='error'
                                 onClick={() => handleDelete(word.id)}
                                 sx={{ marginLeft: 2, backgroundColor: 'red' }}
                             >
                                 Delete
                             </Button>
-                            <Typography sx={{ color: "white" }}>{word.word}</Typography>
+                            <Typography sx={{ color: 'white' }}>{word.word}</Typography>
                             <Button
-                                variant="contained"
+                                variant='contained'
                                 onClick={() => {
                                     setEditLang(word.lang_id);
                                     setEditedWord(word.word);
