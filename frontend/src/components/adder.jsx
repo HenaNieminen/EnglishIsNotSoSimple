@@ -13,11 +13,15 @@ const Adder = () => {
 
     const sendWord = async (lang_id, word) => {
         try {
+            //Combine all the details to the postWords
             const postedWord = { lang_id, word };
+            //Post the word
             await postWords(postedWord);
+            //Sync the data
             await syncData();
             toast.success("Word added succesfully!");
         } catch (error) {
+            //In case the word already exists
             if (error.status === 409) {
                 toast.error("Word already exists!");
                 return;
@@ -46,7 +50,8 @@ const Adder = () => {
                 Add a new word
             </Button>
             )}
-        {addMode && (
+        {addMode &&
+            {/*Menu to add words*/ }(
             <Box
                 sx={{
                     display: 'flex',
@@ -77,6 +82,7 @@ const Adder = () => {
                             ))}
                         </Select>
                     </FormControl>
+                    {/*Textfield for a new word*/}
                     <TextField
                         variant="outlined"
                         size="small"
@@ -85,6 +91,7 @@ const Adder = () => {
                         onChange={(e) => setPostedWord(e.target.value)}
                         sx={{ backgroundColor: 'white', marginBottom: 2 }}
                     />
+                    {/*Buttons to save a new word and to close the menu*/}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Button
                             variant="contained"
