@@ -21,7 +21,7 @@ import {
 //I am become import, the destroyer of coherency
 
 const Editor = () => {
-    const { langs, words, trans, syncData } = useContext(DataContext);
+    const { langs, words, syncData } = useContext(DataContext);
     const [ editedWord, setEditedWord ] = useState('');
     const [ editLang, setEditLang ] = useState('');
     const [ editMode, setEditMode ] = useState(null);
@@ -139,30 +139,32 @@ const Editor = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                             }}>
-                            <FormControl sx={{ marginBottom: 2 }}>
-                                <InputLabel id="language-select-label">Language</InputLabel>
-                                <Select
-                                    labelId="language-select-label"
-                                    value={editLang || word.lang_id}
+                            <Box sx={{backgroundColor: "white", marginBottom: 1}}>
+                                <FormControl sx={{ marginTop: 1, width: '100%' }}>
+                                    <InputLabel id="language-select-label" sx={{}}>Language</InputLabel>
+                                    <Select
+                                        labelId="language-select-label"
+                                        value={editLang}
+                                        size="small"
+                                        onChange={(e) => setEditLang(e.target.value)}
+                                        label="Language"
+                                        sx={{ backgroundColor: "white" }}
+                                    >
+                                        {langs.map((lang) => (
+                                            <MenuItem key={lang.id} value={lang.id}>
+                                                {lang.language}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <TextField
+                                    variant="outlined"
+                                    value={editedWord}
                                     size="small"
-                                    onChange={(e) => setEditLang(e.target.value)}
-                                    label="Language"
-                                    sx={{ backgroundColor: "white" }}
-                                >
-                                    {langs.map((lang) => (
-                                        <MenuItem key={lang.id} value={lang.id}>
-                                            {lang.language}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            <TextField
-                                variant="outlined"
-                                value={editedWord}
-                                size="small"
-                                onChange={(e) => setEditedWord(e.target.value)}
-                                sx={{ backgroundColor: "white", marginBottom: 2 }}
-                            />
+                                    onChange={(e) => setEditedWord(e.target.value)}
+                                    sx={{ backgroundColor: "white", marginBottom: 1, width: '100%', marginTop: 1 }}
+                                />
+                            </Box>
                             <Box sx={{
                                 display: 'flex',
                                 flexDirection: "row",
@@ -207,25 +209,27 @@ const Editor = () => {
                                             ))}
                                     </Box>
                             </Box>
-                            <Button
-                                variant="contained"
-                                onClick={async () => {
-                                    adjustWord(word.id, editLang, editedWord);
-                                }}
-                                sx={{ marginTop: 3 }}
-                            >
-                                Save word and language edit
-                            </Button>
-                            {/*Due to how the functions are set up, editing the word has to be saved manually and trans edits
-                            will automatically execte themselves. Edited the wordings to match how they worked. Don't have time
-                            or patience to shift things around now*/}
-                            <Button
-                                variant="contained"
-                                onClick={() => setEditMode(null)}
-                                sx={{ marginTop: 3, marginLeft: 2 }}
-                            >
-                                Exit
-                            </Button>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Button
+                                    variant="contained"
+                                    onClick={async () => {
+                                        adjustWord(word.id, editLang, editedWord);
+                                    }}
+                                    sx={{ marginTop: 3 }}
+                                >
+                                    Save word and language edit
+                                </Button>
+                                {/*Due to how the functions are set up, editing the word has to be saved manually and trans edits
+                                will automatically execte themselves. Edited the wordings to match how they worked. Don't have time
+                                or patience to shift things around now*/}
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setEditMode(null)}
+                                    sx={{ marginTop: 3, marginLeft: 2 }}
+                                >
+                                    Exit
+                                </Button>
+                            </Box>
                         </Box>
                     ) : (
                         <Box
@@ -250,6 +254,7 @@ const Editor = () => {
                             <Button
                                 variant="contained"
                                 onClick={() => {
+                                    setEditLang(word.lang_id);
                                     setEditedWord(word.word);
                                     handleEdit(word);
                                 }}
@@ -259,7 +264,7 @@ const Editor = () => {
                         </Box>
                     );
                 })
-            )};
+            )}
         </Box>
     );
 };
