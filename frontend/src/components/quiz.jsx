@@ -96,7 +96,15 @@ const Quiz = ({ language, length, active }) => {
                 backgroundColor: '#525252'
             }}>
                 {!questions.length && (
+                    <>
                     <Typography>Loading...</Typography>
+                    <Box>
+                        <Typography>If it doesn't load, exit here</Typography>
+                        <Button onClick={() => active(false)} variant="contained">
+                            Escape
+                        </Button>
+                    </Box>
+                    </>
                 )}
                 {/*Display this when questions haven't loaded in yet*/}
                 {questions.map((q, index) => (
