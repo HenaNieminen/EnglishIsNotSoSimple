@@ -6,8 +6,7 @@ import "../styles/main.css";
 const SettingsPage = () => {
     return (
         <div className="mainContainer">
-            <h1>Main editor and admin view</h1>
-            <h4>Still under construction...</h4>
+            <h1>Admin panel</h1>
             <Link className="navButton"  to="/">Go back</Link>
             <Adder/>
             <Editor/>
