@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { DataContext } from '../context/datacontext';
+import { toast } from 'react-toastify'
 import { fetchTransForWordId } from '../context/backendfunc';
 import PropTypes from 'prop-types';
 import { TextField, Typography, Button, Box } from '@mui/material/';
@@ -48,7 +49,7 @@ const Quiz = ({ language, length, active }) => {
                     });
                     usedWordIds.add(randomWord.id);//Add used word to the Set
                 } catch (error) {
-                    console.error(`Error fetching translations for word ID ${randomWord.id}:`, error);
+                    toast.error(`Error generating questions. Error status: ${error.response.status}`);
                 };
             };
             setQuestions(tempArray);
@@ -99,7 +100,7 @@ const Quiz = ({ language, length, active }) => {
                     <>
                     <Typography>Loading...</Typography>
                     <Box>
-                        <Typography>If it doesn't load, exit here</Typography>
+                        <Typography>If it doesn&apos;t load, exit here</Typography>
                         <Button onClick={() => active(false)} variant="contained">
                             Escape
                         </Button>
