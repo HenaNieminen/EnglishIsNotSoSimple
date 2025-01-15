@@ -1,3 +1,4 @@
+/* Wont be implemented in time. Not also in the project's requirement. Maybe done later
 import { openDB } from 'idb';
 
 const db = 'simple_db'
@@ -13,3 +14,4 @@ export const initIndexDB = async () => {
     });
     return db
 };
+*/
