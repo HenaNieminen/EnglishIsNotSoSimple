@@ -20,7 +20,9 @@ import {
 } from '@mui/material/';
 
 const Editor = () => {
+    //Take context
     const { langs, words, syncData } = useContext(DataContext);
+    //Setstates for editing function
     const [ editedWord, setEditedWord ] = useState('');
     const [ editLang, setEditLang ] = useState('');
     const [ editMode, setEditMode ] = useState(null);
@@ -40,7 +42,6 @@ const Editor = () => {
                 return
             };
             toast.error("Updating word failed:", error);
-            console.error("Updating word failed:", error);
         };
     };
 
@@ -61,7 +62,7 @@ const Editor = () => {
             return transWords;
         } catch (error) {
             //Handle errors and return an empty array
-            console.error("Error fetching trans", error);
+            toast.error(`Error fetching trans. Error status: ${error.response.status}`);
             return [];
         };
     };
@@ -83,7 +84,7 @@ const Editor = () => {
             await syncData();
         } catch (error) {
             //Error handling
-            console.error("Deleting word failed:", error);
+            toast.error(`Error deleting word. Error status: ${error.response.status}`);
         };
     }
 
@@ -98,7 +99,7 @@ const Editor = () => {
             //Sync data overall again
             await syncData();
         } catch (error) {
-            console.error("Adding translation failed:", error);
+            toast.error(`Error adding translation. Error status: ${error.response.status}`);
         };
     };
 
@@ -113,7 +114,7 @@ const Editor = () => {
             //Sync
             await syncData();
         } catch (error) {
-            console.error("Deleting translation failed:", error);
+            toast.error(`Error deleting translation. Error status: ${error.response.status}`);
         };
     };
 

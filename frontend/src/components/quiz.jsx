@@ -1,11 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { DataContext } from '../context/datacontext';
+import { toast } from 'react-toastify'
 import { fetchTransForWordId } from '../context/backendfunc';
 import PropTypes from 'prop-types';
 import { TextField, Typography, Button, Box } from '@mui/material/';
 
 const Quiz = ({ language, length, active }) => {
+    //Context from DataContext
     const { words, trans } = useContext(DataContext);
+    //SetStates for quiz
     const [questions, setQuestions] = useState([]);
     const [score, setScore] = useState(0);
     const [quizOver, setQuizOver] = useState(false);
@@ -14,14 +17,17 @@ const Quiz = ({ language, length, active }) => {
     useEffect(() => {
         let quizLength = length;
         const generateQuestions = async () => {
+            //Select the words from the language user wants to quiz
             const langWords = words.filter(word => word.lang_id === language);
+            //Filter out words that have translations available
             const wordsWithTran = langWords.filter(word => trans.some(tran => tran.word_id === word.id));
+            //If the language of the words has no translations, cut it shut
             if (wordsWithTran.length === 0) {
-                console.warn('No translations available for the selected words.');
+                toast.error('No translations available for the selected language of words.');
                 active(false);
                 return;
             };
-
+            //Temp array to fill words
             const tempArray = [];
             /*This new technique of using sets was suggested by co-pilot. Pretty good for
             weeding out anomalies and duplicates*/
@@ -48,7 +54,7 @@ const Quiz = ({ language, length, active }) => {
                     });
                     usedWordIds.add(randomWord.id);//Add used word to the Set
                 } catch (error) {
-                    console.error(`Error fetching translations for word ID ${randomWord.id}:`, error);
+                    toast.error(`Error generating questions. Error status: ${error.response.status}`);
                 };
             };
             setQuestions(tempArray);
@@ -62,6 +68,7 @@ const Quiz = ({ language, length, active }) => {
         //Handle the submitted answers
         let tempScore = 0;
 
+        //Go through each question
         questions.forEach((q, index) => {
             const userAnswer = userAnswers[index]?.toLowerCase() || "";
             const correctAnswers = q.answers.map(answer => answer.toLowerCase());
@@ -99,7 +106,7 @@ const Quiz = ({ language, length, active }) => {
                     <>
                     <Typography>Loading...</Typography>
                     <Box>
-                        <Typography>If it doesn't load, exit here</Typography>
+                        <Typography>If it doesn&apos;t load, exit here</Typography>
                         <Button onClick={() => active(false)} variant="contained">
                             Escape
                         </Button>
@@ -161,6 +168,7 @@ const Quiz = ({ language, length, active }) => {
     );
 };
 
+//Proptype validation
 Quiz.propTypes = {
     language: PropTypes.number.isRequired,
     length: PropTypes.number.isRequired,

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import "../styles/main.css"
 
 const MainPage = () => {
+    //Just includes navigation to settings and to page where users can start the quiz
     return (
         <div className="mainContainer">
             <h1>Welcome!</h1>
