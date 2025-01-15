@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import "../styles/main.css";
 
 const SettingsPage = () => {
+    //Main wrapper for the settings and summon of adder and editor component
     return (
         <div className="mainContainer">
             <h1>Main editor and admin view</h1>
