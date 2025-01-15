@@ -51,8 +51,8 @@ const Adder = () => {
                 Add a new word
             </Button>
             )}
-        {addMode &&
-            {/*Menu to add words*/ }(
+        {/*Menu to add words*/}
+        {addMode && (
             <Box
                 sx={{
                     display: 'flex',
