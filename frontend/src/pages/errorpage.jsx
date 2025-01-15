@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import "../styles/main.css"
 
-export default function NotFoundPage() {
+const NotFoundPage = () => {
     //Returns an error element for the router
     return (
         <div className='mainContainer'>
@@ -12,3 +12,5 @@ export default function NotFoundPage() {
         </div>
     );
 };
+
+export default NotFoundPage;
