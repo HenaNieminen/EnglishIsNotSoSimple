@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import { TextField, Typography, Button, Box } from '@mui/material/';
 
 const Quiz = ({ language, length, active }) => {
+    //Context from DataContext
     const { words, trans } = useContext(DataContext);
+    //SetStates for quiz
     const [questions, setQuestions] = useState([]);
     const [score, setScore] = useState(0);
     const [quizOver, setQuizOver] = useState(false);
@@ -15,14 +17,17 @@ const Quiz = ({ language, length, active }) => {
     useEffect(() => {
         let quizLength = length;
         const generateQuestions = async () => {
+            //Select the words from the language user wants to quiz
             const langWords = words.filter(word => word.lang_id === language);
+            //Filter out words that have translations available
             const wordsWithTran = langWords.filter(word => trans.some(tran => tran.word_id === word.id));
+            //If the language of the words has no translations, cut it shut
             if (wordsWithTran.length === 0) {
-                console.warn('No translations available for the selected words.');
+                toast.error('No translations available for the selected language of words.');
                 active(false);
                 return;
             };
-
+            //Temp array to fill words
             const tempArray = [];
             /*This new technique of using sets was suggested by co-pilot. Pretty good for
             weeding out anomalies and duplicates*/
@@ -63,6 +68,7 @@ const Quiz = ({ language, length, active }) => {
         //Handle the submitted answers
         let tempScore = 0;
 
+        //Go through each question
         questions.forEach((q, index) => {
             const userAnswer = userAnswers[index]?.toLowerCase() || "";
             const correctAnswers = q.answers.map(answer => answer.toLowerCase());
@@ -162,6 +168,7 @@ const Quiz = ({ language, length, active }) => {
     );
 };
 
+//Proptype validation
 Quiz.propTypes = {
     language: PropTypes.number.isRequired,
     length: PropTypes.number.isRequired,
