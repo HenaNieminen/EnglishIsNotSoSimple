@@ -27,6 +27,9 @@ const Adder = () => {
             if (error.status === 409) {
                 toast.error("Word already exists!");
                 return;
+            } else if (error.status === 400) {
+                toast.error("Word must not contain numbers or special characters other than spaces, dashes, or astrophes");
+                return;
             };
             toast.error(`Error sending word. Error status: ${error.response.status}`);
         };
