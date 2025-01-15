@@ -6,6 +6,7 @@ import router from './router.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+//Wrap all important components to root like the dataprovider, toastify and router
 createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <DataProvider>
