@@ -5,7 +5,9 @@ import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, Inpu
 import { toast } from 'react-toastify';
 
 const Adder = () => {
+    //Langs and syncData from context
     const { langs, syncData } = useContext(DataContext);
+    //States for adding
     const [ addMode, setAddMode ] = useState(false);
     const [ postedWord, setPostedWord ] = useState('');
     const [ postedLang, setPostedLang ] = useState('');
@@ -26,8 +28,7 @@ const Adder = () => {
                 toast.error("Word already exists!");
                 return;
             };
-            console.error('Error posting word', error);
-            toast.error(`Something went wrong. Error code: ${error.status}`);
+            toast.error(`Error sending word. Error status: ${error.response.status}`);
         };
     };
 
