@@ -8,10 +8,10 @@ const Adder = () => {
     //Langs and syncData from context
     const { langs, syncData } = useContext(DataContext);
     //States for adding
-    const [ addMode, setAddMode ] = useState(false);
-    const [ postedWord, setPostedWord ] = useState('');
-    const [ postedLang, setPostedLang ] = useState('');
-    const [ postedTrans, setPostedTrans ] = useState('');
+    const [addMode, setAddMode] = useState(false);
+    const [postedWord, setPostedWord] = useState('');
+    const [postedLang, setPostedLang] = useState('');
+    const [postedTrans, setPostedTrans] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
@@ -41,31 +41,36 @@ const Adder = () => {
                 marginTop: 5,
             }}
         >
-        {/*Button to open the menu*/}
-        {!addMode && (
-            <Button
-                variant="contained"
-                onClick={() => setAddMode(true)}
-                sx={{ marginBottom: 3 }}
-            >
-                Add a new word
-            </Button>
+            {langs.length === 0 && (
+                <Typography variant="h5" sx={{ color: 'white' }}>
+                    Database connection is severed. Refresh and try again
+                </Typography>
             )}
-        {/*Menu to add words*/}
-        {addMode && (
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    minWidth: 400,
-                    maxWidth: 900,
-                    maxHeight: 200,
-                    margin: 'auto',
-                    backgroundColor: '#525252',
-                    padding: 5,
+            {/*Button to open the menu*/}
+            {!addMode && !langs.length === 0 && (
+                <Button
+                    variant="contained"
+                    onClick={() => setAddMode(true)}
+                    sx={{ marginBottom: 3 }}
+                >
+                    Add a new word
+                </Button>
+            )}
+            {/*Menu to add words*/}
+            {addMode && (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minWidth: 400,
+                        maxWidth: 900,
+                        maxHeight: 200,
+                        margin: 'auto',
+                        backgroundColor: '#525252',
+                        padding: 5,
                     }}
                 >
-                <Typography variant="h5" sx={{ color: 'white', marginBottom: 1 }}> Add a new word</Typography>
+                    <Typography variant="h5" sx={{ color: 'white', marginBottom: 1 }}> Add a new word</Typography>
                     <FormControl sx={{ marginBottom: 2 }}>
                         <InputLabel id="language-select-label">Language</InputLabel>
                         <Select
