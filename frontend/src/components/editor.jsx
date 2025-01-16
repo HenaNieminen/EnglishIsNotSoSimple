@@ -44,7 +44,7 @@ const Editor = () => {
                 toast.error("Word must not contain numbers or special characters other than spaces, dashes, or astrophes");
                 return;
             };
-            toast.error(`Error updating word. Error status: ${error.response.status}`);
+            toast.error(`Error updating word. Error code: ${error.response.status}`);
         };
     };
 
@@ -65,7 +65,7 @@ const Editor = () => {
             return transWords;
         } catch (error) {
             //Handle errors and return an empty array
-            toast.error(`Error fetching trans. Error status: ${error.response.status}`);
+            toast.error(`Error fetching trans. Error code: ${error.response.status}`);
             return [];
         };
     };
@@ -87,7 +87,7 @@ const Editor = () => {
             await syncData();
         } catch (error) {
             //Error handling
-            toast.error(`Error deleting word. Error status: ${error.response.status}`);
+            toast.error(`Error deleting word. Error code: ${error.response.status}`);
         };
     }
 
@@ -102,7 +102,7 @@ const Editor = () => {
             //Sync data overall again
             await syncData();
         } catch (error) {
-            toast.error(`Error adding translation. Error status: ${error.response.status}`);
+            toast.error(`Error adding translation. Error code: ${error.response.status}`);
         };
     };
 
@@ -117,7 +117,7 @@ const Editor = () => {
             //Sync
             await syncData();
         } catch (error) {
-            toast.error(`Error deleting translation. Error status: ${error.response.status}`);
+            toast.error(`Error deleting translation. Error code: ${error.response.status}`);
         };
     };
 
