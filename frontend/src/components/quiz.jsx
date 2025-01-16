@@ -168,7 +168,7 @@ const Quiz = ({ language, length, active, activeStatus }) => {
                         </Typography>
                         <Button
                             variant="contained"
-                            onClick={() => active(false)}
+                            onClick={() => { active(false); setQuizOver(false); }}
                             style={{ marginTop: '10px' }}
                         >
                             Exit
