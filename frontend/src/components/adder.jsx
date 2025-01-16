@@ -27,8 +27,11 @@ const Adder = () => {
             if (error.status === 409) {
                 toast.error("Word already exists!");
                 return;
+            } else if (error.status === 500) {
+                toast.error("Server error. Database connection severed. Code: 500");
+                return;
             };
-            toast.error(`Error sending word. Error status: ${error.response.status}`);
+            toast.error(`Server error. Code: ${error.response.status}`);
         };
     };
 
