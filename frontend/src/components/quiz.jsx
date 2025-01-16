@@ -55,6 +55,8 @@ const Quiz = ({ language, length, active }) => {
                     usedWordIds.add(randomWord.id);//Add used word to the Set
                 } catch (error) {
                     toast.error(`Error generating questions. Error status: ${error.response.status}`);
+                    active(false);
+                    return;
                 };
             };
             setQuestions(tempArray);

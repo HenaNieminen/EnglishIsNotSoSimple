@@ -50,11 +50,11 @@ const QuizPage = () => {
                                 label="Quiz language"
                                 sx={{ minWidth: 400, maxWidth: 500, backgroundColor: 'white' }}
                             >
-                            {langs.map((lang) => (
-                                <MenuItem key={lang.id} value={lang.id}>
-                                    {lang.language}
-                                </MenuItem>
-                            ))}
+                                {langs.map((lang) => (
+                                    <MenuItem key={lang.id} value={lang.id}>
+                                        {lang.language}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                         <TextField
@@ -69,15 +69,16 @@ const QuizPage = () => {
                             variant="contained"
                             color="primary"
                             onClick={() => setStartQuiz(true)}
-                            disabled={!quizLength ||!selectedLang || trans.length === 0}
+                            disabled={!quizLength || !selectedLang || trans.length === 0}
                         >
-                        {/*Stops the user from moving on if both values are missing */}
+                            {/*Stops the user from moving on if both values are missing */}
                             Start Quiz
                         </Button>
                     </Box>
                 </>
             }
             {trans.length === 0 && <p>Quiz cannot be started as no words have been translated.</p>}
+            {trans.length === 0 && langs.length === 0 && <p>Database connection is severed</p>}
             {/*When user starts the quiz, pass all the props and the active status */}
             {startQuiz && <Quiz language={selectedLang} length={quizLength} active={setStartQuiz} />}
         </div>
