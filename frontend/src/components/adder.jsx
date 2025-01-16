@@ -47,7 +47,7 @@ const Adder = () => {
                 </Typography>
             )}
             {/*Button to open the menu*/}
-            {!addMode && !langs.length === 0 && (
+            {!addMode && !langs.length !== 0 && (
                 <Button
                     variant="contained"
                     onClick={() => setAddMode(true)}
