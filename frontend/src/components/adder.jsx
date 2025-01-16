@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
-import { postWords, postTrans } from '../context/backendfunc'
+import { postWords } from '../context/backendfunc'
 import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
 import { toast } from 'react-toastify';
 
@@ -11,7 +11,6 @@ const Adder = () => {
     const [addMode, setAddMode] = useState(false);
     const [postedWord, setPostedWord] = useState('');
     const [postedLang, setPostedLang] = useState('');
-    const [postedTrans, setPostedTrans] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
