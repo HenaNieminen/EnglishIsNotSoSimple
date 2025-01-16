@@ -69,7 +69,7 @@ const Quiz = ({ language, length, active, activeStatus }) => {
             setQuestions(tempArray);
         };
         //When quiz becomes active, generate the questions
-        if (activeStatus === true) {
+        if (activeStatus === true && !quizOver) {
             generateQuestions();
         };
     }, [language, length, words, trans, active, quizOver, activeStatus]);
