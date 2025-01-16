@@ -5,7 +5,7 @@ import { fetchTransForWordId } from '../context/backendfunc';
 import PropTypes from 'prop-types';
 import { TextField, Typography, Button, Box } from '@mui/material/';
 
-const Quiz = ({ language, length, active }) => {
+const Quiz = ({ language, length, active, activeStatus }) => {
     //Context from DataContext
     const { words, trans } = useContext(DataContext);
     //SetStates for quiz
@@ -45,26 +45,32 @@ const Quiz = ({ language, length, active }) => {
                     continue;
                 };
                 try {
+                    //Use the fetchTransForWordId method to fetch all translations
                     const translations = await fetchTransForWordId(randomWord.id);
                     const transIds = translations.map(trans => trans.trans_id);
+                    //Filter the answers from the words state
                     const answers = words.filter(word => transIds.includes(word.id));
+                    //Push question into the temp array
                     tempArray.push({
                         question: randomWord.word,
                         answers: answers.map(answer => answer.word),
                     });
-                    usedWordIds.add(randomWord.id);//Add used word to the Set
+                    usedWordIds.add(randomWord.id);
+                    //Add used word to the Set
                 } catch (error) {
                     toast.error(`Error generating questions. Error status: ${error.response.status}`);
                     active(false);
                     return;
                 };
             };
+            //Set questions from the tempArray
             setQuestions(tempArray);
         };
-        if (!quizOver) {
+        //When quiz becomes active, generate the questions
+        if (activeStatus === true) {
             generateQuestions();
         };
-    }, [language, length, words, trans, active, quizOver]);
+    }, [language, length, words, trans, active, quizOver, activeStatus]);
 
     const handleSubmit = () => {
         //Handle the submitted answers
@@ -72,7 +78,9 @@ const Quiz = ({ language, length, active }) => {
 
         //Go through each question
         questions.forEach((q, index) => {
-            const userAnswer = userAnswers[index]?.toLowerCase() || "";
+            //Take the user answer from the index or defaut it to an empty string and then make it lowercase
+            const userAnswer = (userAnswers[index] || "").toLowerCase();
+            //Map the correct answers from the question and convert them to lowercase
             const correctAnswers = q.answers.map(answer => answer.toLowerCase());
             //Check if the user's answer matches any correct answer
             if (correctAnswers.includes(userAnswer)) {
@@ -85,7 +93,8 @@ const Quiz = ({ language, length, active }) => {
     };
 
     const handleInputChange = (e, index) => {
-        //Handle user typing in their answer, taking the event target value
+        /*Handle user typing in answers. Take the event value and
+        setUserAnswers will apply the previous answers and replace the answer at index */
         const answer = e.target.value;
         setUserAnswers((prevAnswers) => ({
             ...prevAnswers,
@@ -174,7 +183,8 @@ const Quiz = ({ language, length, active }) => {
 Quiz.propTypes = {
     language: PropTypes.number.isRequired,
     length: PropTypes.number.isRequired,
-    active: PropTypes.func.isRequired
+    active: PropTypes.func.isRequired,
+    activeStatus: PropTypes.bool.isRequired
 };
 
 export default Quiz;
