@@ -15,6 +15,7 @@ const Quiz = ({ language, length, active, activeStatus }) => {
     const [userAnswers, setUserAnswers] = useState([]);
 
     useEffect(() => {
+        //Take the user given length of the quiz to a new variable
         let quizLength = length;
         const generateQuestions = async () => {
             //Select the words from the language user wants to quiz
@@ -29,7 +30,7 @@ const Quiz = ({ language, length, active, activeStatus }) => {
             };
             //Temp array to fill words
             const tempArray = [];
-            /*This new technique of using sets was suggested by co-pilot. Pretty good for
+            /*This technique of using sets was suggested by co-pilot. Pretty good for
             weeding out anomalies and duplicates*/
             const usedWordIds = new Set();
             //Will set the length as long as possible if there are not enough words than user requested
@@ -38,6 +39,7 @@ const Quiz = ({ language, length, active, activeStatus }) => {
             };
 
             while (tempArray.length < length) {
+                //Pick a random word
                 const randomIndex = Math.floor(Math.random() * length);
                 const randomWord = wordsWithTran[randomIndex];
                 //Skip if a randomly selected word is already there in the Set
