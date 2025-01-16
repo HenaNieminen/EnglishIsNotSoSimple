@@ -95,6 +95,7 @@ const getAllLanguages = () => {
  */
 const getLanguageById = (id) => {
     return new Promise((resolve, reject) => {
+        //Validate the id
         const { error } = idSchema.validate({ id: id });
         if (error) {
             reject({
@@ -192,6 +193,7 @@ const getAllTranslations = () => {
  */
 const getWordsById = (id) => {
     return new Promise((resolve, reject) => {
+        //Validation
         const { error } = idSchema.validate({ id: id });
         if (error) {
             reject({
@@ -275,6 +277,7 @@ const getTranslationsById = (id) => {
  */
 const getTranslationsByWordId = (id) => {
     return new Promise((resolve, reject) => {
+        //Validate
         const { error } = idSchema.validate({ id: id });
         if (error) {
             reject({
@@ -283,6 +286,7 @@ const getTranslationsByWordId = (id) => {
             });
             return;
         };
+        //Seek all translations where word id matches up
         db.all('SELECT * FROM translations WHERE word_id = ?', [id], (err, rows) => {
             if (err) {
                 reject({
@@ -313,7 +317,7 @@ const getTranslationsByWordId = (id) => {
  */
 const postWords = async (langId, word) => {
     return new Promise((resolve, reject) => {
-        //Will refuse if the word is empty. Will also be handled in frontend for redundancy
+        //Validate the word and make the first letter uppercase
         word = word.charAt(0).toUpperCase() + word.slice(1);
         const { error } = wordSchema.validate({ lang_id: langId, word: word });
         if (error) {
@@ -378,8 +382,8 @@ const postWords = async (langId, word) => {
 
 const postTranslations = (id, transId) => {
     return new Promise((resolve, reject) => {
-        //Reject if any value is empty
         const { error } = transSchema.validate({ word_id: id, trans_id: transId });
+        //Validate
         if (error) {
             reject({
                 status: 400,
@@ -483,9 +487,9 @@ const postTranslations = (id, transId) => {
  */
 
 const deleteWord = async (id) => {
-    //Reuse the async promise to get it to work
     return new Promise((resolve, reject) => {
         const { error } = idSchema.validate({ id: id });
+        //Validate
         if (error) {
             reject({
                 status: 400,
@@ -547,6 +551,7 @@ const deleteWord = async (id) => {
 const deleteTranslation = (id, transId) => {
     return new Promise((resolve, reject) => {
         const { error } = transSchema.validate({ word_id: id, trans_id: transId });
+        //Validate the ids
         if (error) {
             reject({
                 status: 400,
@@ -603,16 +608,14 @@ const deleteTranslation = (id, transId) => {
  * @param {number} id - The ID of the word to be edited.
  * @param {number} newLang - The new language ID for the word.
  * @param {string} newWord - The new word text.
- * @returns {Promise<void>} - A promise that resolves when the word is successfully edited.
+ * @returns {Promise<Object>} - A promise that resolves when the word is successfully edited.
  * @throws {Object} - An error object with a status code and message if the operation fails.
  */
 
 const editWord = async (id, newLang, newWord) => {
-    /*Putting the async inside the promise was suggested by ChatGPT to get calling other functions here working,
-    but after putting further research into it, it may have not been the best practice. Many say against it on stack overflow.
-    The alternative here would have been to just copy and paste the query from the getWordsById function*/
     return new Promise((resolve, reject) => {
         const { error } = editSchema.validate({ id: id, lang_id: newLang, word: newWord });
+        //Validate the edit
         if (error) {
             reject({
                 status: 400,
