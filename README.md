@@ -1,6 +1,4 @@
-# English Is Not So Simple (Working title)
-
-
+# English Is Not So Simple
 
 ## Hello!
 
@@ -20,7 +18,7 @@ upon before release 2.
 UI will be limited or nonexistant in Release 1 as I have two projects to make at the same time. I promise backend will be in "some state."
 
 ## For release 2?
-Basic UI. Getting the first task types done (Open translation). 
+Basic UI. Getting the first task types done (Open translation).
 
 This release may not have persistant settings or user added content. I have an idea to use localStorage to then push the
 user added words and translations into the database when it loads up into the ram, but we'll see how this pans out
