@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    //Set the states for data
+    //Set the states for data from all tables in the database
     const [langs, setLangs] = useState([]);
     const [words, setWords] = useState([]);
     const [trans, setTrans] = useState([]);
@@ -20,10 +20,12 @@ export const DataProvider = ({ children }) => {
             setWords(fetchedWord);
             setTrans(fetchedTrans);
         } catch (error) {
+            //Catch errors and spit out its error code.
             toast.error(`Error syncing data: ${error.response.status}`);
         }
     };
     useEffect(() => {
+        //Sync all data when the site loads
         syncData();
     }, []);
 
