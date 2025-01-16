@@ -52,9 +52,6 @@ const Editor = () => {
         try {
             //Fetch the translations for the word
             let trans = await fetchTransForWordId(id);
-            if (trans === null) {
-                return [];
-            };
             //Map the transIDs for the word
             const transIds = trans.map(t => t.trans_id);
             //Find all the words from the words datacontext and then map them
