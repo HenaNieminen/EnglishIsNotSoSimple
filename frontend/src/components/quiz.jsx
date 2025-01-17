@@ -38,7 +38,7 @@ const Quiz = ({ language, length, active }) => {
             };
 
             while (tempArray.length < length) {
-                const randomIndex = Math.floor(Math.random() * length);
+                const randomIndex = Math.floor(Math.random() * wordsWithTran.length);
                 const randomWord = wordsWithTran[randomIndex];
                 //Skip if a randomly selected word is already there in the Set
                 if (usedWordIds.has(randomWord.id)) {
