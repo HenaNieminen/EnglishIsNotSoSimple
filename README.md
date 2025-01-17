@@ -3,6 +3,8 @@
 ##
 ![image](https://github.com/user-attachments/assets/b5e061fc-a2d6-4da5-89b5-bf6441356563)
 
+## RIVETING VISUALS!!!
+
 ### Render service
 
 https://englishisnotsosimple.onrender.com/
@@ -12,7 +14,9 @@ https://englishisnotsosimple.onrender.com/
 English Is Not So Simple allows parents to create their own Finnish to English exam for their kids!
 
 ## Features:
+
 -A blazing selection of just one type of quiz with a length from 1-10 questions!
+
 -Ability to edit the words and translations!
 
 
