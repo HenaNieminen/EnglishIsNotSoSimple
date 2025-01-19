@@ -6,9 +6,9 @@ const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
     //Set the states for data from all tables in the database
-    const [langs, setLangs] = useState([]);
-    const [words, setWords] = useState([]);
-    const [trans, setTrans] = useState([]);
+    const [ langs, setLangs ] = useState([]);
+    const [ words, setWords ] = useState([]);
+    const [ trans, setTrans ] = useState([]);
 
     const syncData = async () => {
         try {
@@ -16,6 +16,8 @@ export const DataProvider = ({ children }) => {
             const fetchedLang = await fetchLang();
             const fetchedWord = await fetchWords();
             const fetchedTrans = await fetchTrans();
+
+            //Set all general states
             setLangs(fetchedLang);
             setWords(fetchedWord);
             setTrans(fetchedTrans);
