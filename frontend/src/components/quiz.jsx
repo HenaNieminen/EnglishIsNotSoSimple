@@ -9,10 +9,10 @@ const Quiz = ({ language, length, active, activeStatus }) => {
     //Context from DataContext
     const { words, trans } = useContext(DataContext);
     //SetStates for quiz
-    const [questions, setQuestions] = useState([]);
-    const [score, setScore] = useState(0);
-    const [quizOver, setQuizOver] = useState(false);
-    const [userAnswers, setUserAnswers] = useState([]);
+    const [ questions, setQuestions ] = useState([]);
+    const [ score, setScore ] = useState(0);
+    const [ quizOver, setQuizOver ] = useState(false);
+    const [ userAnswers, setUserAnswers ] = useState([]);
 
     useEffect(() => {
         //Take the user given length of the quiz to a new variable
@@ -95,13 +95,11 @@ const Quiz = ({ language, length, active, activeStatus }) => {
     };
 
     const handleInputChange = (e, index) => {
-        /*Handle user typing in answers. Take the event value and
-        setUserAnswers will apply the previous answers and replace the answer at index */
-        const answer = e.target.value;
-        setUserAnswers((prevAnswers) => ({
-            ...prevAnswers,
-            [index]: answer,
-        }));
+        /*Take the useranswers to a new const, update the answers
+        at the index with the event target value and set the new tempanswers */
+        const tempAnswers = [...userAnswers];
+        tempAnswers[index] = e.target.value;
+        setUserAnswers(tempAnswers);
     };
 
     return (
