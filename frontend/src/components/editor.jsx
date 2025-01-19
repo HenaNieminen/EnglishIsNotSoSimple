@@ -70,7 +70,8 @@ const Editor = () => {
     const handleEdit = async (word) => {
         //Handle edits. Set the edit mode to the particular word and seek all translations for it
         setEditMode(word.id);
-        const translations = await seekTrans(word.id); //Fetch translations for the word
+        //Fetch translations for the word
+        const translations = await seekTrans(word.id);
         setTempTranslations(translations);
     };
 
@@ -81,6 +82,7 @@ const Editor = () => {
             //Exit the edit mode
             setEditMode(null);
             //Sync the data from context
+            toast.success(`Word successfully deleted!`);
             await syncData();
         } catch (error) {
             //Error handling
@@ -97,6 +99,7 @@ const Editor = () => {
             //Set the new translations
             setTempTranslations(updatedTranslations);
             //Sync data overall again
+            toast.success(`Translation added!`);
             await syncData();
         } catch (error) {
             toast.error(`Error adding translation. Error code: ${error.response.status}`);
@@ -111,6 +114,7 @@ const Editor = () => {
             const updatedTranslations = await seekTrans(wordId);
             //Set it
             setTempTranslations(updatedTranslations);
+            toast.success(`Translation deleted!`);
             //Sync
             await syncData();
         } catch (error) {
