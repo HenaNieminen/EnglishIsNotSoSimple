@@ -8,9 +8,9 @@ const Adder = () => {
     //Langs and syncData from context
     const { langs, syncData } = useContext(DataContext);
     //States for adding
-    const [addMode, setAddMode] = useState(false);
-    const [postedWord, setPostedWord] = useState('');
-    const [postedLang, setPostedLang] = useState('');
+    const [ addMode, setAddMode ] = useState(false);
+    const [ postedWord, setPostedWord ] = useState('');
+    const [ postedLang, setPostedLang ] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
