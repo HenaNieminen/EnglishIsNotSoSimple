@@ -18,15 +18,16 @@ import {
     Button,
     Box
 } from '@mui/material/';
+//I am become import, the destroyer of coherency
 
 const Editor = () => {
     //Take context
     const { langs, words, syncData } = useContext(DataContext);
     //Setstates for editing function
-    const [ editedWord, setEditedWord ] = useState('');
-    const [ editLang, setEditLang ] = useState('');
-    const [ editMode, setEditMode ] = useState(null);
-    const [ tempTranslations, setTempTranslations ] = useState([]);
+    const [editedWord, setEditedWord] = useState('');
+    const [editLang, setEditLang] = useState('');
+    const [editMode, setEditMode] = useState(null);
+    const [tempTranslations, setTempTranslations] = useState([]);
 
     const adjustWord = async (id, lang_id, word) => {
         //Structure the updated word into an object

@@ -1,16 +1,26 @@
 import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
 import { postWords } from '../context/backendfunc'
-import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
+import {
+    TextField,
+    Typography,
+    Button,
+    Box,
+    FormControl,
+    Select,
+    MenuItem,
+    InputLabel
+} from '@mui/material/';
 import { toast } from 'react-toastify';
+//Few people laughed, few people cried, most people were silent
 
 const Adder = () => {
     //Langs and syncData from context
     const { langs, syncData } = useContext(DataContext);
     //States for adding
-    const [ addMode, setAddMode ] = useState(false);
-    const [ postedWord, setPostedWord ] = useState('');
-    const [ postedLang, setPostedLang ] = useState('');
+    const [addMode, setAddMode] = useState(false);
+    const [postedWord, setPostedWord] = useState('');
+    const [postedLang, setPostedLang] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
