@@ -21,8 +21,8 @@ English Is Not So Simple allows parents to create their own Finnish to English e
 
 ## Okay, what the hell is this?
 
-This was a school projet for a backend course where we had to use Node.js and Express to make a backend with an SQL based database, and then make a fullstack
-program to teach English for Finnish kids. More features were planned, but they were scrapped as deadlines and other personal stuff came into the way, but
+This was a school project for a backend course where we had to use Node.js and Express to make a backend with an SQL based database, and then complete it to a fullstack program
+with a React frontend to teach English for Finnish kids. More features were planned, but they were scrapped as deadlines and other personal stuff came into the way, but
 still got very respectable marks and the project stayed in an acceptable scope. Some day, I could just come back here and do something new just to try and expand my
 skills with React or Node.
 
