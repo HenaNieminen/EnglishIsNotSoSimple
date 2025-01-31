@@ -19,7 +19,11 @@ English Is Not So Simple allows parents to create their own Finnish to English e
 
 -Ability to edit the words and translations!
 
+## Okay, what the hell is this?
 
-## Screencast
+This was a school projet for a backend course where we had to use Node.js and Express to make a backend with an SQL based database, and then make a fullstack
+program to teach English for Finnish kids. More features were planned, but they were scrapped as deadlines and other personal stuff came into the way, but
+still got very respectable marks and the project stayed in an acceptable scope. Some day, I could just come back here and do something new just to try and expand my
+skills with React or Node.
 
-https://www.dropbox.com/scl/fi/hkojfvoc53a9vtyphatmn/Screencast-English-is-not-so-simple.mov?rlkey=n3b7bavjjygmn3wkqvzyf7es2&st=wg1ifwjj&dl=0
+Final grade for this project was 4/5.
