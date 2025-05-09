@@ -1,8 +1,18 @@
 import { useContext, useState } from 'react';
 import { DataContext } from '../context/datacontext';
-import { postWords, postTrans } from '../context/backendfunc'
-import { TextField, Typography, Button, Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material/';
+import { postWords } from '../context/backendfunc'
+import {
+    TextField,
+    Typography,
+    Button,
+    Box,
+    FormControl,
+    Select,
+    MenuItem,
+    InputLabel
+} from '@mui/material/';
 import { toast } from 'react-toastify';
+//Few people laughed, few people cried, most people were silent
 
 const Adder = () => {
     //Langs and syncData from context
@@ -11,7 +21,6 @@ const Adder = () => {
     const [addMode, setAddMode] = useState(false);
     const [postedWord, setPostedWord] = useState('');
     const [postedLang, setPostedLang] = useState('');
-    const [postedTrans, setPostedTrans] = useState('');
 
     const sendWord = async (lang_id, word) => {
         try {
@@ -27,8 +36,11 @@ const Adder = () => {
             if (error.status === 409) {
                 toast.error("Word already exists!");
                 return;
+            } else if (error.status === 500) {
+                toast.error("Server error. Database connection severed. Code: 500");
+                return;
             };
-            toast.error(`Error sending word. Error status: ${error.response.status}`);
+            toast.error(`Server error. Code: ${error.response.status}`);
         };
     };
 
@@ -47,7 +59,7 @@ const Adder = () => {
                 </Typography>
             )}
             {/*Button to open the menu*/}
-            {!addMode && !langs.length === 0 && (
+            {!addMode && !langs.length !== 0 && (
                 <Button
                     variant="contained"
                     onClick={() => setAddMode(true)}

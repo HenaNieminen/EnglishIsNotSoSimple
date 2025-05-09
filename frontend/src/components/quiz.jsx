@@ -5,16 +5,17 @@ import { fetchTransForWordId } from '../context/backendfunc';
 import PropTypes from 'prop-types';
 import { TextField, Typography, Button, Box } from '@mui/material/';
 
-const Quiz = ({ language, length, active }) => {
+const Quiz = ({ language, length, active, activeStatus }) => {
     //Context from DataContext
     const { words, trans } = useContext(DataContext);
     //SetStates for quiz
-    const [questions, setQuestions] = useState([]);
-    const [score, setScore] = useState(0);
-    const [quizOver, setQuizOver] = useState(false);
-    const [userAnswers, setUserAnswers] = useState([]);
+    const [ questions, setQuestions ] = useState([]);
+    const [ score, setScore ] = useState(0);
+    const [ quizOver, setQuizOver ] = useState(false);
+    const [ userAnswers, setUserAnswers ] = useState([]);
 
     useEffect(() => {
+        //Take the user given length of the quiz to a new variable
         let quizLength = length;
         const generateQuestions = async () => {
             //Select the words from the language user wants to quiz
@@ -29,7 +30,7 @@ const Quiz = ({ language, length, active }) => {
             };
             //Temp array to fill words
             const tempArray = [];
-            /*This new technique of using sets was suggested by co-pilot. Pretty good for
+            /*This technique of using sets was suggested by co-pilot. Pretty good for
             weeding out anomalies and duplicates*/
             const usedWordIds = new Set();
             //Will set the length as long as possible if there are not enough words than user requested
@@ -38,31 +39,40 @@ const Quiz = ({ language, length, active }) => {
             };
 
             while (tempArray.length < length) {
-                const randomIndex = Math.floor(Math.random() * wordsWithTran.length);
+                //Pick a random word
+                const randomIndex = Math.floor(Math.random() * wordsWithTran.wordsWithTran.length);
                 const randomWord = wordsWithTran[randomIndex];
                 //Skip if a randomly selected word is already there in the Set
                 if (usedWordIds.has(randomWord.id)) {
                     continue;
                 };
                 try {
+                    //Use the fetchTransForWordId method to fetch all translations
                     const translations = await fetchTransForWordId(randomWord.id);
                     const transIds = translations.map(trans => trans.trans_id);
+                    //Filter the answers from the words state
                     const answers = words.filter(word => transIds.includes(word.id));
+                    //Push question into the temp array
                     tempArray.push({
                         question: randomWord.word,
                         answers: answers.map(answer => answer.word),
                     });
-                    usedWordIds.add(randomWord.id);//Add used word to the Set
+                    usedWordIds.add(randomWord.id);
+                    //Add used word to the Set
                 } catch (error) {
                     toast.error(`Error generating questions. Error status: ${error.response.status}`);
+                    active(false);
+                    return;
                 };
             };
+            //Set questions from the tempArray
             setQuestions(tempArray);
         };
-        if (!quizOver) {
+        //When quiz becomes active, generate the questions
+        if (activeStatus === true && !quizOver) {
             generateQuestions();
         };
-    }, [language, length, words, trans, active, quizOver]);
+    }, [language, length, words, trans, active, quizOver, activeStatus]);
 
     const handleSubmit = () => {
         //Handle the submitted answers
@@ -70,7 +80,9 @@ const Quiz = ({ language, length, active }) => {
 
         //Go through each question
         questions.forEach((q, index) => {
-            const userAnswer = userAnswers[index]?.toLowerCase() || "";
+            //Take the user answer from the index or defaut it to an empty string and then make it lowercase
+            const userAnswer = (userAnswers[index] || "").toLowerCase();
+            //Map the correct answers from the question and convert them to lowercase
             const correctAnswers = q.answers.map(answer => answer.toLowerCase());
             //Check if the user's answer matches any correct answer
             if (correctAnswers.includes(userAnswer)) {
@@ -83,12 +95,11 @@ const Quiz = ({ language, length, active }) => {
     };
 
     const handleInputChange = (e, index) => {
-        //Handle user typing in their answer, taking the event target value
-        const answer = e.target.value;
-        setUserAnswers((prevAnswers) => ({
-            ...prevAnswers,
-            [index]: answer,
-        }));
+        /*Take the useranswers to a new const, update the answers
+        at the index with the event target value and set the new tempanswers */
+        const tempAnswers = [...userAnswers];
+        tempAnswers[index] = e.target.value;
+        setUserAnswers(tempAnswers);
     };
 
     return (
@@ -155,7 +166,7 @@ const Quiz = ({ language, length, active }) => {
                         </Typography>
                         <Button
                             variant="contained"
-                            onClick={() => active(false)}
+                            onClick={() => { active(false); setQuizOver(false); }}
                             style={{ marginTop: '10px' }}
                         >
                             Exit
@@ -172,7 +183,8 @@ const Quiz = ({ language, length, active }) => {
 Quiz.propTypes = {
     language: PropTypes.number.isRequired,
     length: PropTypes.number.isRequired,
-    active: PropTypes.func.isRequired
+    active: PropTypes.func.isRequired,
+    activeStatus: PropTypes.bool.isRequired
 };
 
 export default Quiz;

@@ -39,6 +39,7 @@ const createWordsTable = (db) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         lang_id INTEGER,
         word TEXT,
+        tags TEXT,
         FOREIGN KEY (lang_id) REFERENCES languages (id),
         UNIQUE(lang_id, word)
     );`);
@@ -71,6 +72,26 @@ const createTranslationsTable = (db) => {
     /*Converted to use duplication. I realized that comma separating them
     will cause headaches in the future. Luckily this is still easily correctable*/
 };
+
+/**
+* This table stores tags for the words
+*
+*Columns:
+*- id: Primary key, auto-incremented
+*- tag: Text to store the tag
+*- UNIQUE(tag): Ensures that each tag is unique in the table
+*This table is used to store tags for words, allowing for better organization and categorization of words.
+* @param {Object} db - The database connection object.
+*
+*/
+const createTagsTable = (db) => {
+    db.run(`CREATE TABLE tags (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tag TEXT NOT NULL,
+        UNIQUE(tag)
+    );`);
+}
+
 
 //Read the initialData.json file and insert all contents to the database
 /**

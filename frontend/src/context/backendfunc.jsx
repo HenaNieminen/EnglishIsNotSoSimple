@@ -4,7 +4,6 @@ import axios from 'axios';
 const fetchLang = async () => {
     try {
         const response = await axios.get(`/api/languages`);
-        console.log(response);
         return response.data;
     } catch (error) {
         if (error.status === 404) {
@@ -19,7 +18,6 @@ const fetchLang = async () => {
 const fetchWords = async () => {
     try {
         const response = await axios.get(`/api/words`);
-        console.log(response);
         return response.data;
     } catch (error) {
         if (error.status === 404) {
@@ -33,7 +31,6 @@ const fetchWords = async () => {
 const fetchTrans = async () => {
     try {
         const response = await axios.get(`/api/translations`);
-        console.log(response);
         return response.data;
     } catch (error) {
         if (error.status === 404) {

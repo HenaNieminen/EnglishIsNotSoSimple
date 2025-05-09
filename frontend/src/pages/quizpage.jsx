@@ -80,7 +80,14 @@ const QuizPage = () => {
             {trans.length === 0 && <p>Quiz cannot be started as no words have been translated.</p>}
             {trans.length === 0 && langs.length === 0 && <p>Database connection is severed</p>}
             {/*When user starts the quiz, pass all the props and the active status */}
-            {startQuiz && <Quiz language={selectedLang} length={quizLength} active={setStartQuiz} />}
+            {startQuiz &&
+            <Quiz
+                language={selectedLang}
+                length={quizLength}
+                active={setStartQuiz}
+                activeStatus={startQuiz}
+            />
+                }
         </div>
     );
 };

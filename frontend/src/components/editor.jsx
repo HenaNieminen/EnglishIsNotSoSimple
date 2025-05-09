@@ -18,15 +18,16 @@ import {
     Button,
     Box
 } from '@mui/material/';
+//I am become import, the destroyer of coherency
 
 const Editor = () => {
     //Take context
     const { langs, words, syncData } = useContext(DataContext);
     //Setstates for editing function
-    const [ editedWord, setEditedWord ] = useState('');
-    const [ editLang, setEditLang ] = useState('');
-    const [ editMode, setEditMode ] = useState(null);
-    const [ tempTranslations, setTempTranslations ] = useState([]);
+    const [editedWord, setEditedWord] = useState('');
+    const [editLang, setEditLang] = useState('');
+    const [editMode, setEditMode] = useState(null);
+    const [tempTranslations, setTempTranslations] = useState([]);
 
     const adjustWord = async (id, lang_id, word) => {
         //Structure the updated word into an object
@@ -40,8 +41,11 @@ const Editor = () => {
             if (error.status === 409) {
                 toast.error("Updating word failed: word already exists.");
                 return
+            } else if (error.status === 400) {
+                toast.error("Word must not contain numbers or special characters other than spaces, dashes, or astrophes");
+                return;
             };
-            toast.error("Updating word failed:", error);
+            toast.error(`Error updating word. Error code: ${error.response.status}`);
         };
     };
 
@@ -49,9 +53,6 @@ const Editor = () => {
         try {
             //Fetch the translations for the word
             let trans = await fetchTransForWordId(id);
-            if (trans === null) {
-                return [];
-            };
             //Map the transIDs for the word
             const transIds = trans.map(t => t.trans_id);
             //Find all the words from the words datacontext and then map them
@@ -62,7 +63,7 @@ const Editor = () => {
             return transWords;
         } catch (error) {
             //Handle errors and return an empty array
-            toast.error(`Error fetching trans. Error status: ${error.response.status}`);
+            toast.error(`Error fetching trans. Error code: ${error.response.status}`);
             return [];
         };
     };
@@ -70,7 +71,8 @@ const Editor = () => {
     const handleEdit = async (word) => {
         //Handle edits. Set the edit mode to the particular word and seek all translations for it
         setEditMode(word.id);
-        const translations = await seekTrans(word.id); //Fetch translations for the word
+        //Fetch translations for the word
+        const translations = await seekTrans(word.id);
         setTempTranslations(translations);
     };
 
@@ -81,10 +83,11 @@ const Editor = () => {
             //Exit the edit mode
             setEditMode(null);
             //Sync the data from context
+            toast.success(`Word successfully deleted!`);
             await syncData();
         } catch (error) {
             //Error handling
-            toast.error(`Error deleting word. Error status: ${error.response.status}`);
+            toast.error(`Error deleting word. Error code: ${error.response.status}`);
         };
     }
 
@@ -97,9 +100,10 @@ const Editor = () => {
             //Set the new translations
             setTempTranslations(updatedTranslations);
             //Sync data overall again
+            toast.success(`Translation added!`);
             await syncData();
         } catch (error) {
-            toast.error(`Error adding translation. Error status: ${error.response.status}`);
+            toast.error(`Error adding translation. Error code: ${error.response.status}`);
         };
     };
 
@@ -111,10 +115,11 @@ const Editor = () => {
             const updatedTranslations = await seekTrans(wordId);
             //Set it
             setTempTranslations(updatedTranslations);
+            toast.success(`Translation deleted!`);
             //Sync
             await syncData();
         } catch (error) {
-            toast.error(`Error deleting translation. Error status: ${error.response.status}`);
+            toast.error(`Error deleting translation. Error code: ${error.response.status}`);
         };
     };
 
