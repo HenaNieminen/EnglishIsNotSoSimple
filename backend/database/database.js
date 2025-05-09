@@ -27,6 +27,7 @@ const createLanguageTable = (db) => {
  * - id: An integer primary key that auto-increments each insert.
  * - lang_id: Links the word with its respective language in the language table
  * - word: text to store the word
+ * - tags: text to store the tags
  *
  * The table has a unique constraint on the combination of 'lang_id' and 'word',
  * ensuring that each word is unique within its language but allowing the same word
@@ -39,7 +40,6 @@ const createWordsTable = (db) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         lang_id INTEGER,
         word TEXT,
-        tags TEXT,
         FOREIGN KEY (lang_id) REFERENCES languages (id),
         UNIQUE(lang_id, word)
     );`);
@@ -91,6 +91,18 @@ const createTagsTable = (db) => {
         UNIQUE(tag)
     );`);
 }
+
+const createWordTagsTable = (db) => {
+    db.run(`CREATE TABLE word_tags (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        word_id INTEGER,
+        tag_id INTEGER,
+        FOREIGN KEY (word_id) REFERENCES words (id),
+        FOREIGN KEY (tag_id) REFERENCES tags (id),
+        UNIQUE(word_id, tag_id)
+    );`);
+};
+
 
 
 //Read the initialData.json file and insert all contents to the database
